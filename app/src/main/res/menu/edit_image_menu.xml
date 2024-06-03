@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="Search Library"
+        android:id="@+id/item_library" />
+    <item
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="Clear"
+        android:id="@+id/item_clear" />
+    <!--item
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/cancel"
+        android:id="@+id/item_cancel" /-->
+</menu>

@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">I Do The Cooking</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">I Do The Cooking</string>
+    <string name="nav_header_subtitle">Manage your cooking needs in one place</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_recipes">Recipes</string>
+    <string name="menu_shopping_lists">Shopping Lists</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="title_activity_recipe">Recipe</string>
+    <string name="title_activity_recipe_name">Recipe - {0}</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="recipe_main_fragment_label">Recipe Info</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="update">Update</string>
+    <string name="add">Add</string>
+    <string name="ok">OK</string>
+    <string name="delete">Delete</string>
+
+    <string name="exit_without_save">You\'ve made changes.  Would you like to save them?</string>
+    <string name="delete_confirmation">Confirm delete of recipe: {0}</string>
+
+    <string name="overview_tab">Overview</string>
+    <string name="ingredients_tab">Ingredients</string>
+    <string name="instructions_tab">Instructions</string>
+
+    <string name="recipe_main">Name</string>
+    <string name="recipe_description">Description</string>
+    <string name="recipe_image">Image</string>
+    <string name="recipe_servings">Servings</string>
+    <string name="recipe_categories">Categories</string>
+    <string name="recipe_select_categories">Select Categories</string>
+
+    <string name="ingredient_amount_hint">#</string>
+    <string name="ingredient_unit_hint">Units</string>
+    <string name="ingredient_name_hint">Name</string>
+    <string name="ingredient_edit_amount">Amount</string>
+    <string name="ingredient_edit_servings">Servings</string>
+    <string name="ingredient_edit_name">Name</string>
+
+    <string name="direction_content_hint">Details</string>
+
+    <string name="create_recipe_title">Recipe</string>
+    <string name="create_recipe_msg">Create a new recipe</string>
+
+    <string name="create_category_title">Category</string>
+    <string name="create_category_msg">Create a new category</string>
+
+    <string name="update_category_title">Category</string>
+    <string name="update_category_msg">Update a category</string>
+
+    <string name="filter_sort_by">Sort By</string>
+    <string name="filter_sort_by_name">Name</string>
+    <string name="filter_sort_by_newest">Newest</string>
+    <string name="filter_sort_by_recently_updated">Recently Updated</string>
+    <string name="filter_sort_by_calories">Calories</string>
+    <string name="filter_on_categories">Filter on Categories</string>
+
+    <string name="categories_dlg_title">Select Category</string>
+    <string name="categories_dlg_clear_all">Clear All</string>
+</resources>

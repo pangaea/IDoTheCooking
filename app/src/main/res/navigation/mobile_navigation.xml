@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.pangaea.idothecooking.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_recipes"
+        android:name="com.pangaea.idothecooking.ui.recipe.RecipesFragment"
+        android:label="@string/menu_recipes"
+        tools:layout="@layout/fragment_recipe_list" />
+
+    <fragment
+        android:id="@+id/nav_categories"
+        android:name="com.pangaea.idothecooking.ui.category.CategoriesFragment"
+        android:label="Categories"
+        tools:layout="@layout/fragment_category_list" />
+
+    <fragment
+        android:id="@+id/nav_shopping_lists"
+        android:name="com.pangaea.idothecooking.ui.shoppinglist.ShoppingListsFragment"
+        android:label="@string/menu_shopping_lists"
+        tools:layout="@layout/fragment_shopping_lists_list" />
+</navigation>
