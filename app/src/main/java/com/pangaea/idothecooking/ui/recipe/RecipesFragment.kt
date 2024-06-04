@@ -109,10 +109,10 @@ class RecipesFragment : Fragment() {
                     override fun instantiateUnderlayButton(position: Int): List<UnderlayButton> {
                         val deleteButton = deleteButton(position)
                         val cancelButton = cancelButton(position)
-                        if (deleteButton != null && cancelButton != null) {
-                            return listOf(deleteButton, cancelButton)
+                        return if (deleteButton != null && cancelButton != null) {
+                            listOf(deleteButton, cancelButton)
                         } else {
-                            return listOf()
+                            listOf()
                         }
                     }
                 })
