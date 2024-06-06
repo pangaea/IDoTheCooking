@@ -1,10 +1,15 @@
 package com.pangaea.idothecooking.ui.recipe
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.NumberPicker
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,11 +17,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeDirectionsBinding
 import com.pangaea.idothecooking.state.db.entities.Direction
+import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeDirectionsAdapter
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeIngredientsAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
+import com.pangaea.idothecooking.utils.extensions.fractionValues
 
 //private const val RECIPE_DIRECTIONS = "recipeDirections"
 
@@ -43,6 +50,8 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_recipe_directions, container, false)
         _view = view
+
+        view.setBackgroundResource(R.mipmap.tablecloth3)
 
         //val recyclerView: RecyclerView = binding.listItemsView
         val list = view.findViewById<RecyclerView>(R.id.listItemsView)
@@ -74,11 +83,14 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
 
         val btn = view.findViewById<Button>(R.id.button_new_item)
         btn.setOnClickListener {
-            val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
-            val adapter = recycler.adapter as RecipeDirectionsAdapter
-            val aa = Direction()
-            aa.content = ""
-            adapter.addNewItem(aa)
+            lanuchEditDialog(null, null){ dialog, id ->
+                val details = (dialog as AlertDialog).findViewById<View>(R.id.details) as EditText?
+                val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
+                val adapter = recycler.adapter as RecipeDirectionsAdapter
+                val aa = Direction()
+                aa.content = details?.text.toString()
+                adapter.addNewItem(aa)
+            }
         }
         return view
     }
@@ -122,6 +134,37 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
     }
 
     override fun onItemClicked(index: Int) {
-        TODO("Not yet implemented")
+        lanuchEditDialog(null, index){ dialog, id ->
+            val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
+            val adapter: RecipeDirectionsAdapter = list.adapter as RecipeDirectionsAdapter
+            val details = (dialog as AlertDialog).findViewById<View>(R.id.details) as EditText?
+            val direction: Direction? = adapter.mItems?.get(index)
+            direction?.content = details?.text.toString()
+            (activity as RecipeActivity).dataDirty = true
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    fun lanuchEditDialog(savedInstanceState: Bundle?, index: Int?, callback: DialogInterface.OnClickListener) {
+        val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
+        val adapter: RecipeDirectionsAdapter = list.adapter as RecipeDirectionsAdapter
+        val direction: Direction? = index?.let { adapter.mItems?.get(it) }
+        activity?.let {
+            val layout: View =
+                requireActivity().layoutInflater.inflate(R.layout.direction_edit, null, false)!!
+            val alertBuilder = AlertDialog.Builder(requireContext())
+            alertBuilder.setView(layout)
+            alertBuilder.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
+            if (direction != null) {
+                alertBuilder.setTitle("Edit Direction")
+                val details = layout.findViewById<View>(R.id.details) as EditText?
+                details?.setText(direction.content)
+                alertBuilder.setPositiveButton(resources.getString(R.string.update), callback)
+            } else {
+                alertBuilder.setTitle("New Direction")
+                alertBuilder.setPositiveButton(resources.getString(R.string.add), callback)
+            }
+            alertBuilder.show()
+        }
     }
 }

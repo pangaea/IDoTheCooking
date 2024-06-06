@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.ui.recipe
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeIngredientsBinding
+import com.pangaea.idothecooking.state.db.entities.Category
+import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
+import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeIngredientsAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
@@ -79,12 +83,11 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
 
         val btn = view.findViewById<Button>(R.id.button_new_item)
         btn.setOnClickListener {
-            val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
-            val adapter = recycler.adapter as RecipeIngredientsAdapter
-            val aa = Ingredient()
-            aa.name = ""
-            aa.amount = null
-            adapter.addNewItem(aa)
+            lanuchEditDialog(null) { obj ->
+                val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
+                val adapter = recycler.adapter as RecipeIngredientsAdapter
+                adapter.addNewItem(obj)
+            }
         }
         return view
     }
@@ -128,34 +131,24 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
     }
 
     override fun onItemClicked(index: Int) {
-        lanuchEditDialog(null, index)
-    }
-
-    fun lanuchEditDialog(savedInstanceState: Bundle?, index: Int) {
         val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
         val adapter: RecipeIngredientsAdapter = list.adapter as RecipeIngredientsAdapter
-        val ingredient: Ingredient? = adapter.mItems?.get(index)
+        val ingredient: Ingredient? = index.let { adapter.mItems?.get(it) }
         if (ingredient != null) {
-            activity?.let {
-                RecipeIngredientDialog(ingredient, { dialog, id ->
-                    val wholeNumView = (dialog as AlertDialog).findViewById<View>(R.id.amount_whole) as NumberPicker?
-                    var amount: Double = wholeNumView?.value?.toDouble() ?: 0.00
-                    val fractionView = (dialog as AlertDialog).findViewById<View>(R.id.amount_fraction) as NumberPicker?
-                    val reversedFractionValues = fractionValues.reversedArray()
-                    if (fractionView != null && reversedFractionValues.get(fractionView.value) < 1.00) {
-                        amount = amount + reversedFractionValues.get(fractionView.value)
-                    }
-                    ingredient.amount = amount
-                    val unitView = (dialog as AlertDialog).findViewById<View>(R.id.unit) as EditText?
-                    ingredient.unit = unitView?.text.toString()
-                    val nameView = (dialog as AlertDialog).findViewById<View>(R.id.name) as EditText?
-                    ingredient.name = nameView?.text.toString()
-                    (activity as RecipeActivity).dataDirty = true
-                    adapter.notifyDataSetChanged()
-                }, { dialog, id ->
-                    dialog.cancel()
-                }).show(childFragmentManager, null)
+            lanuchEditDialog(ingredient) { obj ->
+                ingredient.amount = obj.amount
+                ingredient.unit = obj.unit
+                ingredient.name = obj.name
+                (activity as RecipeActivity).dataDirty = true
+                adapter.notifyDataSetChanged()
             }
+        }
+    }
+
+    fun lanuchEditDialog(ingredient: Ingredient?, callback: (ingredient: Ingredient) -> Unit) {
+        activity?.let {
+            RecipeIngredientDialog(ingredient, callback) { dialog, _ -> dialog.cancel() }
+                .show(childFragmentManager, null)
         }
     }
 }
