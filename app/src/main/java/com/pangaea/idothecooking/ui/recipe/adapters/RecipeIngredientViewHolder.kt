@@ -1,17 +1,16 @@
 package com.pangaea.idothecooking.ui.recipe.adapters
 
 import android.graphics.Color
-import android.text.Html
 import android.view.View
 import android.widget.ImageView
-import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperViewHolder
 
+
 class RecipeIngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-    DraggableItemTouchHelperViewHolder {
+                                                   DraggableItemTouchHelperViewHolder {
     val displayAmountView: TextView
     val displayNameView: TextView
     //val editView: ImageView
