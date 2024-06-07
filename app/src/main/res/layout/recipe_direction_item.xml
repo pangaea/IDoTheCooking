@@ -13,6 +13,7 @@
         android:layout_marginStart="18dp"
         android:layout_width="0dp"
         android:hint="@string/direction_content_hint"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"/>
 

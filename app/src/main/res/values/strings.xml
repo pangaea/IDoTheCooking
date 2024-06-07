@@ -46,6 +46,8 @@
     <string name="ingredient_edit_amount">Amount</string>
     <string name="ingredient_edit_servings">Servings</string>
     <string name="ingredient_edit_name">Name</string>
+    <string name="ingredient_edit_title">Edit Ingredient</string>
+    <string name="ingredient_new_title">New Ingredient</string>
 
     <string name="direction_content_hint">Details</string>
 
@@ -64,6 +66,9 @@
     <string name="filter_sort_by_recently_updated">Recently Updated</string>
     <string name="filter_sort_by_calories">Calories</string>
     <string name="filter_on_categories">Filter on Categories</string>
+
+    <string name="direction_edit_title">Edit Instruction</string>
+    <string name="direction_new_title">New Instruction</string>
 
     <string name="categories_dlg_title">Select Category</string>
     <string name="categories_dlg_clear_all">Clear All</string>

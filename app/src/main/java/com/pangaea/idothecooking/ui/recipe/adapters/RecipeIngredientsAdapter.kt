@@ -1,12 +1,15 @@
 package com.pangaea.idothecooking.ui.recipe.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.TextAppearanceSpan
+import android.util.TypedValue
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperAdapter
@@ -74,31 +77,20 @@ class RecipeIngredientsAdapter(
         handleDragEvent(holder, holder.handleView)
     }
 
+    @SuppressLint("ResourceType")
     private fun highlightItem(view: View) {
-        //context?.theme?.resolveAttribute(android.R.attr.selectableItemBackground, activity, true)
+//        if (context != null) {
+//            val tv = TypedValue()
+//            context.theme?.resolveAttribute(android.R.attr.selectableItemBackground, tv, true)
+//            if (tv.resourceId != 0) {
+//                view.setBackgroundResource(tv.resourceId);
+//            } else {
+//                view.setBackgroundColor(tv.data);
+//            }
+//        }
         view.setBackgroundResource(com.google.android.material.R.color.abc_color_highlight_material)
         Timer().schedule(timerTask {
             view.setBackgroundColor(Color.TRANSPARENT)
         }, 200)
     }
-
-//    fun View.addBackgroundRipple() = with(TypedValue()) {
-//        context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
-//        setBackgroundResource(resourceId)
-//    }
-//
-//    fun View.addBackgroundCircleRipple() = with(TypedValue()) {
-//        context.theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, this, true)
-//        setBackgroundResource(resourceId)
-//    }
-//
-//    fun View.addForegroundRipple() = with(TypedValue()) {
-//        context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
-//        foreground = ContextCompat.getDrawable(context, resourceId)
-//    }
-//
-//    fun View.addForegroundCircleRipple() = with(TypedValue()) {
-//        context.theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, this, true)
-//        foreground = ContextCompat.getDrawable(context, resourceId)
-//    }
 }

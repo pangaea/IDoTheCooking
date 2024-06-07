@@ -156,12 +156,12 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
             alertBuilder.setView(layout)
             alertBuilder.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
             if (direction != null) {
-                alertBuilder.setTitle("Edit Direction")
+                alertBuilder.setTitle(resources.getString(R.string.direction_edit_title))
                 val details = layout.findViewById<View>(R.id.details) as EditText?
                 details?.setText(direction.content)
                 alertBuilder.setPositiveButton(resources.getString(R.string.update), callback)
             } else {
-                alertBuilder.setTitle("New Direction")
+                alertBuilder.setTitle(resources.getString(R.string.direction_new_title))
                 alertBuilder.setPositiveButton(resources.getString(R.string.add), callback)
             }
             alertBuilder.show()

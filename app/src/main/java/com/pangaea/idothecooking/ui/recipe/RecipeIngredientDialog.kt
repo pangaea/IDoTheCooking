@@ -38,7 +38,7 @@ class RecipeIngredientDialog(private val ingredient: Ingredient?,
         amountView.displayedValues = reversedFractions.toTypedArray()
 
         val ingredientView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-
+        var buttonText = resources.getString(R.string.update)
         if (ingredient != null) {
             if (ingredient.amount != null) {
                 val wholeNum = ingredient.amount!!.toInt() ?: 0
@@ -56,13 +56,14 @@ class RecipeIngredientDialog(private val ingredient: Ingredient?,
 
             val nameView: TextView = layout.findViewById(R.id.name)
             nameView.text = ingredient.name
-            ingredientView.setTitle("Edit Ingredient")
+            ingredientView.setTitle(resources.getString(R.string.ingredient_edit_title))
         } else {
-            ingredientView.setTitle("New Ingredient")
+            ingredientView.setTitle(resources.getString(R.string.ingredient_new_title))
+            buttonText = resources.getString(R.string.add)
         }
         ingredientView.setView(layout)
             .setPositiveButton(
-                R.string.update
+                buttonText
             ) { dialog, id ->
                 val wholeNumView =
                     (dialog as AlertDialog).findViewById<View>(R.id.amount_whole) as NumberPicker?
