@@ -47,6 +47,7 @@ class CategoriesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_category_list, container, false)
+        view.setBackgroundResource(R.mipmap.tablecloth3)
         val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
         val categoryRepo = db.categoryDao()?.let { CategoryRepository(it) }
         viewModel = categoryRepo?.let { CategoryViewModelFactory(it, null).create(CategoryViewModel::class.java) }!!
@@ -66,8 +67,6 @@ class CategoriesFragment : Fragment() {
                                     category.name
                                 ) { name ->
                                     if (name != null) {
-                                        val category = Category()
-                                        category.id = id
                                         category.name = name
                                         viewModel.update(category)
                                     }

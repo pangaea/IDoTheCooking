@@ -1,6 +1,8 @@
 package com.pangaea.idothecooking.ui.shared.adapters.draggable
 
+import android.content.ContentValues
 import android.graphics.Canvas
+import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
@@ -70,6 +72,9 @@ class DraggableItemTouchHelperCallback<T, H: RecyclerView.ViewHolder>(private va
                 val itemViewHolder = viewHolder as DraggableItemTouchHelperViewHolder
                 itemViewHolder.onItemSelected()
             }
+        } else {
+            //Log.d(ContentValues.TAG, "onSelectedChanged")
+            mAdapter.notifyDataSetChanged()
         }
         super.onSelectedChanged(viewHolder, actionState)
     }

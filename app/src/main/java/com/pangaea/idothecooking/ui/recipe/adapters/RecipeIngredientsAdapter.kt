@@ -1,24 +1,17 @@
 package com.pangaea.idothecooking.ui.recipe.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.TextAppearanceSpan
-import android.util.TypedValue
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemsAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
-import java.util.Timer
-import kotlin.concurrent.timerTask
-
 
 class RecipeIngredientsAdapter(
     val context: Context?,
@@ -64,33 +57,10 @@ class RecipeIngredientsAdapter(
 
         builder.append(s)
         holder.displayNameView.text = builder
-        holder.displayAmountView.setOnClickListener() {
-            highlightItem(holder.itemView)
-            mDragStartListener.onItemClicked(position)
-        }
-        holder.displayNameView.setOnClickListener() {
-            highlightItem(holder.itemView)
-            mDragStartListener.onItemClicked(position)
-        }
+
+        holder.itemView.setOnClickListener { mDragStartListener.onItemClicked(position) }
 
         // Attach drag event to handle image
         handleDragEvent(holder, holder.handleView)
-    }
-
-    @SuppressLint("ResourceType")
-    private fun highlightItem(view: View) {
-//        if (context != null) {
-//            val tv = TypedValue()
-//            context.theme?.resolveAttribute(android.R.attr.selectableItemBackground, tv, true)
-//            if (tv.resourceId != 0) {
-//                view.setBackgroundResource(tv.resourceId);
-//            } else {
-//                view.setBackgroundColor(tv.data);
-//            }
-//        }
-        view.setBackgroundResource(com.google.android.material.R.color.abc_color_highlight_material)
-        Timer().schedule(timerTask {
-            view.setBackgroundColor(Color.TRANSPARENT)
-        }, 200)
     }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeIngredientsBinding
 import com.pangaea.idothecooking.state.db.entities.Category
@@ -81,7 +82,7 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
             }
         }
 
-        val btn = view.findViewById<Button>(R.id.button_new_item)
+        val btn = view.findViewById<FloatingActionButton>(R.id.button_new_item)
         btn.setOnClickListener {
             lanuchEditDialog(null) { obj ->
                 val recycler: RecyclerView = view.findViewById(R.id.listItemsView)

@@ -29,19 +29,9 @@ class RecipeDirectionsAdapter(
 
     override fun onBindViewHolder(holder: RecipeDirectionViewHolder, position: Int) {
         holder.textView.setText(mItems!![position].content)
-        holder.textView.setOnClickListener() {
-            highlightItem(holder.itemView)
-            mDragStartListener.onItemClicked(position)
-        }
+        holder.itemView.setOnClickListener { mDragStartListener.onItemClicked(position) }
 
         // Attach drag event to handle image
         handleDragEvent(holder, holder.handleView)
-    }
-
-    private fun highlightItem(view: View) {
-        view.setBackgroundResource(com.google.android.material.R.color.abc_color_highlight_material)
-        Timer().schedule(timerTask {
-            view.setBackgroundColor(Color.TRANSPARENT)
-        }, 200)
     }
 }

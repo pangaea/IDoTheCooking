@@ -3,8 +3,7 @@
     android:id="@+id/item"
     android:layout_width="fill_parent"
     android:layout_height="?listPreferredItemHeight"
-    android:clickable="false"
-    android:focusable="false"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal">
 
     <TextView

@@ -1,6 +1,8 @@
 package com.pangaea.idothecooking.ui.shared.adapters.draggable
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -35,9 +37,6 @@ abstract class DraggableItemsAdapter<T, H: RecyclerView.ViewHolder>(
         val view: View =
             LayoutInflater.from(parent.context).inflate(layout, parent, false)
         val itemViewHolder = createHolder(view)
-//            if (autoSelect) {
-//                itemViewHolder.textView.requestFocus()
-//            }
         return itemViewHolder
     }
 
