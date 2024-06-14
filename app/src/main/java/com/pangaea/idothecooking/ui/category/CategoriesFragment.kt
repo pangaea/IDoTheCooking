@@ -18,11 +18,12 @@ import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.CategoryRepository
 import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Category
+import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.ui.category.adapters.CategoryRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerClickListener
-import com.pangaea.idothecooking.ui.shared.adapters.swipeable.DeletableItemTouchHelperCallback
+import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
 import java.util.function.Consumer
 
 
@@ -38,6 +39,7 @@ class CategoriesFragment : Fragment() {
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.setHint(field)
         input.setPaddingRelative(60, 20, 60, 20)
+        input.requestFocus()
         alertBuilder.setView(input)
         alertBuilder.setPositiveButton(resources.getString(R.string.save)) { _, _ ->
             callback.accept(input.text.toString()) }
@@ -82,14 +84,12 @@ class CategoriesFragment : Fragment() {
                     list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
                 }
 
-                val callback: ItemTouchHelper.Callback = DeletableItemTouchHelperCallback(context) {
+                context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){position: Int ->
                     val adapter = list.adapter as CategoryRecyclerViewAdapter
-                    // Hit database here
-                    val category: Category = adapter.getItem(it)
+                    val category: Category = adapter.getItem(position)
                     viewModel.delete(category)
-                    adapter.removeAt(it)
-                }
-                ItemTouchHelper(callback).attachToRecyclerView(list)
+                    adapter.removeAt(position)
+                }).attachToRecyclerView(list) }
             }
 
             val fab = view.findViewById<FloatingActionButton>(R.id.fab)

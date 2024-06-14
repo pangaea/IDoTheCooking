@@ -25,12 +25,14 @@ import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
+import com.pangaea.idothecooking.ui.category.adapters.CategoryRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerClickListener
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeHelper
 import java.util.function.Consumer
 
@@ -103,56 +105,14 @@ class RecipesFragment : Fragment() {
 
                 //list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
                 list.layoutManager = LinearLayoutManager(context)
-                val itemTouchHelper = ItemTouchHelper(object : SwipeHelper(list) {
-                    override fun instantiateUnderlayButton(position: Int): List<UnderlayButton> {
-                        val deleteButton = deleteButton(position)
-                        val cancelButton = cancelButton(position)
-                        return if (deleteButton != null && cancelButton != null) {
-                            listOf(deleteButton, cancelButton)
-                        } else {
-                            listOf()
-                        }
-                    }
-                })
-
-                itemTouchHelper.attachToRecyclerView(list)
+                context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){ position: Int ->
+                    //val list = view?.findViewById<RecyclerView>(R.id.list)
+                    val adapter = list?.adapter as RecipeRecyclerViewAdapter
+                    val recipe: Recipe = adapter.getItem(position)
+                    viewModel.delete(recipe)
+                    adapter.removeAt(position)
+                }).attachToRecyclerView(list) }
             }
-        }
-    }
-
-    private fun deleteButton(position: Int) : SwipeHelper.UnderlayButton? {
-        return context?.let {
-            SwipeHelper.UnderlayButton(
-                it,
-                resources.getString(R.string.delete),
-                14.0f,
-                android.R.color.holo_red_light,
-                object : SwipeHelper.UnderlayButtonClickListener {
-                    override fun onClick() {
-                        val list = view?.findViewById<RecyclerView>(R.id.list)
-                        val adapter = list?.adapter as RecipeRecyclerViewAdapter
-                        val recipe: Recipe = adapter.getItem(position)
-                        viewModel.delete(recipe)
-                        adapter.removeAt(position)
-                    }
-                })
-        }
-    }
-
-    private fun cancelButton(position: Int) : SwipeHelper.UnderlayButton? {
-        return context?.let {
-            SwipeHelper.UnderlayButton(
-                it,
-                resources.getString(R.string.cancel),
-                14.0f,
-                android.R.color.holo_green_light,
-                object : SwipeHelper.UnderlayButtonClickListener {
-                    override fun onClick() {
-                        val list = view?.findViewById<RecyclerView>(R.id.list)
-                        val adapter = list?.adapter as RecipeRecyclerViewAdapter
-                        adapter.notifyDataSetChanged()
-                    }
-                })
         }
     }
 
