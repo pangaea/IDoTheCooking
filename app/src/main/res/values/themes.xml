@@ -23,7 +23,6 @@
     <style name="homeRecipeRecentTitle">
         <item name="android:textSize">10pt</item>
         <item name="android:fontFamily">sans-serif-smallcaps</item>
-        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
     <style name="homeListsTitle">

@@ -14,7 +14,7 @@
             android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#dbeceb"
+            android:background="#E7ECDB"
             android:padding="4dp">
 
             <TextView

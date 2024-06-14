@@ -33,6 +33,11 @@
     <string name="ingredients_tab">Ingredients</string>
     <string name="instructions_tab">Instructions</string>
 
+    <string name="home_recipes_title">My Recipes</string>
+    <string name="home_recently_updated">Recently updated:</string>
+    <string name="home_create_new">Create New</string>
+    <string name="home_view_all">View All</string>
+
     <string name="recipe_main">Name</string>
     <string name="recipe_description">Description</string>
     <string name="recipe_image">Image</string>

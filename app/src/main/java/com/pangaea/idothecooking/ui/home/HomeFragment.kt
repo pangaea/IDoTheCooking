@@ -61,6 +61,8 @@ class HomeFragment : Fragment() {
                             .load(recipe.recipe.imageUri)
                             .into(image)
                     } catch(_: Exception) {}
+                } else {
+                    image.visibility = View.GONE
                 }
 
                 val content = recipeLayout.findViewById<TextView>(R.id.content)
@@ -75,7 +77,7 @@ class HomeFragment : Fragment() {
                     startActivity(intent)
                 }
                 linearLayout.addView(recipeLayout)
-                if (index >= 3) break;
+                if (index >= 2) break;
             }
         }
 
