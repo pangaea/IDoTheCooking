@@ -91,8 +91,6 @@ class RecipesFragment : Fragment() {
 
                     val listener = object : RecipeRecyclerClickListener() {
                         override fun click(id: Int) {
-                            val adapter = list.adapter as RecipeRecyclerViewAdapter
-                            adapter.notifyDataSetChanged()
                             val intent = Intent(activity, RecipeActivity::class.java)
                             val b = Bundle()
                             b.putInt("id", id)
@@ -118,32 +116,6 @@ class RecipesFragment : Fragment() {
                 })
 
                 itemTouchHelper.attachToRecyclerView(list)
-
-//                val callback = DeletableItemTouchHelperCallback(context) {
-//                    val adapter = list.adapter as RecipeRecyclerViewAdapter
-//                    val recipe: Recipe = adapter.getItem(it)
-//
-//                    val deleteAlertBuilder = AlertDialog.Builder(requireContext())
-//                    deleteAlertBuilder.setMessage(resources.getString(R.string.delete_confirmation)
-//                        .replace("{0}", recipe.name))
-//                    deleteAlertBuilder.setCancelable(true)
-//                    deleteAlertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-//                        viewModel.delete(recipe)
-//                        adapter.removeAt(it)
-//                    }
-//                    deleteAlertBuilder.setNegativeButton(resources.getString(R.string.no)) { _, _ ->
-//                        adapter.notifyDataSetChanged()
-//                    }
-//                    val deleteAlert = deleteAlertBuilder.create()
-//                    deleteAlert.show()
-//                }
-//                ItemTouchHelper(callback).attachToRecyclerView(list)
-//
-//                list.addItemDecoration(object : ItemDecoration() {
-//                    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-//                        callback.onDraw(c)
-//                    }
-//                })
             }
         }
     }

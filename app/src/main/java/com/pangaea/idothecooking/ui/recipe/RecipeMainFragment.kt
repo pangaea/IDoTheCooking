@@ -1,5 +1,7 @@
 package com.pangaea.idothecooking.ui.recipe
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +26,7 @@ import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
+import java.io.File
 import java.util.Collections
 
 
@@ -50,6 +53,8 @@ class RecipeMainFragment : Fragment() {
                 // TODO: Remove this when I figure out how to get the URI directly from the TextView
                 imageUri = uri.toString()
                 binding.editImage.setImageURI(uri)
+                requireActivity().contentResolver.takePersistableUriPermission(uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 fireCallback();
             }
         }

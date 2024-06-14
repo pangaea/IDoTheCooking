@@ -16,10 +16,8 @@ import com.pangaea.idothecooking.state.db.entities.Recipe
  * [RecyclerView.Adapter] that can display a [Recipe].
  */
 class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
-                                listener: RecipeRecyclerClickListener) :
+                                private val listener: RecipeRecyclerClickListener) :
     RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>() {
-
-    private var listener: RecipeRecyclerClickListener = listener;
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -46,8 +44,8 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
         }
 
         holder.contentView.text = item.name
-        holder.itemView.setOnClickListener { listener.click(item.id) }
         holder.descView.text = item.description
+        holder.itemView.setOnClickListener { listener.click(item.id) }
     }
 
     fun getItem(position: Int): Recipe {

@@ -26,7 +26,7 @@
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
 
-    <string name="exit_without_save">You\'ve made changes.  Would you like to save them?</string>
+    <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="delete_confirmation">Confirm delete of recipe: {0}</string>
 
     <string name="overview_tab">Overview</string>
@@ -72,4 +72,5 @@
 
     <string name="categories_dlg_title">Select Category</string>
     <string name="categories_dlg_clear_all">Clear All</string>
+
 </resources>

@@ -25,7 +25,6 @@ class RecipeFilterDialog(
         val layout: View =
             requireActivity().layoutInflater.inflate(R.layout.recipe_filter_edit, null, false)!!
 
-
         if (sortBy == RecipesFragment.SortBy.Name) {
             val titleRb: RadioButton? = layout.findViewById(R.id.sortName)
             titleRb?.isChecked = true

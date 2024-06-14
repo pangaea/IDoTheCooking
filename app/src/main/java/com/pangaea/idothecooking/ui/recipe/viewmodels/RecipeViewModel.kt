@@ -27,8 +27,8 @@ class RecipeViewModel(private val recipeRepository: RecipeRepository, private va
     fun insert(recipe: RecipeDetails, callback: Consumer<Long>) = viewModelScope.launch {
         recipeRepository.insert(recipe, callback)
     }
-    fun update(recipe: RecipeDetails) = viewModelScope.launch {
-        recipeRepository.update(recipe)
+    fun update(recipe: RecipeDetails, callback: Consumer<Long>?) = viewModelScope.launch {
+        recipeRepository.update(recipe, callback)
     }
     fun delete(recipe: Recipe) = viewModelScope.launch {
         recipeRepository.delete(recipe)

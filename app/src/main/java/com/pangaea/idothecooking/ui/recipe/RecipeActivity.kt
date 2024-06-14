@@ -91,11 +91,8 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
                 val deleteAlertBuilder = AlertDialog.Builder(this)
                 deleteAlertBuilder.setMessage(resources.getString(R.string.exit_without_save))
                 deleteAlertBuilder.setCancelable(true)
-                deleteAlertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                    viewModel.update(recipeDetails)
-                    onBackPressed()
-                }
-                deleteAlertBuilder.setNegativeButton(resources.getString(R.string.no)) { _, _ -> onBackPressed() }
+                deleteAlertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ -> onBackPressed() }
+                deleteAlertBuilder.setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.cancel() }
                 val deleteAlert = deleteAlertBuilder.create()
                 deleteAlert.show()
             } else {
@@ -106,7 +103,10 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
 
         val itemSave = menu.findItem(R.id.item_save)
         itemSave.setOnMenuItemClickListener { menuItem ->
-            viewModel.update(recipeDetails)
+            viewModel.update(recipeDetails){}
+//            viewModel.update(recipeDetails) {
+//                onBackPressed()
+//            }
             onBackPressed()
             false
         }

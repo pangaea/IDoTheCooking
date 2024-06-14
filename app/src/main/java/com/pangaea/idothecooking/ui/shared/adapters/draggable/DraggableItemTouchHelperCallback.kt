@@ -73,7 +73,6 @@ class DraggableItemTouchHelperCallback<T, H: RecyclerView.ViewHolder>(private va
                 itemViewHolder.onItemSelected()
             }
         } else {
-            //Log.d(ContentValues.TAG, "onSelectedChanged")
             mAdapter.notifyDataSetChanged()
         }
         super.onSelectedChanged(viewHolder, actionState)

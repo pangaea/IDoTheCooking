@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.DeletableItemTouchHelperCallback
 import java.util.function.Consumer
+
 
 class CategoriesFragment : Fragment() {
 
@@ -75,6 +77,9 @@ class CategoriesFragment : Fragment() {
                         }
                     }
                     adapter = CategoryRecyclerViewAdapter(categories.toMutableList(), listener)
+
+                    // Add line separator
+                    list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
                 }
 
                 val callback: ItemTouchHelper.Callback = DeletableItemTouchHelperCallback(context) {

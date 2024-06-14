@@ -73,10 +73,10 @@ class RecipeRepository(private var recipeDao: RecipeDao) {
         }
     }
 
-    suspend fun update(recipe: RecipeDetails) {
+    suspend fun update(recipe: RecipeDetails, callback: Consumer<Long>?) {
         val tc = TimestampConverter()
         updateWithTimestamp(recipe.recipe)
-        recipeDao.updateData(recipe.recipe.id.toLong(), recipe.recipe.name, recipe.recipe.description,
+        val id: Int = recipeDao.updateData(recipe.recipe.id.toLong(), recipe.recipe.name, recipe.recipe.description,
             recipe.recipe.imageUri, recipe.recipe.servings, tc.dateToTimestamp(recipe.recipe.modifiedAt))
         mDirectionDao?.deleteAllByRecipe(recipe.recipe.id)
         insertDirections(recipe.directions, recipe.recipe.id)
@@ -85,6 +85,9 @@ class RecipeRepository(private var recipeDao: RecipeDao) {
 
         recipeCategoryLinkDao?.deleteAllByRecipe(recipe.recipe.id)
         insertCategoryLinks(recipe.categories, recipe.recipe.id)
+        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+            o.accept(id.toLong())
+        }
     }
 
     private fun updateRecipeDate(recipe: RecipeDetails): RecipeDetails? {
