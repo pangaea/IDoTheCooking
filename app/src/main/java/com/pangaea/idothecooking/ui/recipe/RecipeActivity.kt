@@ -1,6 +1,7 @@
 package com.pangaea.idothecooking.ui.recipe
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -61,10 +62,9 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
 
         viewModel.getDetails()?.observe(this) { recipes ->
             recipeDetails = recipes[0]
-            title =
-                resources.getString(R.string.title_activity_recipe_name).replace("{0}", recipeDetails.recipe.name)
-            sectionsPagerAdapter =
-                RecipePagerAdapter(supportFragmentManager, 3, lifecycle, recipeDetails)
+            title = resources.getString(R.string.title_activity_recipe_name)
+                .replace("{0}", recipeDetails.recipe.name)
+            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 3, lifecycle, recipeDetails)
             val viewPager: ViewPager2 = binding.viewPager
             binding.viewPager.isUserInputEnabled = false
             viewPager.adapter = sectionsPagerAdapter
@@ -98,6 +98,16 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             } else {
                 onBackPressed()
             }
+            false
+        }
+
+        val itemPrint = menu.findItem(R.id.item_print)
+        itemPrint.setOnMenuItemClickListener { menuItem ->
+            val intent = Intent(this, RecipeViewActivity::class.java)
+            val b = Bundle()
+            b.putInt("id", recipeId)
+            intent.putExtras(b)
+            startActivity(intent)
             false
         }
 

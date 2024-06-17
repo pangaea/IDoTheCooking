@@ -2,13 +2,10 @@ package com.pangaea.idothecooking.ui.recipe
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,13 +15,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeDirectionsBinding
 import com.pangaea.idothecooking.state.db.entities.Direction
-import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeDirectionsAdapter
-import com.pangaea.idothecooking.ui.recipe.adapters.RecipeIngredientsAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
-import com.pangaea.idothecooking.utils.extensions.fractionValues
 
 //private const val RECIPE_DIRECTIONS = "recipeDirections"
 
@@ -70,16 +64,14 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         val recipe: RecipeDetails? = callBackListener?.getRecipeDetails()
         recipe?.let {
             val directions = it.directions
-            if (directions != null) {
-                val adapter = list.adapter as RecipeDirectionsAdapter
-                val data = directions.toMutableList()
-                data.sortWith(Comparator { obj1, obj2 -> // ## Ascending order
-                    Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-                })
-                adapter.setItems(data)
-                adapter.notifyDataSetChanged()
-                adapter.setAutoSelect(true)
-            }
+            val adapter = list.adapter as RecipeDirectionsAdapter
+            val data = directions.toMutableList()
+            data.sortWith(Comparator { obj1, obj2 -> // ## Ascending order
+                Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+            })
+            adapter.setItems(data)
+            adapter.notifyDataSetChanged()
+            adapter.setAutoSelect(true)
         }
 
         val btn = view.findViewById<FloatingActionButton>(R.id.button_new_item)
@@ -152,19 +144,21 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         val direction: Direction? = index?.let { adapter.mItems?.get(it) }
         activity?.let {
             val layout: View =
-                requireActivity().layoutInflater.inflate(R.layout.direction_edit, null, false)!!
+                requireActivity().layoutInflater.inflate(R.layout.recipe_direction_edit, null, false)!!
             val alertBuilder = AlertDialog.Builder(requireContext())
             alertBuilder.setView(layout)
+            val details = layout.findViewById<View>(R.id.details) as EditText?
+
             alertBuilder.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
             if (direction != null) {
                 alertBuilder.setTitle(resources.getString(R.string.direction_edit_title))
-                val details = layout.findViewById<View>(R.id.details) as EditText?
                 details?.setText(direction.content)
                 alertBuilder.setPositiveButton(resources.getString(R.string.update), callback)
             } else {
                 alertBuilder.setTitle(resources.getString(R.string.direction_new_title))
                 alertBuilder.setPositiveButton(resources.getString(R.string.add), callback)
             }
+            details?.requestFocus()
             alertBuilder.show()
         }
     }

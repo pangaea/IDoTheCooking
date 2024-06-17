@@ -59,7 +59,7 @@
     </style>
 
     <style name="homeListButton" parent="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
-        <item name="icon">@android:drawable/ic_input_add</item>
+        <item name="icon">@android:drawable/ic_menu_view</item>
         <item name="android:layout_marginStart">5dp</item>
         <item name="android:layout_marginEnd">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
@@ -68,6 +68,16 @@
         <item name="android:layout_width">150dp</item>
         <item name="android:layout_height">50dp</item>
         <item name="iconGravity">start</item>
+    </style>
+
+    <style name="viewRecipeDetails">
+    </style>
+
+    <style name="viewRecipeIngredientsTitle">
+        <item name="android:textSize">10pt</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
     </style>
 
     <style name="Theme.IDoTheCooking.NoActionBar">

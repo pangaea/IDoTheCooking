@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.R
-import com.pangaea.idothecooking.databinding.FragmentRecipeBinding
+import com.pangaea.idothecooking.databinding.FragmentRecipeItemBinding
 import com.pangaea.idothecooking.state.db.entities.Recipe
 
 
@@ -21,7 +21,7 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            FragmentRecipeBinding.inflate(
+            FragmentRecipeItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -59,7 +59,7 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(binding: FragmentRecipeItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val imageView: ImageView = binding.recipeImage
         val contentView: TextView = binding.content
         val descView: TextView = binding.description

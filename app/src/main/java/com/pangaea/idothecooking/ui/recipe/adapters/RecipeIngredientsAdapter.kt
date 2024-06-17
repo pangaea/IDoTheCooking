@@ -12,6 +12,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouch
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemsAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
+import com.pangaea.idothecooking.utils.formatting.IngredientFormatter
 
 class RecipeIngredientsAdapter(
     val context: Context?,
@@ -27,37 +28,7 @@ class RecipeIngredientsAdapter(
 
     override fun onBindViewHolder(holder: RecipeIngredientViewHolder, position: Int) {
         val selectedItem = mItems!![position]
-
-        val builderAmount = SpannableStringBuilder()
-        val frac: Pair<String, Double>? = selectedItem.amount?.vulgarFraction
-        if (frac != null) {
-            val s = SpannableString(frac.first)
-            s.setSpan(
-                TextAppearanceSpan(context, R.style.IngredientAmountStyle),
-                0, frac.first.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            builderAmount.append(s)
-        }
-        if (selectedItem.unit.isNotEmpty()) {
-            val s = SpannableString(" " + selectedItem.unit)
-            s.setSpan(
-                TextAppearanceSpan(context, R.style.IngredientUnitStyle),
-                0, selectedItem.unit.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            builderAmount.append(s)
-        }
-
-        holder.displayAmountView.text = builderAmount
-        val builder = SpannableStringBuilder()
-        val s = SpannableString(selectedItem.name)
-        s.setSpan(
-            TextAppearanceSpan(context, R.style.IngredientNameStyle),
-            0, selectedItem.name.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        builder.append(s)
-        holder.displayNameView.text = builder
-
+        holder.display.text = context?.let { IngredientFormatter.formatDisplay(it, selectedItem) }
         holder.itemView.setOnClickListener { mDragStartListener.onItemClicked(position) }
 
         // Attach drag event to handle image

@@ -11,14 +11,16 @@ import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouch
 
 class RecipeIngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
                                                    DraggableItemTouchHelperViewHolder {
-    val displayAmountView: TextView
-    val displayNameView: TextView
+//    val displayAmountView: TextView
+//    val displayNameView: TextView
+    val display: TextView
     //val editView: ImageView
     val handleView: ImageView
 
     init {
-        displayAmountView = itemView.findViewById<TextView>(R.id.display_amount)
-        displayNameView = itemView.findViewById<TextView>(R.id.display_name)
+//        displayAmountView = itemView.findViewById<TextView>(R.id.display_amount)
+//        displayNameView = itemView.findViewById<TextView>(R.id.display_name)
+        display = itemView.findViewById<TextView>(R.id.display)
         //editView = itemView.findViewById<ImageView>(R.id.edit)
         handleView = itemView.findViewById<ImageView>(R.id.handle)
     }

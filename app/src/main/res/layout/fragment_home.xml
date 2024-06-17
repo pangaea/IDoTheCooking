@@ -39,7 +39,6 @@
                 style="@style/homeAddButton"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/viewRecipes"
-                app:icon="@android:drawable/ic_menu_view"
                 android:text="@string/home_view_all"
                 style="@style/homeListButton"/>
         </LinearLayout>

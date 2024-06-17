@@ -1,12 +1,15 @@
 package com.pangaea.idothecooking.ui.category
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,7 +21,6 @@ import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.CategoryRepository
 import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Category
-import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.ui.category.adapters.CategoryRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
@@ -39,8 +41,13 @@ class CategoriesFragment : Fragment() {
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.setHint(field)
         input.setPaddingRelative(60, 20, 60, 20)
-        input.requestFocus()
+//        input.isFocusableInTouchMode = true
+//        input.setFocusable(true)
         alertBuilder.setView(input)
+
+        input.requestFocus()
+//        val imm = getSystemService(requireContext(), InputMethodManager::class.java)
+//        imm!!.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT)
         alertBuilder.setPositiveButton(resources.getString(R.string.save)) { _, _ ->
             callback.accept(input.text.toString()) }
         alertBuilder.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->

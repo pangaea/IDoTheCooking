@@ -56,6 +56,7 @@ class RecipesFragment : Fragment() {
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.setHint(field)
         input.setPaddingRelative(60, 20, 60, 20)
+        input.requestFocus()
         alertBuilder.setView(input)
         alertBuilder.setPositiveButton(resources.getString(R.string.save)) { _, _ ->
             callback.accept(input.text.toString()) }

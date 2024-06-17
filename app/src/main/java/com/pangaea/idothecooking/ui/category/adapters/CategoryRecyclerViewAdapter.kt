@@ -7,11 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.pangaea.idothecooking.databinding.FragmentCategoryBinding
-import com.pangaea.idothecooking.databinding.FragmentRecipeBinding
+import com.pangaea.idothecooking.databinding.FragmentCategoryItemBinding
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerClickListener
-import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerViewAdapter
 
 class CategoryRecyclerViewAdapter(private val values: MutableList<Category>,
                                   private val listener: RecipeRecyclerClickListener
@@ -19,7 +17,7 @@ class CategoryRecyclerViewAdapter(private val values: MutableList<Category>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            FragmentCategoryBinding.inflate(
+            FragmentCategoryItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -53,7 +51,7 @@ class CategoryRecyclerViewAdapter(private val values: MutableList<Category>,
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(binding: FragmentCategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val contentView: TextView = binding.content
     }
 }

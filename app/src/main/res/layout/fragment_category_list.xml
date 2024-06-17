@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         android:background="?android:attr/selectableItemBackground"
-        tools:listitem="@layout/fragment_category" >
+        tools:listitem="@layout/fragment_category_item" >
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

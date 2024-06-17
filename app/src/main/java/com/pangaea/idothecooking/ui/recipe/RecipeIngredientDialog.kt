@@ -1,11 +1,8 @@
 package com.pangaea.idothecooking.ui.recipe
 
-import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
-import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -23,19 +20,23 @@ class RecipeIngredientDialog(private val ingredient: Ingredient?,
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val layout: View =
-            requireActivity().layoutInflater.inflate(R.layout.ingredient_edit, null, false)!!
+            requireActivity().layoutInflater.inflate(R.layout.recipes_ingredient_edit, null, false)!!
 
+        // Get text views
         val amountWholeView = layout.findViewById<NumberPicker>(R.id.amount_whole)
+        val amountFractionView = layout.findViewById<NumberPicker>(R.id.amount_fraction)
+        val unitView = layout.findViewById<TextView>(R.id.unit)
+        val nameView = layout.findViewById<TextView>(R.id.name)
+
         amountWholeView.minValue = 0
         amountWholeView.maxValue = 100
 
-        val amountView = layout.findViewById<NumberPicker>(R.id.amount_fraction)
         val reversedFractions = fractions.reversedArray().toMutableList()
         reversedFractions.removeLast()
         reversedFractions[0] = ".0"
-        amountView.minValue = 0
-        amountView.maxValue = reversedFractions.size - 1
-        amountView.displayedValues = reversedFractions.toTypedArray()
+        amountFractionView.minValue = 0
+        amountFractionView.maxValue = reversedFractions.size - 1
+        amountFractionView.displayedValues = reversedFractions.toTypedArray()
 
         val ingredientView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         var buttonText = resources.getString(R.string.update)
@@ -44,17 +45,16 @@ class RecipeIngredientDialog(private val ingredient: Ingredient?,
                 val wholeNum = ingredient.amount!!.toInt() ?: 0
                 amountWholeView.value = wholeNum
                 if (ingredient.amount!! - wholeNum == 0.0) {
-                    amountView.value = 0
+                    amountFractionView.value = 0
                 } else {
-                    amountView.value =
+                    amountFractionView.value =
                         reversedFractions.indexOf((ingredient.amount!! - wholeNum).vulgarFraction.first)
                 }
             }
 
-            val unitView: TextView = layout.findViewById(R.id.unit)
+            //val unitView: TextView = layout.findViewById(R.id.unit)
             unitView.text = ingredient.unit
 
-            val nameView: TextView = layout.findViewById(R.id.name)
             nameView.text = ingredient.name
             ingredientView.setTitle(resources.getString(R.string.ingredient_edit_title))
         } else {
@@ -65,28 +65,23 @@ class RecipeIngredientDialog(private val ingredient: Ingredient?,
             .setPositiveButton(
                 buttonText
             ) { dialog, id ->
-                val wholeNumView =
-                    (dialog as AlertDialog).findViewById<View>(R.id.amount_whole) as NumberPicker?
-                var amount: Double = wholeNumView?.value?.toDouble() ?: 0.00
-                val fractionView =
-                    (dialog as AlertDialog).findViewById<View>(R.id.amount_fraction) as NumberPicker?
+                var amount: Double = amountWholeView?.value?.toDouble() ?: 0.00
                 val reversedFractionValues = fractionValues.reversedArray()
-                if (fractionView != null && reversedFractionValues.get(fractionView.value) < 1.00) {
-                    amount = amount + reversedFractionValues.get(fractionView.value)
+                if (amountFractionView != null && reversedFractionValues.get(amountFractionView.value) < 1.00) {
+                    amount = amount + reversedFractionValues.get(amountFractionView.value)
                 }
-                val unitView = (dialog as AlertDialog).findViewById<View>(R.id.unit) as EditText?
-                val nameView = (dialog as AlertDialog).findViewById<View>(R.id.name) as EditText?
 
                 val obj = Ingredient()
-                obj.name = nameView?.text.toString()
+                obj.name = nameView.text.toString()
                 obj.amount = amount
-                obj.unit = unitView?.text.toString()
+                obj.unit = unitView.text.toString()
                 listenerOk(obj)
             }
             .setNegativeButton(
                 R.string.cancel,
                 listenerCancel
             )
+        nameView.requestFocus()
         return ingredientView.create()
     }
 
@@ -94,8 +89,8 @@ class RecipeIngredientDialog(private val ingredient: Ingredient?,
         super.onResume()
         val window = dialog!!.window ?: return
         val params = window.attributes
-        params.width = WindowManager.LayoutParams.MATCH_PARENT
-        params.height = 1100
+//        params.width = WindowManager.LayoutParams.MATCH_PARENT
+//        params.height = 1500
         window.attributes = params
     }
 }

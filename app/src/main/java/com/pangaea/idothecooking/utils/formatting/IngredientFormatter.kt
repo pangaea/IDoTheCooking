@@ -1,0 +1,48 @@
+package com.pangaea.idothecooking.utils.formatting
+
+import android.content.Context
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.TextAppearanceSpan
+import com.pangaea.idothecooking.R
+import com.pangaea.idothecooking.state.db.entities.Ingredient
+import com.pangaea.idothecooking.utils.extensions.vulgarFraction
+
+class IngredientFormatter {
+    companion object {
+        fun formatDisplay(context: Context, ingredient: Ingredient): SpannableStringBuilder {
+            val builder = SpannableStringBuilder()
+            val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
+            if (frac != null) {
+                val s = SpannableString(frac.first)
+                s.setSpan(
+                    TextAppearanceSpan(context, R.style.IngredientAmountStyle),
+                    0, frac.first.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                builder.append(s)
+            }
+            if (ingredient.unit.isNotEmpty()) {
+                val s = SpannableString(" " + ingredient.unit)
+                s.setSpan(
+                    TextAppearanceSpan(context, R.style.IngredientUnitStyle),
+                    0, ingredient.unit.length + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                builder.append(s)
+            }
+
+            var text = ingredient.name
+            if (!builder.isEmpty()) {
+                text = " $text"
+            }
+            val s = SpannableString(text)
+            s.setSpan(
+                TextAppearanceSpan(context, R.style.IngredientNameStyle),
+                0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            builder.append(s)
+            return builder
+        }
+    }
+}
