@@ -91,6 +91,13 @@ class RecipeViewActivity : AppCompatActivity() {
                 .replace("{{2}}", ingredientBuilder.toString())
                 .replace("{{3}}", directionBuilder.toString())
                 .replace("{{image}}", imageElem)
+
+            if (recipeDetails.recipe.servings > 0) {
+                val servingsDisplay = getString(com.pangaea.idothecooking.R.string.servings_display)
+                htmlRecipe = htmlRecipe.replace("{{4}}", servingsDisplay.replace("{{0}}", recipeDetails.recipe.servings.toString()))
+            } else {
+                htmlRecipe = htmlRecipe.replace("{{4}}", "")
+            }
             binding.viewport.loadDataWithBaseURL(null, htmlRecipe, "text/html", "utf-8", null);
         }
     }
