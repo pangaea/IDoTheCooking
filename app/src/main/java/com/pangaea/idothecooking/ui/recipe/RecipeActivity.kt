@@ -101,16 +101,6 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             false
         }
 
-        val itemPrint = menu.findItem(R.id.item_print)
-        itemPrint.setOnMenuItemClickListener { menuItem ->
-            val intent = Intent(this, RecipeViewActivity::class.java)
-            val b = Bundle()
-            b.putInt("id", recipeId)
-            intent.putExtras(b)
-            startActivity(intent)
-            false
-        }
-
         val itemSave = menu.findItem(R.id.item_save)
         itemSave.setOnMenuItemClickListener { menuItem ->
             viewModel.update(recipeDetails){}

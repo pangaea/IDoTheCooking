@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_view"
-        android:title="Print"
-        android:id="@+id/item_print"
-        app:showAsAction="always" />
-    <item
-        android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/save"
         android:id="@+id/item_save"

@@ -94,7 +94,7 @@ class RecipesFragment : Fragment() {
 
                     val listener = object : RecipeRecyclerClickListener() {
                         override fun click(id: Int) {
-                            val intent = Intent(activity, RecipeActivity::class.java)
+                            val intent = Intent(activity, RecipeViewActivity::class.java)
                             val b = Bundle()
                             b.putInt("id", id)
                             intent.putExtras(b)

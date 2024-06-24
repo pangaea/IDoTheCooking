@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="html_recipe_ingredient">
+        <![CDATA[
+        <tr>
+            <td><div></div></td>
+            <td><b>{{0}}</b> {{1}}</td>
+        </tr>
+        ]]>
+    </string>
+
+    <string name="html_recipe_direction">
+        <![CDATA[
+        <tr>
+            <td valign="top"><div class="vertical-line" ></div><div class="directions_bullet">{{1}}</div></td>
+            <td><div>{{0}}</div></td>
+        </tr>
+        ]]>
+    </string>
+
+    <string name="html_recipe">
+        <![CDATA[
+<style>
+ .recipe {
+    font: 16px Arial, sans-serif;
+ }
+.vertical-line{
+  width:0px;
+  z-index:-1;
+  border-right: thick solid #666;
+  position: absolute;
+  height: 100%;
+  left: 32px;
+}
+table.ingredients_table tr > td {
+    vertical-align: top;
+}
+table.ingredients_table tr > td:first-child div{
+    border-radius: 50%;
+    width: 4px;
+    height: 4px;
+    padding: 4px;
+    z-index:10;
+    background: #29aea1;
+    border: 2px solid #666;
+    color: #666666;
+    text-align: center;
+}
+table.directions_table tr > td:nth-child(2) {
+    vertical-align: top;
+}
+
+table.directions_table tr > td:nth-child(2) div {
+    padding-top: 14px;
+    padding-left: 14px;
+    font: 16px Arial, sans-serif;
+}
+table.directions_table .directions_bullet {
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    padding: 8px;
+    z-index:10;
+    background: #03dac5;
+    border: 2px solid #666;
+    color: #666666;
+    text-align: center;
+    font-size: 26px;
+}
+</style>
+<div class="recipe">
+<table><tr><td>
+    {{image}}
+</td><td>
+        <h2>{{0}}</h2>
+        <p>{{1}}</p>
+</td></tr>
+</table>
+<h3>Ingredients:</h3>
+<table class="ingredients_table">
+{{2}}
+</table>
+<h3>Directions:</h3>
+<table class="directions_table">
+{{3}}
+</table>
+</div>
+        ]]>
+    </string>
+</resources>

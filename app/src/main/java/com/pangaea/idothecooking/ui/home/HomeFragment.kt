@@ -20,6 +20,7 @@ import com.pangaea.idothecooking.state.RecipeRepository
 import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.RecipeActivity
+import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 
@@ -70,7 +71,7 @@ class HomeFragment : Fragment() {
                 val description = recipeLayout.findViewById<TextView>(R.id.description)
                 description.text = recipe.recipe.description
                 recipeLayout.rootView.setOnClickListener{
-                    val intent = Intent(activity, RecipeActivity::class.java)
+                    val intent = Intent(activity, RecipeViewActivity::class.java)
                     val b = Bundle()
                     b.putInt("id", recipe.recipe.id)
                     intent.putExtras(b)

@@ -2,16 +2,11 @@ package com.pangaea.idothecooking.ui.recipe
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.SpannableStringBuilder
 import android.text.style.TextAppearanceSpan
 import android.view.Menu
-import android.view.View
-import android.view.WindowManager
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
@@ -24,7 +19,7 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
-import com.pangaea.idothecooking.utils.formatting.IngredientFormatter
+
 
 class RecipeViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeViewBinding
@@ -64,42 +59,39 @@ class RecipeViewActivity : AppCompatActivity() {
             title = resources.getString(R.string.title_activity_recipe_name)
                 .replace("{0}", recipeDetails.recipe.name)
 
-            val detailsCanvas = binding.recipeDetailsCanvas
-            val inputTitle = TextView(this)
-            inputTitle.inputType = InputType.TYPE_CLASS_TEXT
-            inputTitle.text = recipeDetails.recipe.name
-            detailsCanvas.addView(inputTitle)
-            val inputDesc = TextView(this)
-            inputDesc.isElegantTextHeight = true;
-            inputDesc.isSingleLine = false;
-            //inputDesc.inputType = InputType.TYPE_CLASS_TEXT
-            inputDesc.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            inputDesc.text = recipeDetails.recipe.description
-            detailsCanvas.addView(inputDesc)
-
-            val ingredientsCanvas = binding.recipeIngredientsCanvas
+            val ingredientBuilder = StringBuilder()
+            val htmlRecipeIngredient = getString(com.pangaea.idothecooking.R.string.html_recipe_ingredient)
             recipeDetails.ingredients.forEach { ingredient: Ingredient ->
-                val input = TextView(this)
-                input.inputType = InputType.TYPE_CLASS_TEXT
-                input.text = IngredientFormatter.formatDisplay(this, ingredient)
-                ingredientsCanvas.addView(input)
+                val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
+                if (frac != null) {
+                    val amount = frac.first + " " + ingredient.unit
+                    ingredientBuilder.append(htmlRecipeIngredient.replace("{{0}}", amount)
+                                                 .replace("{{1}}", ingredient.name))
+
+                } else {
+                    ingredientBuilder.append(htmlRecipeIngredient.replace("{{0}}", "")
+                                                 .replace("{{1}}", ingredient.name))
+                }
             }
 
-            val instructionsCanvas = binding.recipeInstructionsCanvas
+            val directionBuilder = StringBuilder()
+            val htmlRecipeDirection = getString(com.pangaea.idothecooking.R.string.html_recipe_direction)
             recipeDetails.directions.forEachIndexed { index, direction: Direction ->
-                val input = TextView(this)
-                //input.width = WindowManager.LayoutParams.MATCH_PARENT
-                input.isElegantTextHeight = true;
-                input.isSingleLine = false;
-                input.setLines(2)
-                input.minLines = 2
-                input.maxLines = 10
-                //input.inputType = InputType.TYPE_CLASS_TEXT
-                input.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-                //input.text = IngredientFormatter.formatDisplay(this, ingredient)
-                input.text = (index+1).toString() + ") " + direction.content
-                instructionsCanvas.addView(input)
+                directionBuilder.append(htmlRecipeDirection.replace("{{0}}", direction.content)
+                                            .replace("{{1}}", (index+1).toString()))
             }
+
+            var imageElem = ""
+            if (!recipeDetails.recipe.imageUri.isNullOrEmpty()) {
+                imageElem = "<img length=\"100px\" width=\"100px\" src=\""+ recipeDetails.recipe.imageUri.toString() + "\">";
+            }
+
+            var htmlRecipe = getString(com.pangaea.idothecooking.R.string.html_recipe)
+            htmlRecipe = htmlRecipe.replace("{{0}}", recipeDetails.recipe.name).replace("{{1}}", recipeDetails.recipe.description)
+                .replace("{{2}}", ingredientBuilder.toString())
+                .replace("{{3}}", directionBuilder.toString())
+                .replace("{{image}}", imageElem)
+            binding.viewport.loadDataWithBaseURL(null, htmlRecipe, "text/html", "utf-8", null);
         }
     }
 
@@ -109,6 +101,15 @@ class RecipeViewActivity : AppCompatActivity() {
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
             onBackPressed()
+            false
+        }
+        val itemEdit = menu.findItem(R.id.item_edit)
+        itemEdit.setOnMenuItemClickListener { menuItem ->
+            val intent = Intent(this, RecipeActivity::class.java)
+            val b = Bundle()
+            b.putInt("id", recipeId)
+            intent.putExtras(b)
+            startActivity(intent)
             false
         }
         return true
