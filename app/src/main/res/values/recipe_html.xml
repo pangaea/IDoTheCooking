@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="html_recipe_ingredient">
-        <![CDATA[
-        <tr>
-            <td><div></div></td>
-            <td><b>{{0}}</b> {{1}}</td>
-        </tr>
-        ]]>
-    </string>
 
-    <string name="html_recipe_direction">
-        <![CDATA[
-        <tr>
-            <td valign="top"><div class="vertical-line" ></div><div class="directions_bullet">{{1}}</div></td>
-            <td><div>{{0}}</div></td>
-        </tr>
-        ]]>
-    </string>
+<string name="html_recipe_ingredient">
+<![CDATA[
+<tr>
+    <td><div></div></td>
+    <td><b>{{0}}</b> {{1}}</td>
+</tr>
+]]>
+</string>
 
-    <string name="servings_display">Servings: {{0}}</string>
+<string name="html_recipe_direction">
+<![CDATA[
+<tr>
+    <td valign="top"><div class="vertical-line" ></div><div class="directions_bullet">{{1}}</div></td>
+    <td><div>{{0}}</div></td>
+</tr>
+]]>
+</string>
 
-    <string name="html_recipe">
-        <![CDATA[
+<string name="servings_display">Servings: {{0}}</string>
+
+<string name="html_recipe">
+<![CDATA[
 <style>
  .recipe {
     font: 16px Arial, sans-serif;
@@ -95,6 +96,6 @@ h3 {
 {{3}}
 </table>
 </div>
-        ]]>
-    </string>
+]]>
+</string>
 </resources>

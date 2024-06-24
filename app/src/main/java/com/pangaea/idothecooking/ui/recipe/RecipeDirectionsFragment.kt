@@ -138,7 +138,7 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         }
     }
 
-    fun lanuchEditDialog(savedInstanceState: Bundle?, index: Int?, callback: DialogInterface.OnClickListener) {
+    private fun lanuchEditDialog(savedInstanceState: Bundle?, index: Int?, callback: DialogInterface.OnClickListener) {
         val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
         val adapter: RecipeDirectionsAdapter = list.adapter as RecipeDirectionsAdapter
         val direction: Direction? = index?.let { adapter.mItems?.get(it) }

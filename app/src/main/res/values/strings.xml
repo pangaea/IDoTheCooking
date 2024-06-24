@@ -37,6 +37,7 @@
     <string name="home_recently_updated">Recently updated:</string>
     <string name="home_create_new">Create New</string>
     <string name="home_view_all">View All</string>
+    <string name="recipe_name">Recipe Name</string>
 
     <string name="recipe_main">Name</string>
     <string name="recipe_description">Description</string>
@@ -55,8 +56,9 @@
     <string name="ingredient_new_title">New Ingredient</string>
 
     <string name="direction_content_hint">Details</string>
+    <string name="instructions_content_hint">Instruction details</string>
 
-    <string name="create_recipe_title">Recipe</string>
+    <string name="create_recipe_title">Create New Recipe</string>
     <string name="create_recipe_msg">Create a new recipe</string>
 
     <string name="create_category_title">Category</string>

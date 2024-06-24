@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.CategoryRepository
@@ -48,22 +49,6 @@ class RecipesFragment : Fragment() {
     private lateinit var viewModel: RecipeViewModel
     private var sortBy: SortBy = SortBy.ModifiedBy
     private var filterCategories: List<Int> = ArrayList()
-
-    private fun launchCreateModal(title: Int, field: Int, callback: Consumer<String?>) {
-        val alertBuilder = AlertDialog.Builder(requireContext())
-        alertBuilder.setTitle(resources.getString(title))
-        val input = EditText(context)
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        input.setHint(field)
-        input.setPaddingRelative(60, 20, 60, 20)
-        input.requestFocus()
-        alertBuilder.setView(input)
-        alertBuilder.setPositiveButton(resources.getString(R.string.save)) { _, _ ->
-            callback.accept(input.text.toString()) }
-        alertBuilder.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
-            dialog.cancel() }
-        alertBuilder.show()
-    }
 
     private fun buildList() {
         val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
@@ -125,24 +110,19 @@ class RecipesFragment : Fragment() {
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab?.setOnClickListener {
-            launchCreateModal(
-                R.string.create_recipe_title,
-                R.string.create_recipe_msg
-            ) { name ->
-                if (name != null) {
-                    val recipe = Recipe()
-                    recipe.name = name
-                    recipe.description = ""
-                    val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                    viewModel.insert(details) { id: Long ->
-                        val recipeIntent = Intent(activity, RecipeActivity::class.java)
-                        val bundle = Bundle()
-                        bundle.putInt("id", id.toInt())
-                        recipeIntent.putExtras(bundle)
-                        startActivity(recipeIntent)
-                    }
+            NewRecipeDialog() { name ->
+                val recipe = Recipe()
+                recipe.name = name
+                recipe.description = ""
+                val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
+                viewModel.insert(details) { id: Long ->
+                    val recipeIntent = Intent(activity, RecipeActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putInt("id", id.toInt())
+                    recipeIntent.putExtras(bundle)
+                    startActivity(recipeIntent)
                 }
-            }
+            }.show(childFragmentManager, null)
         }
         return view
     }

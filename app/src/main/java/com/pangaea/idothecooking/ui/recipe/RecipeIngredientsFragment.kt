@@ -84,11 +84,15 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
 
         val btn = view.findViewById<FloatingActionButton>(R.id.button_new_item)
         btn.setOnClickListener {
-            lanuchEditDialog(null) { obj ->
-                val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
-                val adapter = recycler.adapter as RecipeIngredientsAdapter
-                adapter.addNewItem(obj)
+            activity?.let {
+                    RecipeIngredientDialog(null, { obj ->
+                    val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
+                    val adapter = recycler.adapter as RecipeIngredientsAdapter
+                    adapter.addNewItem(obj)
+                }, { dialog, _ -> dialog.cancel() })
+                    .show(childFragmentManager, null)
             }
+
         }
         return view
     }
@@ -136,20 +140,16 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         val adapter: RecipeIngredientsAdapter = list.adapter as RecipeIngredientsAdapter
         val ingredient: Ingredient? = index.let { adapter.mItems?.get(it) }
         if (ingredient != null) {
-            lanuchEditDialog(ingredient) { obj ->
-                ingredient.amount = obj.amount
-                ingredient.unit = obj.unit
-                ingredient.name = obj.name
-                (activity as RecipeActivity).dataDirty = true
-                adapter.notifyDataSetChanged()
+            activity?.let {
+                RecipeIngredientDialog(ingredient, { obj ->
+                    ingredient.amount = obj.amount
+                    ingredient.unit = obj.unit
+                    ingredient.name = obj.name
+                    (activity as RecipeActivity).dataDirty = true
+                    adapter.notifyDataSetChanged()
+                }, { dialog, _ -> dialog.cancel() })
+                    .show(childFragmentManager, null)
             }
-        }
-    }
-
-    fun lanuchEditDialog(ingredient: Ingredient?, callback: (ingredient: Ingredient) -> Unit) {
-        activity?.let {
-            RecipeIngredientDialog(ingredient, callback) { dialog, _ -> dialog.cancel() }
-                .show(childFragmentManager, null)
         }
     }
 }

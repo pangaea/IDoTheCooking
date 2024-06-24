@@ -3,26 +3,34 @@ package com.pangaea.idothecooking.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentHomeBinding
 import com.pangaea.idothecooking.state.RecipeRepository
 import com.pangaea.idothecooking.state.db.AppDatabase
+import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
+import com.pangaea.idothecooking.ui.recipe.NewRecipeDialog
 import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import java.util.function.Consumer
 
 class HomeFragment : Fragment() {
 
@@ -82,10 +90,22 @@ class HomeFragment : Fragment() {
             }
         }
 
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
+        binding.createNewRecipe.setOnClickListener(){
+            NewRecipeDialog() { name ->
+                val recipe = Recipe()
+                recipe.name = name
+                recipe.description = ""
+                val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
+                viewModel.insert(details) { id: Long ->
+                    val recipeIntent = Intent(activity, RecipeActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putInt("id", id.toInt())
+                    recipeIntent.putExtras(bundle)
+                    startActivity(recipeIntent)
+                }
+            }.show(childFragmentManager, null)
+        }
+
         binding.viewRecipes.setOnClickListener(){
             activity?.findNavController(R.id.nav_host_fragment_content_main)?.navigate(R.id.nav_recipes)
         }

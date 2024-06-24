@@ -17,14 +17,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="@string/instructions_content_hint">
+        android:hint="@string/recipe_name">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/details"
-            android:inputType="textMultiLine"
-            android:gravity="top"
-            android:minLines="3"
-            android:maxLines="5"
-            android:layout_weight="1"
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
