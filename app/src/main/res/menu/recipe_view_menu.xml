@@ -9,6 +9,12 @@
         app:showAsAction="always" />
     <item
         android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="Share"
+        android:id="@+id/item_share"
+        app:showAsAction="always" />
+    <item
+        android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Edit"
         android:id="@+id/item_edit"

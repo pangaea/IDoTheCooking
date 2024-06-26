@@ -5,7 +5,7 @@
 <![CDATA[
 <tr>
     <td><div></div></td>
-    <td><b>{{0}}</b> {{1}}</td>
+    <td><b>{{amount}}</b> {{name}}</td>
 </tr>
 ]]>
 </string>
@@ -13,13 +13,11 @@
 <string name="html_recipe_direction">
 <![CDATA[
 <tr>
-    <td valign="top"><div class="vertical-line" ></div><div class="directions_bullet">{{1}}</div></td>
-    <td><div>{{0}}</div></td>
+    <td valign="top"><div class="vertical-line" ></div><div class="directions_bullet">{{step}}</div></td>
+    <td><div>{{content}}</div></td>
 </tr>
 ]]>
 </string>
-
-<string name="servings_display">Servings: {{0}}</string>
 
 <string name="html_recipe">
 <![CDATA[
@@ -83,17 +81,17 @@ h3 {
 <div class="recipe">
 <div class="general_info">
     {{image}}
-    <h2>{{0}}</h2>
-    <p>{{1}}</p>
-    <p>{{4}}</p>
+    <h2>{{title}}</h2>
+    <p>{{description}}</p>
+    <p>Servings: {{servings}}</p>
 </div>
 <h3>Ingredients:</h3>
 <table class="ingredients_table">
-{{2}}
+{{ingredients}}
 </table>
 <h3>Directions:</h3>
 <table class="directions_table">
-{{3}}
+{{directions}}
 </table>
 </div>
 ]]>
