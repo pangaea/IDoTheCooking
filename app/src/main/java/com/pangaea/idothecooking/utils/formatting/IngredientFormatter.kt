@@ -13,16 +13,19 @@ class IngredientFormatter {
     companion object {
         fun formatDisplay(context: Context, ingredient: Ingredient): SpannableStringBuilder {
             val builder = SpannableStringBuilder()
-            val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
-            if (frac != null) {
-                val s = SpannableString(frac.first)
-                s.setSpan(
-                    TextAppearanceSpan(context, R.style.IngredientAmountStyle),
-                    0, frac.first.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                builder.append(s)
+            if (ingredient.amount != null && ingredient.amount!! > 0f) {
+                val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
+                if (frac != null) {
+                    val s = SpannableString(frac.first)
+                    s.setSpan(
+                        TextAppearanceSpan(context, R.style.IngredientAmountStyle),
+                        0, frac.first.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    builder.append(s)
+                }
             }
-            if (ingredient.unit.isNotEmpty()) {
+
+            if (!builder.isEmpty() && ingredient.unit.isNotEmpty()) {
                 val s = SpannableString(" " + ingredient.unit)
                 s.setSpan(
                     TextAppearanceSpan(context, R.style.IngredientUnitStyle),

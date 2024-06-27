@@ -74,16 +74,21 @@ class RecipeViewActivity : AppCompatActivity() {
         val ingredientBuilder = StringBuilder()
         val htmlRecipeIngredient = getString(ingredientTemplate)
         recipeDetails.ingredients.forEach { ingredient: Ingredient ->
-            val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
-            if (frac != null) {
-                val amount = frac.first + " " + ingredient.unit
-                ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", amount)
-                                             .replace("{{name}}", ingredient.name))
+            do {
+                if (ingredient.amount != null && ingredient.amount!! > 0f) {
+                    val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
+                    if (frac != null) {
+                        val amount = frac.first + " " + ingredient.unit
+                        ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", amount)
+                                                     .replace("{{name}}", ingredient.name))
+                        break;
+                    }
 
-            } else {
+                }// else {
                 ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", "")
                                              .replace("{{name}}", ingredient.name))
-            }
+                //}
+            } while (false)
         }
 
         val directionBuilder = StringBuilder()
