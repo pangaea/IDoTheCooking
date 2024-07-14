@@ -54,7 +54,6 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
 
         view.setBackgroundResource(R.mipmap.tablecloth3)
 
-        //val list: RecyclerView = binding.listItemsView
         val list = view.findViewById<RecyclerView>(R.id.listItemsView)
         val self = this
         with(list) {
@@ -70,25 +69,26 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         val recipe: RecipeDetails? = callBackListener?.getRecipeDetails()
         recipe?.let {
             val ingredients = it.ingredients
-            if (ingredients != null) {
-                val adapter = list.adapter as RecipeIngredientsAdapter
-                val data = ingredients.toMutableList()
-                data.sortWith(Comparator { obj1, obj2 -> // ## Ascending order
-                    Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-                })
-                adapter.setItems(data)
-                adapter.notifyDataSetChanged()
-                adapter.setAutoSelect(true)
+            val adapter = list.adapter as RecipeIngredientsAdapter
+            val data = ingredients.toMutableList()
+            data.sortWith { obj1, obj2 ->
+                Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
             }
+            adapter.setItems(data)
+            adapter.notifyDataSetChanged()
+            adapter.setAutoSelect(true)
         }
 
         val btn = view.findViewById<FloatingActionButton>(R.id.button_new_item)
         btn.setOnClickListener {
             activity?.let {
-                    RecipeIngredientDialog(null, { obj ->
-                    val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
-                    val adapter = recycler.adapter as RecipeIngredientsAdapter
-                    adapter.addNewItem(obj)
+                RecipeIngredientDialog(null, { obj ->
+                    val adapter = list.adapter as RecipeIngredientsAdapter
+                    val ingredient = Ingredient()
+                    ingredient.amount = obj.amount
+                    ingredient.unit = obj.unit
+                    ingredient.name = obj.name
+                    adapter.addNewItem(ingredient)
                 }, { dialog, _ -> dialog.cancel() })
                     .show(childFragmentManager, null)
             }

@@ -73,7 +73,11 @@ class RecipeViewActivity : AppCompatActivity() {
     fun renderRecipe(template: Int, ingredientTemplate: Int, directionTemplate: Int): String {
         val ingredientBuilder = StringBuilder()
         val htmlRecipeIngredient = getString(ingredientTemplate)
-        recipeDetails.ingredients.forEach { ingredient: Ingredient ->
+        val ingredients = recipeDetails.ingredients.toMutableList()
+        ingredients.sortWith { obj1, obj2 ->
+            Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+        }
+        ingredients.forEach { ingredient: Ingredient ->
             do {
                 if (ingredient.amount != null && ingredient.amount!! > 0f) {
                     val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
@@ -84,16 +88,20 @@ class RecipeViewActivity : AppCompatActivity() {
                         break;
                     }
 
-                }// else {
+                }
+
                 ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", "")
                                              .replace("{{name}}", ingredient.name))
-                //}
             } while (false)
         }
 
         val directionBuilder = StringBuilder()
         val htmlRecipeDirection = getString(directionTemplate)
-        recipeDetails.directions.forEachIndexed { index, direction: Direction ->
+        val directions = recipeDetails.directions.toMutableList()
+        directions.sortWith { obj1, obj2 ->
+            Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+        }
+        directions.forEachIndexed { index, direction: Direction ->
             directionBuilder.append(htmlRecipeDirection.replace("{{content}}", direction.content)
                                         .replace("{{step}}", (index+1).toString()))
         }

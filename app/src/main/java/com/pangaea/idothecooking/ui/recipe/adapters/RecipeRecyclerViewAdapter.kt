@@ -10,13 +10,14 @@ import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeItemBinding
 import com.pangaea.idothecooking.state.db.entities.Recipe
+import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 
 
 /**
  * [RecyclerView.Adapter] that can display a [Recipe].
  */
 class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
-                                private val listener: RecipeRecyclerClickListener) :
+                                private val listener: RecycleViewClickListener) :
     RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

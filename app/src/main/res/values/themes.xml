@@ -34,11 +34,11 @@
     <style name="homePanel">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-<!--        <item name="android:layout_height">match_parent</item>-->
-<!--        <item name="android:layout_weight">0.5</item>-->
-<!--        <item name="android:layout_margin">10dp</item>-->
+        <!--        <item name="android:layout_height">match_parent</item>-->
+        <!--        <item name="android:layout_weight">0.5</item>-->
+        <!--        <item name="android:layout_margin">10dp</item>-->
         <item name="android:orientation">vertical</item>
-<!--        <item name="android:isScrollContainer">true</item>-->
+        <!--        <item name="android:isScrollContainer">true</item>-->
     </style>
 
     <style name="recipeHolder">
@@ -70,14 +70,20 @@
         <item name="iconGravity">start</item>
     </style>
 
-    <style name="viewRecipeDetails">
-    </style>
+    <style name="viewRecipeDetails"></style>
 
     <style name="viewRecipeIngredientsTitle">
         <item name="android:textSize">10pt</item>
         <item name="android:fontFamily">sans-serif-smallcaps</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginEnd">10dp</item>
+    </style>
+
+    <style name="shoppingListItem">
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
     </style>
 
     <style name="Theme.IDoTheCooking.NoActionBar">

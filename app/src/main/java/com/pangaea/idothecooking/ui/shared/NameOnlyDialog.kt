@@ -1,4 +1,4 @@
-package com.pangaea.idothecooking.ui.recipe
+package com.pangaea.idothecooking.ui.shared
 
 import android.os.Bundle
 import android.view.View
@@ -8,17 +8,22 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 
-class NewRecipeDialog(val callback: (name: String) -> Unit) : DialogFragment() {
+class NameOnlyDialog(val resInt: Int, val name: String?, val callback: (name: String) -> Unit) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val layout: View =
-            requireActivity().layoutInflater.inflate(R.layout.recipe_new, null, false)!!
+            requireActivity().layoutInflater.inflate(R.layout.name_only_form, null, false)!!
+        val nameView = layout.findViewById<TextInputEditText>(R.id.name)
+        if (name != null) {
+            nameView.setText(name)
+        }
         return AlertDialog.Builder(requireContext())
-        .setTitle(resources.getString(R.string.create_recipe_title))
+        //.setTitle(resources.getString(R.string.create_recipe_title))
+        .setTitle(resources.getString(resInt))
         .setView(layout)
         .setPositiveButton(resources.getString(R.string.save)) { _, _ ->
-            val name = layout.findViewById<TextInputEditText>(R.id.name)
-            callback(name.text.toString()) }
+            //val name = layout.findViewById<TextInputEditText>(R.id.name)
+            callback(nameView.text.toString()) }
         .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
             dialog.cancel() }
             .create()

@@ -13,4 +13,10 @@ data class RecipeDetails (
     var directions: List<Direction>,
     @Relation(parentColumn = "id", entityColumn = "recipe_id")
     var categories: List<RecipeCategoryLink>
+
+//    fun getDirectionsSorted() {
+//        return directions.sortWith(Comparator { obj1, obj2 -> // ## Ascending order
+//            Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+//        }
+//    })
 )

@@ -25,6 +25,7 @@
     <string name="add">Add</string>
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
+    <string name="name">Name</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="delete_confirmation">Confirm delete of recipe: {0}</string>
@@ -64,6 +65,8 @@
     <string name="create_category_title">Category</string>
     <string name="create_category_msg">Create a new category</string>
 
+    <string name="create_shopping_list_title">Create New Shopping List</string>
+
     <string name="update_category_title">Category</string>
     <string name="update_category_msg">Update a category</string>
 
@@ -82,4 +85,5 @@
 
     <string name="recipe_sent_success">Recipe \'{{0}}\' Sent</string>
     <string name="recipe_sent_failed">Recipe \'{{0}}\' Failed</string>
+    <string name="title_activity_shopping_list">ShoppingListActivity</string>
 </resources>

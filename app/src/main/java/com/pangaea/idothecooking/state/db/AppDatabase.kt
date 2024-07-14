@@ -16,22 +16,30 @@ import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.state.CategoryRepository
+import com.pangaea.idothecooking.state.ShoppingListRepository
 import com.pangaea.idothecooking.state.db.dao.CategoryDao
 import com.pangaea.idothecooking.state.db.dao.RecipeCategoryLinkDao
+import com.pangaea.idothecooking.state.db.dao.ShoppingListDao
+import com.pangaea.idothecooking.state.db.dao.ShoppingListItemDao
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
+import com.pangaea.idothecooking.state.db.entities.ShoppingList
+import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
+import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.future.future
 
 @Database(version = 1, entities = [Recipe::class, Ingredient::class, Direction::class,
-    Category::class, RecipeCategoryLink::class])
+    Category::class, RecipeCategoryLink::class, ShoppingList::class, ShoppingListItem::class], exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao?
     abstract fun recipeDirectionDao(): RecipeDirectionDao?
     abstract fun recipeIngredientDao(): RecipeIngredientDao?
     abstract fun categoryDao(): CategoryDao?
     abstract fun recipeCategoryLinkDao(): RecipeCategoryLinkDao?
+    abstract fun shoppingListDao(): ShoppingListDao?
+    abstract fun shoppingListItemDao(): ShoppingListItemDao?
 
     companion object {
         //private var instance: AppDatabase? = null
@@ -74,11 +82,21 @@ abstract class AppDatabase : RoomDatabase() {
             return ingredient
         }
 
+        fun createShoppingListItem(order: Int, count: Double, unit: String, name: String): ShoppingListItem {
+            val item = ShoppingListItem()
+            item.order = order
+            item.amount = count
+            item.unit = unit
+            item.name = name
+            return item
+        }
+
         fun createDirection(order: Int, content: String): Direction {
-            val direction = Direction()
-            direction.order = order
-            direction.content = content
-            return direction
+//            val direction = Direction()
+//            direction.order = order
+//            direction.content = content
+//            return direction
+            return Direction(0, 0, order, content)
         }
 
         private class PopulateDbAsync(appContext: Context?) :
@@ -147,7 +165,10 @@ abstract class AppDatabase : RoomDatabase() {
                     )
                 )
                 val ingredients: MutableList<Ingredient> = arrayListOf()
-                ingredients.add(Ingredient(0, 0, 0, "Potato bread",2.00, ""))
+                //ingredients.add(Ingredient(0, 0, 0, "Potato bread",2.00, ""))
+                //ingredients.add(Ingredient(0, 0, 1, "American cheese",3.00, ""))
+                //ingredients.add(Ingredient(0, 0, 2, "Butter",2.50, "tbsp"))
+                ingredients.add(createIngredient(0, 2.00, "", "Potato bread"))
                 ingredients.add(createIngredient(1, 3.00, "", "American cheese"))
                 ingredients.add(createIngredient(2, 2.50, "tbsp", "Butter"))
                 val categories: MutableList<RecipeCategoryLink> = arrayListOf()
@@ -165,12 +186,29 @@ abstract class AppDatabase : RoomDatabase() {
                 directions2.add(createDirection(1, "Put hot dogs in boiling water"))
                 val ingredients2: MutableList<Ingredient> = arrayListOf()
                 ingredients2.add(createIngredient(0, 1.00, "", "Hot dog"))
-                ingredients2.add(createIngredient(0, 1.00, "", "Hot dog bun"))
+                ingredients2.add(createIngredient(1, 1.00, "", "Hot dog bun"))
                 val categories2: MutableList<RecipeCategoryLink> = arrayListOf()
                 categories2.add(RecipeCategoryLink(0, 0, cat3Id.toInt()))
                 categories2.add(RecipeCategoryLink(0, 0, cat4Id.toInt()))
                 val details2 = RecipeDetails(recipe2, ingredients2, directions2, categories2)
                 recipeRepo?.insert(details2) {}
+
+                val shoppingListRepo = ShoppingListRepository(mainApp)
+                val shoppingList1 = ShoppingList()
+                shoppingList1.name = "Groceries"
+                shoppingList1.description = "Normal grocery list"
+                val listItems: MutableList<ShoppingListItem> = arrayListOf()
+                listItems.add(createShoppingListItem(0, 1.00, "gallon", "Milk"))
+                listItems.add(createShoppingListItem(1, 2.00, "box", "Cereal"))
+                shoppingListRepo.insert(ShoppingListDetails(shoppingList1, listItems)) {}
+
+                val shoppingList2 = ShoppingList()
+                shoppingList2.name = "Thanksgiving"
+                shoppingList2.description = "Thanksgiving list"
+                val listItems2: MutableList<ShoppingListItem> = arrayListOf()
+                listItems2.add(createShoppingListItem(0, 1.00, "", "Turkey"))
+                listItems2.add(createShoppingListItem(1, 5.00, "", "Corn on the cob"))
+                shoppingListRepo.insert(ShoppingListDetails(shoppingList2, listItems2)) {}
             }
         }
     }

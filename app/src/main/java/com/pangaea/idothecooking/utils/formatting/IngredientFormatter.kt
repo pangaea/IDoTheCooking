@@ -7,11 +7,12 @@ import android.text.SpannableStringBuilder
 import android.text.style.TextAppearanceSpan
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Ingredient
+import com.pangaea.idothecooking.state.db.entities.MeasuredItem
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 
 class IngredientFormatter {
     companion object {
-        fun formatDisplay(context: Context, ingredient: Ingredient): SpannableStringBuilder {
+        fun formatDisplay(context: Context, ingredient: MeasuredItem): SpannableStringBuilder {
             val builder = SpannableStringBuilder()
             if (ingredient.amount != null && ingredient.amount!! > 0f) {
                 val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction

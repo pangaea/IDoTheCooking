@@ -12,7 +12,7 @@ import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 
 @Dao
 interface CategoryDao {
-    @Query("SELECT * FROM categories ORDER BY name ASC")
+    @Query("SELECT * FROM categories ORDER BY name COLLATE NOCASE ASC")
     fun loadAllCategories(): LiveData<List<Category>>
 
     @Insert

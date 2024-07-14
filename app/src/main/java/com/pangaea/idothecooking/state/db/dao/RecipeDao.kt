@@ -12,18 +12,19 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 
 @Dao
 interface RecipeDao {
-    @Query("SELECT * FROM recipes ORDER BY modified_at DESC")
+    @Query("SELECT * FROM recipes ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllRecipes(): LiveData<List<Recipe>>
 
-    @Query("SELECT * FROM recipes ORDER BY modified_at DESC")
+    @Transaction
+    @Query("SELECT * FROM recipes ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllRecipesWithDetails(): LiveData<List<RecipeDetails>>
 
     @Query("SELECT * FROM recipes WHERE id IN (:recipeIds)")
-    fun loadAllByIds(recipeIds: IntArray): LiveData<List<Recipe>>
+    fun loadRecipesByIds(recipeIds: IntArray): LiveData<List<Recipe>>
 
     @Transaction
-    @Query("SELECT * FROM recipes WHERE id IN (:recipeIds) order by modified_at desc")
-    fun getRecipeWithDetailsByIds(recipeIds: IntArray): LiveData<List<RecipeDetails>>
+    @Query("SELECT * FROM recipes WHERE id IN (:recipeIds) order by modified_at COLLATE NOCASE desc")
+    fun loadRecipesWithDetailsByIds(recipeIds: IntArray): LiveData<List<RecipeDetails>>
 
     @Insert
     suspend fun insert(recipe: Recipe): Long

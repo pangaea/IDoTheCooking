@@ -1,4 +1,4 @@
-package com.pangaea.idothecooking.ui.recipe.adapters
+package com.pangaea.idothecooking.ui.shoppinglist.adapters
 
 import android.graphics.Color
 import android.view.View
@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperViewHolder
 
-
-class RecipeIngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+class ShoppingListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
                                                    DraggableItemTouchHelperViewHolder {
     val display: TextView
     val handleView: ImageView

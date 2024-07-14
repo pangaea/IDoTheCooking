@@ -19,7 +19,7 @@ import java.util.Date
 import java.util.Optional
 import java.util.function.Consumer
 
-class RecipeRepository(private var recipeDao: RecipeDao) {
+class RecipeRepository(private var recipeDao: RecipeDao) : RepositoryBase<Recipe>() {
 
     var db: AppDatabase? = null
     private var mDirectionDao: RecipeDirectionDao? = null
@@ -37,30 +37,26 @@ class RecipeRepository(private var recipeDao: RecipeDao) {
         recipeCategoryLinkDao = categoryLinkDao
     }
 
-    fun init(application: Application) {
-        db = (application as IDoTheCookingApp).getDatabase()
-        mDirectionDao = db!!.recipeDirectionDao()
-        mIngredientDao = db!!.recipeIngredientDao()
-        recipeCategoryLinkDao = db!!.recipeCategoryLinkDao()
-    }
-    //val allRecipes: LiveData<List<Recipe>> = recipeDao.loadAllRecipes()
+//    fun init(application: Application) {
+//        db = (application as IDoTheCookingApp).getDatabase()
+//        mDirectionDao = db!!.recipeDirectionDao()
+//        mIngredientDao = db!!.recipeIngredientDao()
+//        recipeCategoryLinkDao = db!!.recipeCategoryLinkDao()
+//    }
+
     fun getAllRecipes(): LiveData<List<Recipe>> {
         return recipeDao.loadAllRecipes()
     }
     fun getAllRecipesWithDetails(): LiveData<List<RecipeDetails>> {
         return recipeDao.loadAllRecipesWithDetails()
     }
-//    val allRecipes: () -> LiveData<List<Recipe>>
-//        get() = {
-//            recipeDao.loadAllRecipes()
-//    }
 
     fun getRecipe(id: Long): LiveData<List<Recipe>> {
-        return recipeDao.loadAllByIds(intArrayOf(id.toInt()))
+        return recipeDao.loadRecipesByIds(intArrayOf(id.toInt()))
     }
 
     fun getRecipeWithDetails(id: Long): LiveData<List<RecipeDetails>> {
-        return recipeDao.getRecipeWithDetailsByIds(intArrayOf(id.toInt()))
+        return recipeDao.loadRecipesWithDetailsByIds(intArrayOf(id.toInt()))
     }
 
     suspend fun insert(recipe: RecipeDetails, callback: Consumer<Long>?) {
@@ -90,32 +86,19 @@ class RecipeRepository(private var recipeDao: RecipeDao) {
         }
     }
 
-    private fun updateRecipeDate(recipe: RecipeDetails): RecipeDetails? {
-        updateWithTimestamp(recipe.recipe)
-        return recipe
-    }
+//    private fun updateRecipeDate(recipe: RecipeDetails): RecipeDetails? {
+//        updateWithTimestamp(recipe.recipe)
+//        return recipe
+//    }
 
     suspend fun delete(recipe: Recipe) {
         recipeDao.delete(recipe)
     }
 
-    fun insertWithTimestamp(o: Recipe): Recipe {
-        val curTime = System.currentTimeMillis()
-        o.createdAt = Date(curTime)
-        o.modifiedAt = Date(curTime)
-        return o
-    }
-
-    fun updateWithTimestamp(o: Recipe): Recipe {
-        val curTime = System.currentTimeMillis()
-        o.modifiedAt = Date(curTime)
-        return o
-    }
-
     private suspend fun insertDirections(items: List<Direction>, idNew: Int) {
         var i = 0
-        val _size = items.size
-        while (i < _size) {
+        val size = items.size
+        while (i < size) {
             val item: Direction = items[i]
             item.recipe_id = idNew
             mDirectionDao?.insert(item)
@@ -125,8 +108,8 @@ class RecipeRepository(private var recipeDao: RecipeDao) {
 
     private suspend fun insertIngredients(items: List<Ingredient>, idNew: Int) {
         var i = 0
-        val _size = items.size
-        while (i < _size) {
+        val size = items.size
+        while (i < size) {
             val item: Ingredient = items[i]
             item.recipe_id = idNew
             mIngredientDao?.insert(item)
@@ -136,8 +119,8 @@ class RecipeRepository(private var recipeDao: RecipeDao) {
 
     private suspend fun insertCategoryLinks(items: List<RecipeCategoryLink>, idNew: Int) {
         var i = 0
-        val _size = items.size
-        while (i < _size) {
+        val size = items.size
+        while (i < size) {
             val item: RecipeCategoryLink = items[i]
             item.recipe_id = idNew
             recipeCategoryLinkDao?.insert(item)

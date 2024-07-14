@@ -48,7 +48,7 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
 
         view.setBackgroundResource(R.mipmap.tablecloth3)
 
-        //val recyclerView: RecyclerView = binding.listItemsView
+        //val list: RecyclerView = binding.listItemsView
         val list = view.findViewById<RecyclerView>(R.id.listItemsView)
         val self = this
         with(list) {
@@ -66,9 +66,9 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
             val directions = it.directions
             val adapter = list.adapter as RecipeDirectionsAdapter
             val data = directions.toMutableList()
-            data.sortWith(Comparator { obj1, obj2 -> // ## Ascending order
+            data.sortWith { obj1, obj2 ->
                 Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-            })
+            }
             adapter.setItems(data)
             adapter.notifyDataSetChanged()
             adapter.setAutoSelect(true)
@@ -78,8 +78,8 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         btn.setOnClickListener {
             lanuchEditDialog(null, null){ dialog, id ->
                 val details = (dialog as AlertDialog).findViewById<View>(R.id.details) as EditText?
-                val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
-                val adapter = recycler.adapter as RecipeDirectionsAdapter
+                //val recycler: RecyclerView = view.findViewById(R.id.listItemsView)
+                val adapter = list.adapter as RecipeDirectionsAdapter
                 val aa = Direction()
                 aa.content = details?.text.toString()
                 adapter.addNewItem(aa)

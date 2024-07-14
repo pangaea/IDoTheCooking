@@ -1,32 +1,27 @@
-package com.pangaea.idothecooking.ui.recipe.adapters
+package com.pangaea.idothecooking.ui.shoppinglist.adapters
 
 import android.content.Context
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.TextAppearanceSpan
 import android.view.View
 import com.pangaea.idothecooking.R
-import com.pangaea.idothecooking.state.db.entities.Ingredient
+import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemsAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
-import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 import com.pangaea.idothecooking.utils.formatting.IngredientFormatter
 
-class RecipeIngredientsAdapter(
+class ShoppingListItemsAdapter(
     val context: Context?,
-    ingredients: MutableList<Ingredient>?,
+    items: MutableList<ShoppingListItem>?,
     private val mDragStartListener: OnStartDragListener
 ) :
-    DraggableItemsAdapter<Ingredient, RecipeIngredientViewHolder>(ingredients,
-        R.layout.recipe_ingredient_item, mDragStartListener),
+    DraggableItemsAdapter<ShoppingListItem, ShoppingListItemViewHolder>(items,
+                                                                    R.layout.shopping_list_item, mDragStartListener),
     DraggableItemTouchHelperAdapter {
-    override fun createHolder(view: View): RecipeIngredientViewHolder {
-        return RecipeIngredientViewHolder(view)
+    override fun createHolder(view: View): ShoppingListItemViewHolder {
+        return ShoppingListItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecipeIngredientViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ShoppingListItemViewHolder, position: Int) {
         val selectedItem = mItems!![position]
         holder.display.text = context?.let { IngredientFormatter.formatDisplay(it, selectedItem) }
         holder.itemView.setOnClickListener { mDragStartListener.onItemClicked(position) }

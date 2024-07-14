@@ -8,7 +8,7 @@ import java.util.Date
 import java.util.Optional
 import java.util.function.Consumer
 
-class CategoryRepository(private var categoryDao: CategoryDao) {
+class CategoryRepository(private var categoryDao: CategoryDao) : RepositoryBase<Category>() {
     fun getAllCategories(): LiveData<List<Category>> {
         return categoryDao.loadAllCategories()
     }
@@ -26,18 +26,5 @@ class CategoryRepository(private var categoryDao: CategoryDao) {
 
     suspend fun delete(category: Category) {
         categoryDao.delete(category)
-    }
-
-    fun insertWithTimestamp(o: Category): Category {
-        val curTime = System.currentTimeMillis()
-        o.createdAt = Date(curTime)
-        o.modifiedAt = Date(curTime)
-        return o
-    }
-
-    fun updateWithTimestamp(o: Category): Category {
-        val curTime = System.currentTimeMillis()
-        o.modifiedAt = Date(curTime)
-        return o
     }
 }
