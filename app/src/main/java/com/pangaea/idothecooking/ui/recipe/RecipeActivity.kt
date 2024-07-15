@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -25,6 +26,9 @@ import com.pangaea.idothecooking.ui.recipe.adapters.RecipePagerAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.utils.ThrottledUpdater
+import com.pangaea.idothecooking.utils.extensions.observeOnce
+import com.pangaea.idothecooking.utils.extensions.setAsDisabled
+import com.pangaea.idothecooking.utils.extensions.setAsEnabled
 
 class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
 
@@ -33,6 +37,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
     private lateinit var sectionsPagerAdapter: RecipePagerAdapter
     private lateinit var viewModel: RecipeViewModel
     private lateinit var recipeDetails: RecipeDetails
+    private var _itemSave: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +65,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
                 .create(RecipeViewModel::class.java)
         }!!
 
-        viewModel.getDetails()?.observe(this) { recipes ->
+        viewModel.getDetails()?.observeOnce(this) { recipes ->
             recipeDetails = recipes[0]
             title = resources.getString(R.string.title_activity_recipe_name)
                 .replace("{0}", recipeDetails.recipe.name)
@@ -102,12 +107,16 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
         }
 
         val itemSave = menu.findItem(R.id.item_save)
+        _itemSave = itemSave
+        _itemSave?.setAsDisabled()
         itemSave.setOnMenuItemClickListener { menuItem ->
             viewModel.update(recipeDetails){}
+            dataDirty = false
+            _itemSave?.setAsDisabled()
 //            viewModel.update(recipeDetails) {
 //                onBackPressed()
 //            }
-            onBackPressed()
+            //onBackPressed()
             false
         }
         return true
@@ -132,6 +141,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             recipeDetails.recipe.imageUri = recipe.imageUri
             recipeDetails.recipe.servings = recipe.servings
         }
+        _itemSave?.setAsEnabled()
     }
 
     override fun onRecipeDirectionUpdate(directions: List<Direction>) {
@@ -140,6 +150,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             dataDirty = true
             recipeDetails.directions = directions
         }
+        _itemSave?.setAsEnabled()
     }
 
     override fun onRecipeIngredientUpdate(ingredients: List<Ingredient>) {
@@ -148,6 +159,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             dataDirty = true
             recipeDetails.ingredients = ingredients
         }
+        _itemSave?.setAsEnabled()
     }
 
     override fun onRecipeCategories(categories: List<Category>) {
@@ -158,5 +170,6 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
                 RecipeCategoryLink(0, recipeId, o.id)
             }
         }
+        _itemSave?.setAsEnabled()
     }
 }

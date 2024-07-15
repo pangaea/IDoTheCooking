@@ -1,32 +1,30 @@
 package com.pangaea.idothecooking.ui.shoppinglist
 
 import android.os.Bundle
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityShoppingListBinding
-import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
-import com.pangaea.idothecooking.ui.recipe.RecipeActivity
-import com.pangaea.idothecooking.ui.recipe.RecipeIngredientDialog
-import com.pangaea.idothecooking.ui.recipe.adapters.RecipeIngredientsAdapter
-import com.pangaea.idothecooking.ui.recipe.adapters.RecipePagerAdapter
+import com.pangaea.idothecooking.ui.shared.MeasuredItemDialog
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shoppinglist.adapters.ShoppingListItemsAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
+import com.pangaea.idothecooking.utils.extensions.observeOnce
+import com.pangaea.idothecooking.utils.extensions.setAsDisabled
+import com.pangaea.idothecooking.utils.extensions.setAsEnabled
 
 class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
     private var shoppingListId: Int = -1
@@ -34,6 +32,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
     private lateinit var shoppingListDetails: ShoppingListDetails
     private var mItemTouchHelper: ItemTouchHelper? = null
     private lateinit var _view: View
+    var _itemSave: MenuItem? = null
 
     private lateinit var binding: ActivityShoppingListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +55,20 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
             shoppingListId = bundle.getInt("id", -1)
         }
 
+        //var textWatcher: TextWatcher? = null
         viewModel = ShoppingListViewModel((application as IDoTheCookingApp), shoppingListId.toLong())
-        viewModel.getDetails()?.observe(this) { shoppingLists ->
+        viewModel.getDetails()?.observeOnce(this) { shoppingLists ->
             shoppingListDetails = shoppingLists[0]
             title = resources.getString(R.string.title_activity_recipe_name)
                 .replace("{0}", shoppingListDetails.shoppingList.name)
+
+//            if (textWatcher != null) {
+//                binding.name.removeTextChangedListener(textWatcher)
+//            }
+            binding.name.setText(shoppingListDetails.shoppingList.name)
+            /*textWatcher = */binding.name.doAfterTextChanged() {
+                _itemSave?.setAsEnabled()
+            }
 
             val adapter = list.adapter as ShoppingListItemsAdapter
             val data = shoppingListDetails.shoppingListItems.toMutableList()
@@ -74,7 +82,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         val btn = _view.findViewById<FloatingActionButton>(R.id.button_new_item)
         btn.setOnClickListener {
             this.let {
-                RecipeIngredientDialog(null, { obj ->
+                MeasuredItemDialog(null, { obj ->
                     val adapter = list.adapter as ShoppingListItemsAdapter
                     val shoppingListItem = ShoppingListItem()
                     shoppingListItem.amount = obj.amount
@@ -88,21 +96,31 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         }
     }
 
-    var _itemSave: MenuItem? = null
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.shopping_list_menu, menu)
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            onBackPressed()
+            if (_itemSave?.isEnabled == true) {
+                val deleteAlertBuilder = AlertDialog.Builder(this)
+                deleteAlertBuilder.setMessage(resources.getString(R.string.exit_without_save))
+                deleteAlertBuilder.setCancelable(true)
+                deleteAlertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ -> onBackPressed() }
+                deleteAlertBuilder.setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.cancel() }
+                val deleteAlert = deleteAlertBuilder.create()
+                deleteAlert.show()
+            } else {
+                onBackPressed()
+            }
+            //onBackPressed()
             false
         }
 
         val itemSave = menu.findItem(R.id.item_save)
         _itemSave = itemSave
-        itemSave?.isVisible = false
+        _itemSave?.setAsDisabled()
         itemSave.setOnMenuItemClickListener { menuItem ->
+            shoppingListDetails.shoppingList.name = binding.name.text.toString()
             val recyclerView: RecyclerView = _view.findViewById(R.id.listItemsView)
             val adapter = recyclerView.adapter as ShoppingListItemsAdapter?
 
@@ -116,13 +134,8 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
                 shoppingListDetails.shoppingListItems = data
                 viewModel.update(shoppingListDetails)
             }
-            //_itemSave?.setEnabled(false)
-            _itemSave?.isVisible = false
-            //viewModel.update(shoppingListDetails){}
-//            viewModel.update(recipeDetails) {
-//                onBackPressed()
-//            }
-            //onBackPressed()
+
+            _itemSave?.setAsDisabled()
             false
         }
 
@@ -134,23 +147,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
     }
 
     override fun onItemChanged() {
-        // Read in list items and reset the positions to match the ui
-//        val recyclerView: RecyclerView = _view.findViewById(R.id.listItemsView)
-//        val adapter = recyclerView.adapter as ShoppingListItemsAdapter?
-//
-//        // Edit the position value of each item
-//        var i = 0
-//        val data: List<ShoppingListItem>? = adapter?.mItems?.map() { it ->
-//            it.order = i++
-//            return@map it
-//        }
-
-        //_itemSave?.setEnabled(true)
-        _itemSave?.isVisible = true
-
-//        if (data != null) {
-//            callBackListener?.onRecipeIngredientUpdate(data)
-//        }
+        _itemSave?.setAsEnabled()
     }
 
     override fun onItemClicked(index: Int) {
@@ -159,11 +156,11 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         val ingredient: ShoppingListItem? = index.let { adapter.mItems?.get(it) }
         if (ingredient != null) {
             this.let {
-                RecipeIngredientDialog(ingredient, { obj ->
+                MeasuredItemDialog(ingredient, { obj ->
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
-                    //(activity as RecipeActivity).dataDirty = true
+                    _itemSave?.setAsEnabled()
                     adapter.notifyDataSetChanged()
                 }, { dialog, _ -> dialog.cancel() })
                     .show(supportFragmentManager, null)

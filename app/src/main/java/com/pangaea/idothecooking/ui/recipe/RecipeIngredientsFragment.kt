@@ -1,15 +1,9 @@
 package com.pangaea.idothecooking.ui.recipe
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.NumberPicker
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,15 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeIngredientsBinding
-import com.pangaea.idothecooking.state.db.entities.Category
-import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
-import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeIngredientsAdapter
+import com.pangaea.idothecooking.ui.shared.MeasuredItemDialog
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
-import com.pangaea.idothecooking.utils.extensions.fractionValues
 
 
 /**
@@ -82,7 +73,7 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         val btn = view.findViewById<FloatingActionButton>(R.id.button_new_item)
         btn.setOnClickListener {
             activity?.let {
-                RecipeIngredientDialog(null, { obj ->
+                MeasuredItemDialog(null, { obj ->
                     val adapter = list.adapter as RecipeIngredientsAdapter
                     val ingredient = Ingredient()
                     ingredient.amount = obj.amount
@@ -141,7 +132,7 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         val ingredient: Ingredient? = index.let { adapter.mItems?.get(it) }
         if (ingredient != null) {
             activity?.let {
-                RecipeIngredientDialog(ingredient, { obj ->
+                MeasuredItemDialog(ingredient, { obj ->
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name

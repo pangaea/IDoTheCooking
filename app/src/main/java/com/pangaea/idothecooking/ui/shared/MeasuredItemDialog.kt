@@ -1,4 +1,4 @@
-package com.pangaea.idothecooking.ui.recipe
+package com.pangaea.idothecooking.ui.shared
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -8,16 +8,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.pangaea.idothecooking.R
-import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.MeasuredItem
 import com.pangaea.idothecooking.utils.extensions.fractionValues
 import com.pangaea.idothecooking.utils.extensions.fractions
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 
 
-class RecipeIngredientDialog(private val ingredient: MeasuredItem?,
-                             private val listenerOk: (ingredient: MeasuredItem) -> Unit,
-                             private val listenerCancel: DialogInterface.OnClickListener) : DialogFragment() {
+class MeasuredItemDialog(private val ingredient: MeasuredItem?,
+                         private val listenerOk: (ingredient: MeasuredItem) -> Unit,
+                         private val listenerCancel: DialogInterface.OnClickListener) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val layout: View =
