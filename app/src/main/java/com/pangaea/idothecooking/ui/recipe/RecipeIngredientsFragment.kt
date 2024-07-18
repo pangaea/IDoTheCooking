@@ -80,6 +80,7 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
                     adapter.addNewItem(ingredient)
+                    onItemChanged()
                 }, { dialog, _ -> dialog.cancel() })
                     .show(childFragmentManager, null)
             }
@@ -136,8 +137,9 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
-                    (activity as RecipeActivity).dataDirty = true
+                    //(activity as RecipeActivity).dataDirty = true
                     adapter.notifyDataSetChanged()
+                    onItemChanged()
                 }, { dialog, _ -> dialog.cancel() })
                     .show(childFragmentManager, null)
             }

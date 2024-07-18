@@ -83,6 +83,7 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
                 val aa = Direction()
                 aa.content = details?.text.toString()
                 adapter.addNewItem(aa)
+                onItemChanged()
             }
         }
         return view
@@ -133,8 +134,9 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
             val details = (dialog as AlertDialog).findViewById<View>(R.id.details) as EditText?
             val direction: Direction? = adapter.mItems?.get(index)
             direction?.content = details?.text.toString()
-            (activity as RecipeActivity).dataDirty = true
+            //(activity as RecipeActivity).dataDirty = true
             adapter.notifyDataSetChanged()
+            onItemChanged()
         }
     }
 

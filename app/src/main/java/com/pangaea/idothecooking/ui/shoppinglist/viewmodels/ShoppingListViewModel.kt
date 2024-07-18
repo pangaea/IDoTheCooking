@@ -38,8 +38,8 @@ class ShoppingListViewModel(app: IDoTheCookingApp,
     fun insert(shoppingList: ShoppingListDetails, callback: Consumer<Long>) = viewModelScope.launch {
         shoppingListRepository.insert(shoppingList, callback)
     }
-    fun update(shoppingList: ShoppingListDetails) = viewModelScope.launch {
-        shoppingListRepository.update(shoppingList){}
+    fun update(shoppingList: ShoppingListDetails, callback: Consumer<Long>) = viewModelScope.launch {
+        shoppingListRepository.update(shoppingList, callback)
     }
     fun delete(shoppingList: ShoppingList) = viewModelScope.launch {
         shoppingListRepository.delete(shoppingList)

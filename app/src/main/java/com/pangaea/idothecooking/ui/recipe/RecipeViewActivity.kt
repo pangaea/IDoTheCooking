@@ -1,15 +1,17 @@
 package com.pangaea.idothecooking.ui.recipe
 
 import android.Manifest
-import android.R.id.message
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintJob
+import android.print.PrintManager
 import android.provider.ContactsContract
 import android.telephony.SmsManager
 import android.view.Menu
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -271,6 +273,22 @@ class RecipeViewActivity : AppCompatActivity() {
             }
             false
         }
+
+        val itemPrint = menu.findItem(R.id.item_print)
+        itemPrint.setOnMenuItemClickListener { menuItem ->
+            createWebPrintJob(binding.viewport)
+            false
+        }
         return true
+    }
+
+    private fun createWebPrintJob(webView: WebView) {
+        val printManager = this.getSystemService(PRINT_SERVICE) as PrintManager
+        val jobName = recipeDetails.recipe.name
+        val printAdapter = webView.createPrintDocumentAdapter(jobName)
+        printManager.print(
+            jobName, printAdapter,
+            PrintAttributes.Builder().build()
+        )
     }
 }

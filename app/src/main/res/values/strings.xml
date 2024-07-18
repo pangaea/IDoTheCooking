@@ -28,6 +28,7 @@
     <string name="name">Name</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
+    <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
     <string name="delete_confirmation">Confirm delete of recipe: {0}</string>
 
     <string name="overview_tab">Overview</string>

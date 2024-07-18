@@ -6,6 +6,13 @@
     android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal">
 
+    <CheckBox
+        android:id="@+id/item_checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_margin"
+        android:layout_marginBottom="@dimen/text_margin" />
+
     <TextView
         android:id="@+id/display"
         android:layout_weight="1"

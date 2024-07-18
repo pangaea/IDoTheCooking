@@ -37,7 +37,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
     private lateinit var sectionsPagerAdapter: RecipePagerAdapter
     private lateinit var viewModel: RecipeViewModel
     private lateinit var recipeDetails: RecipeDetails
-    private var _itemSave: MenuItem? = null
+    var _itemSave: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,12 +92,14 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
         menuInflater.inflate(R.menu.recipe_menu, menu)
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            if (dataDirty) {
+            if (_itemSave?.isEnabled == true) {
                 val deleteAlertBuilder = AlertDialog.Builder(this)
-                deleteAlertBuilder.setMessage(resources.getString(R.string.exit_without_save))
-                deleteAlertBuilder.setCancelable(true)
-                deleteAlertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ -> onBackPressed() }
-                deleteAlertBuilder.setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.cancel() }
+                    .setMessage(resources.getString(R.string.exit_with_save))
+                    .setCancelable(true)
+                    .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressed() }
+                    .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                        viewModel.update(recipeDetails) { onBackPressed() }
+                    }
                 val deleteAlert = deleteAlertBuilder.create()
                 deleteAlert.show()
             } else {
@@ -110,13 +112,10 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
         _itemSave = itemSave
         _itemSave?.setAsDisabled()
         itemSave.setOnMenuItemClickListener { menuItem ->
-            viewModel.update(recipeDetails){}
-            dataDirty = false
-            _itemSave?.setAsDisabled()
-//            viewModel.update(recipeDetails) {
-//                onBackPressed()
-//            }
-            //onBackPressed()
+            viewModel.update(recipeDetails){
+                //dataDirty = false
+                _itemSave?.setAsDisabled()
+            }
             false
         }
         return true
@@ -126,7 +125,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
         return recipeDetails;
     }
 
-    var dataDirty: Boolean = false
+    //var dataDirty: Boolean = false
     private val infoUpdater = ThrottledUpdater()
     private val ingredientUpdater = ThrottledUpdater()
     private val directionsUpdater = ThrottledUpdater()
@@ -135,7 +134,8 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
         infoUpdater.delayedUpdate(){
             Log.d(TAG, "onRecipeInfoUpdate")
             // TODO: Find a better way to do this
-            dataDirty = true
+            //dataDirty = true
+            //_itemSave?.setAsEnabled()
             recipeDetails.recipe.name = recipe.name
             recipeDetails.recipe.description = recipe.description
             recipeDetails.recipe.imageUri = recipe.imageUri
@@ -147,7 +147,8 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
     override fun onRecipeDirectionUpdate(directions: List<Direction>) {
         directionsUpdater.delayedUpdate(){
             Log.d(TAG, "onRecipeDirectionUpdate")
-            dataDirty = true
+            //dataDirty = true
+            //_itemSave?.setAsEnabled()
             recipeDetails.directions = directions
         }
         _itemSave?.setAsEnabled()
@@ -156,7 +157,8 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
     override fun onRecipeIngredientUpdate(ingredients: List<Ingredient>) {
         ingredientUpdater.delayedUpdate(){
             Log.d(TAG, "onRecipeIngredientUpdate")
-            dataDirty = true
+            //dataDirty = true
+            //_itemSave?.setAsEnabled()
             recipeDetails.ingredients = ingredients
         }
         _itemSave?.setAsEnabled()
@@ -165,7 +167,8 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
     override fun onRecipeCategories(categories: List<Category>) {
         infoUpdater.delayedUpdate(){
             Log.d(TAG, "onRecipeCategories")
-            dataDirty = true
+            //dataDirty = true
+            //_itemSave?.setAsEnabled()
             recipeDetails.categories = categories.map { o ->
                 RecipeCategoryLink(0, recipeId, o.id)
             }

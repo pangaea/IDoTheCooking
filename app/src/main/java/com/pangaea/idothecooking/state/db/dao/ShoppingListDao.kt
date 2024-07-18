@@ -12,7 +12,7 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 
 @Dao
 interface ShoppingListDao {
-    @Query("SELECT * FROM shopping_lists ORDER BY name COLLATE NOCASE ASC")
+    @Query("SELECT * FROM shopping_lists ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllShoppingLists(): LiveData<List<ShoppingList>>
 
     @Transaction

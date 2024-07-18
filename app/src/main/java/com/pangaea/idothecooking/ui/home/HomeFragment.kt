@@ -19,16 +19,21 @@ import com.pangaea.idothecooking.state.RecipeRepository
 import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
+import com.pangaea.idothecooking.state.db.entities.ShoppingList
+import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
+import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private lateinit var viewModel: RecipeViewModel
+    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var shoppingListViewModel: ShoppingListViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -48,19 +53,19 @@ class HomeFragment : Fragment() {
         val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
         val recipeRepo = db.recipeDao()?.let { RecipeRepository(it) }
 
-        viewModel = recipeRepo?.let { RecipeViewModelFactory(it, null).create(RecipeViewModel::class.java) }!!
-        viewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipes ->
+        recipeViewModel = recipeRepo?.let { RecipeViewModelFactory(it, null).create(RecipeViewModel::class.java) }!!
+        recipeViewModel.getAllRecipes().observe(viewLifecycleOwner) { recipes ->
             val linearLayout = root.findViewById<LinearLayout>(R.id.recipeHolder)
             linearLayout.removeAllViews()
-            for ((index, recipe: RecipeDetails) in recipes.withIndex()) {
+            for ((index, recipe: Recipe) in recipes.withIndex()) {
                 val recipeLayout: View =
                     requireActivity().layoutInflater.inflate(R.layout.home_recent_recipe,
                                                              null,false)!!
                 val image = recipeLayout.findViewById<ImageView>(R.id.recipeImage)
-                if (recipe.recipe.imageUri != null && !recipe.recipe.imageUri!!.isEmpty()) {
+                if (recipe.imageUri != null && !recipe.imageUri!!.isEmpty()) {
                     try {
                         Glide.with(requireActivity().baseContext)
-                            .load(recipe.recipe.imageUri)
+                            .load(recipe.imageUri)
                             .into(image)
                     } catch(_: Exception) {}
                 } else {
@@ -68,17 +73,39 @@ class HomeFragment : Fragment() {
                 }
 
                 val content = recipeLayout.findViewById<TextView>(R.id.content)
-                content.text = recipe.recipe.name
+                content.text = recipe.name
                 val description = recipeLayout.findViewById<TextView>(R.id.description)
-                description.text = recipe.recipe.description
+                description.text = recipe.description
                 recipeLayout.rootView.setOnClickListener{
                     val intent = Intent(activity, RecipeViewActivity::class.java)
                     val b = Bundle()
-                    b.putInt("id", recipe.recipe.id)
+                    b.putInt("id", recipe.id)
                     intent.putExtras(b)
                     startActivity(intent)
                 }
                 linearLayout.addView(recipeLayout)
+                if (index >= 2) break;
+            }
+        }
+
+        shoppingListViewModel = ShoppingListViewModel((activity?.application as IDoTheCookingApp), null)
+        shoppingListViewModel.getAllShoppingLists().observe(viewLifecycleOwner) { shoppingLists ->
+            val linearLayout = root.findViewById<LinearLayout>(R.id.listsHolder)
+            linearLayout.removeAllViews()
+            for ((index, shoppingList: ShoppingList) in shoppingLists.withIndex()) {
+                val shoppingListLayout: View =
+                    requireActivity().layoutInflater.inflate(R.layout.home_recent_shopping_list,
+                                                             null,false)!!
+                val content = shoppingListLayout.findViewById<TextView>(R.id.content)
+                content.text = shoppingList.name
+                shoppingListLayout.rootView.setOnClickListener{
+                    val intent = Intent(activity, ShoppingListActivity::class.java)
+                    val b = Bundle()
+                    b.putInt("id", shoppingList.id)
+                    intent.putExtras(b)
+                    startActivity(intent)
+                }
+                linearLayout.addView(shoppingListLayout)
                 if (index >= 2) break;
             }
         }
@@ -89,12 +116,28 @@ class HomeFragment : Fragment() {
                 recipe.name = name
                 recipe.description = ""
                 val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                viewModel.insert(details) { id: Long ->
+                recipeViewModel.insert(details) { id: Long ->
                     val recipeIntent = Intent(activity, RecipeActivity::class.java)
                     val bundle = Bundle()
                     bundle.putInt("id", id.toInt())
                     recipeIntent.putExtras(bundle)
                     startActivity(recipeIntent)
+                }
+            }.show(childFragmentManager, null)
+        }
+
+        binding.createNewList.setOnClickListener(){
+            NameOnlyDialog(R.string.create_shopping_list_title, null) { name ->
+                val shoppingList = ShoppingList()
+                shoppingList.name = name
+                shoppingList.description = ""
+                val details = ShoppingListDetails(shoppingList, emptyList())
+                shoppingListViewModel.insert(details) { id: Long ->
+                    val shoppingListIntent = Intent(activity, ShoppingListActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putInt("id", id.toInt())
+                    shoppingListIntent.putExtras(bundle)
+                    startActivity(shoppingListIntent)
                 }
             }.show(childFragmentManager, null)
         }

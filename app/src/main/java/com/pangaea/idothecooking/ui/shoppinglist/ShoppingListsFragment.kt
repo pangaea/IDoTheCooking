@@ -93,11 +93,6 @@ class ShoppingListsFragment : Fragment() {
                     bundle.putInt("id", id.toInt())
                     shoppingListIntent.putExtras(bundle)
                     startActivity(shoppingListIntent)
-//                    val list = view.findViewById<RecyclerView>(R.id.list)
-//                    if (list is RecyclerView) {
-//                        val adapter = list.adapter as ShoppingListRecyclerViewAdapter
-//                        adapter.notifyDataSetChanged()
-//                    }
                 }
             }.show(childFragmentManager, null)
         }

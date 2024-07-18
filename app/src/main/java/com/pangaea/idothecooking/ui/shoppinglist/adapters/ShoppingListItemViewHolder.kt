@@ -2,6 +2,7 @@ package com.pangaea.idothecooking.ui.shoppinglist.adapters
 
 import android.graphics.Color
 import android.view.View
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,8 +13,10 @@ class ShoppingListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
                                                    DraggableItemTouchHelperViewHolder {
     val display: TextView
     val handleView: ImageView
+    val isChecked: CheckBox
 
     init {
+        isChecked = itemView.findViewById<CheckBox>(R.id.item_checked)
         display = itemView.findViewById<TextView>(R.id.display)
         handleView = itemView.findViewById<ImageView>(R.id.handle)
     }

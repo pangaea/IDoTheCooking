@@ -25,6 +25,7 @@ import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewMode
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
 import com.pangaea.idothecooking.utils.extensions.setAsEnabled
+import java.util.function.Consumer
 
 class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
     private var shoppingListId: Int = -1
@@ -103,10 +104,12 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         itemCancel.setOnMenuItemClickListener { menuItem ->
             if (_itemSave?.isEnabled == true) {
                 val deleteAlertBuilder = AlertDialog.Builder(this)
-                deleteAlertBuilder.setMessage(resources.getString(R.string.exit_without_save))
-                deleteAlertBuilder.setCancelable(true)
-                deleteAlertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ -> onBackPressed() }
-                deleteAlertBuilder.setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.cancel() }
+                    .setMessage(resources.getString(R.string.exit_with_save))
+                    .setCancelable(true)
+                    .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressed() }
+                    .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                        saveShoppingList() { onBackPressed() }
+                    }
                 val deleteAlert = deleteAlertBuilder.create()
                 deleteAlert.show()
             } else {
@@ -120,26 +123,28 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         _itemSave = itemSave
         _itemSave?.setAsDisabled()
         itemSave.setOnMenuItemClickListener { menuItem ->
-            shoppingListDetails.shoppingList.name = binding.name.text.toString()
-            val recyclerView: RecyclerView = _view.findViewById(R.id.listItemsView)
-            val adapter = recyclerView.adapter as ShoppingListItemsAdapter?
-
-            // Edit the position value of each item
-            var i = 0
-            val data: List<ShoppingListItem>? = adapter?.mItems?.map() { it ->
-                it.order = i++
-                return@map it
-            }
-            if (data != null) {
-                shoppingListDetails.shoppingListItems = data
-                viewModel.update(shoppingListDetails)
-            }
-
-            _itemSave?.setAsDisabled()
+            saveShoppingList() { _itemSave?.setAsDisabled() }
             false
         }
 
         return true
+    }
+
+    private fun saveShoppingList(callback: Consumer<Long>) {
+        shoppingListDetails.shoppingList.name = binding.name.text.toString()
+        val recyclerView: RecyclerView = _view.findViewById(R.id.listItemsView)
+        val adapter = recyclerView.adapter as ShoppingListItemsAdapter?
+
+        // Edit the position value of each item
+        var i = 0
+        val data: List<ShoppingListItem>? = adapter?.mItems?.map() { it ->
+            it.order = i++
+            return@map it
+        }
+        if (data != null) {
+            shoppingListDetails.shoppingListItems = data
+            viewModel.update(shoppingListDetails, callback)
+        }
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
