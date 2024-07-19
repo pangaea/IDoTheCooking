@@ -283,7 +283,7 @@ class RecipeViewActivity : AppCompatActivity() {
     }
 
     private fun createWebPrintJob(webView: WebView) {
-        val printManager = this.getSystemService(PRINT_SERVICE) as PrintManager
+        val printManager = getSystemService(PRINT_SERVICE) as PrintManager
         val jobName = recipeDetails.recipe.name
         val printAdapter = webView.createPrintDocumentAdapter(jobName)
         printManager.print(
