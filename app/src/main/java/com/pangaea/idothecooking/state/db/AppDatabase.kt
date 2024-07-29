@@ -121,31 +121,18 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
             suspend fun initDatabase() {
-                val db: AppDatabase = mainApp.getDatabase()
-
-                val categoryDao : CategoryDao? = db.categoryDao()
-                val categoryRepository : CategoryRepository? = categoryDao?.let {
-                    CategoryRepository(it)
-                }
+                val categoryRepository = CategoryRepository(mainApp)
                 val cat1 = Category(0, "Breakfast")
                 var cat1Id: Long = 0; var cat2Id: Long = 0; var cat3Id: Long = 0; var cat4Id: Long = 0
-                categoryRepository?.insert(cat1) {cat1Id = it}
+                categoryRepository.insert(cat1) {cat1Id = it}
                 val cat2 = Category(0, "Lunch")
-                categoryRepository?.insert(cat2) {cat2Id = it}
+                categoryRepository.insert(cat2) {cat2Id = it}
                 val cat3 = Category(0, "Dinner")
-                categoryRepository?.insert(cat3) {cat3Id = it}
+                categoryRepository.insert(cat3) {cat3Id = it}
                 val cat4 = Category(0, "Desert")
-                categoryRepository?.insert(cat4) {cat4Id = it}
+                categoryRepository.insert(cat4) {cat4Id = it}
 
-
-                val recipeRepo = db.recipeDao()?.let {
-                    db.recipeDirectionDao()
-                        ?.let { it1 ->
-                            db.recipeIngredientDao()
-                                ?.let { it2 -> db.recipeCategoryLinkDao()
-                                    ?.let { it3 -> RecipeRepository(it, it1, it2, it3) } }
-                        }
-                }
+                val recipeRepo = RecipeRepository(mainApp)
 
                 val recipe = Recipe()
                 recipe.name = "Grilled Cheese"
@@ -175,7 +162,7 @@ abstract class AppDatabase : RoomDatabase() {
                 categories.add(RecipeCategoryLink(0, 0, cat1Id.toInt()))
                 categories.add(RecipeCategoryLink(0, 0, cat2Id.toInt()))
                 val details = RecipeDetails(recipe, ingredients, directions, categories)
-                recipeRepo?.insert(details) {}
+                recipeRepo.insert(details) {}
 
 
                 val recipe2 = Recipe()
@@ -191,7 +178,7 @@ abstract class AppDatabase : RoomDatabase() {
                 categories2.add(RecipeCategoryLink(0, 0, cat3Id.toInt()))
                 categories2.add(RecipeCategoryLink(0, 0, cat4Id.toInt()))
                 val details2 = RecipeDetails(recipe2, ingredients2, directions2, categories2)
-                recipeRepo?.insert(details2) {}
+                recipeRepo.insert(details2) {}
 
                 val shoppingListRepo = ShoppingListRepository(mainApp)
                 val shoppingList1 = ShoppingList()

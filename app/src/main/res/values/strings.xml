@@ -26,6 +26,11 @@
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
     <string name="name">Name</string>
+    <string name="print">Print</string>
+    <string name="share">Share</string>
+    <string name="edit">Edit</string>
+    <string name="adj_srv_size">Adjust Serving Size</string>
+    <string name="filter">Filter</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
@@ -67,6 +72,8 @@
     <string name="create_category_msg">Create a new category</string>
 
     <string name="create_shopping_list_title">Create New Shopping List</string>
+    <string name="shopping_list_edit_title">Edit Shopping List Item</string>
+    <string name="shopping_list_new_title">New Shopping List Item</string>
 
     <string name="update_category_title">Category</string>
     <string name="update_category_msg">Update a category</string>
@@ -87,4 +94,9 @@
     <string name="recipe_sent_success">Recipe \'{{0}}\' Sent</string>
     <string name="recipe_sent_failed">Recipe \'{{0}}\' Failed</string>
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
+
+    <string name="adjust_servings_title">Adjust Serving Size</string>
+    <string name="adjust_servings_error">Recipe serving size must be specified in order to adjust ingredients properly</string>
+
+    <string name="select_phone_number">Select phone number</string>
 </resources>

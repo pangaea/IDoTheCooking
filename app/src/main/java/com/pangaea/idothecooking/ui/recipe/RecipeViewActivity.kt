@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
+import androidx.navigation.ui.navigateUp
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityRecipeViewBinding
@@ -26,15 +28,17 @@ import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.NumberOnlyDialog
 import com.pangaea.idothecooking.ui.shared.PicklistDlg
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
-
 
 class RecipeViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeViewBinding
     private lateinit var viewModel: RecipeViewModel
     private var recipeId: Int = -1
     private lateinit var recipeDetails: RecipeDetails
+    private var servingSize: Int = 0;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,47 +53,53 @@ class RecipeViewActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        val db: AppDatabase = (application as IDoTheCookingApp).getDatabase()
-        val recipeRepo = db.recipeDao()?.let {
-            db.recipeDirectionDao()
-                ?.let { it1 ->
-                    db.recipeIngredientDao()?.let { it2 -> db.recipeCategoryLinkDao()
-                        ?.let { it3 -> RecipeRepository(it, it1, it2, it3) } }
-                }
-        }
-
-        viewModel = recipeRepo?.let {
-            RecipeViewModelFactory(it, recipeId.toLong())
-                .create(RecipeViewModel::class.java)
-        }!!
+        viewModel = RecipeViewModelFactory(application, recipeId.toLong()).create(RecipeViewModel::class.java)
 
         viewModel.getDetails()?.observe(this) { recipes ->
             recipeDetails = recipes[0]
+            servingSize = recipeDetails.recipe.servings
+            if (servingSize == 0) {
+                // Hide adjust servings button since we have no way to
+            }
             title = resources.getString(R.string.title_activity_recipe_name).replace("{0}", recipeDetails.recipe.name)
-            val htmlRecipe = renderRecipe(R.string.html_recipe, R.string.html_recipe_ingredient,
-                                          R.string.html_recipe_direction)
-            binding.viewport.loadDataWithBaseURL(null, htmlRecipe, "text/html", "utf-8", null);
+            drawRecipe()
         }
+    }
+
+    fun drawRecipe() {
+        val htmlRecipe = renderRecipe(R.string.html_recipe, R.string.html_recipe_ingredient,
+                                      R.string.html_recipe_direction)
+        binding.viewport.loadDataWithBaseURL(null, htmlRecipe, "text/html", "utf-8", null);
     }
 
     fun renderRecipe(template: Int, ingredientTemplate: Int, directionTemplate: Int): String {
         val ingredientBuilder = StringBuilder()
         val htmlRecipeIngredient = getString(ingredientTemplate)
         val ingredients = recipeDetails.ingredients.toMutableList()
+
+        var adjRatio: Double = 1.0
+        if (recipeDetails.recipe.servings > 0) {
+            // Avoid division by zero
+            adjRatio = (servingSize.toDouble() / recipeDetails.recipe.servings)
+        }
         ingredients.sortWith { obj1, obj2 ->
             Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
         }
         ingredients.forEach { ingredient: Ingredient ->
             do {
                 if (ingredient.amount != null && ingredient.amount!! > 0f) {
-                    val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
+                    var adjAmount = ingredient.amount
+                    if (adjRatio != 1.0) {
+                        adjAmount = ingredient.amount!! * adjRatio
+                    }
+                    //val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
+                    val frac: Pair<String, Double>? = adjAmount?.vulgarFraction
                     if (frac != null) {
                         val amount = frac.first + " " + ingredient.unit
                         ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", amount)
                                                      .replace("{{name}}", ingredient.name))
                         break;
                     }
-
                 }
 
                 ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", "")
@@ -120,9 +130,9 @@ class RecipeViewActivity : AppCompatActivity() {
             .replace("{{image}}", imageElem)
 
         if (recipeDetails.recipe.servings > 0) {
-            htmlRecipe = htmlRecipe.replace("{{servings}}", recipeDetails.recipe.servings.toString())
+            htmlRecipe = htmlRecipe.replace("{{servings}}", servingSize.toString())
         } else {
-            htmlRecipe = htmlRecipe.replace("{{servings}}", "-")
+            htmlRecipe = htmlRecipe.replace("{{servings}}", "?")
         }
         return htmlRecipe
     }
@@ -202,7 +212,7 @@ class RecipeViewActivity : AppCompatActivity() {
                                     phones.moveToNext()
                                 }
                                 if (phoneNumbers.isNotEmpty()) {
-                                    PicklistDlg("Select phone number",
+                                    PicklistDlg(getString(R.string.select_phone_number),
                                                 phoneNumbers) { selectedNum: String ->
                                         selectedPhoneNumber = selectedNum
                                         if (hasSMSPermission()) {
@@ -248,12 +258,15 @@ class RecipeViewActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.recipe_view_menu, menu)
+
+        // Close
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
             onBackPressed()
             false
         }
 
+        // Edit recipe
         val itemEdit = menu.findItem(R.id.item_edit)
         itemEdit.setOnMenuItemClickListener { menuItem ->
             val intent = Intent(this, RecipeActivity::class.java)
@@ -264,6 +277,7 @@ class RecipeViewActivity : AppCompatActivity() {
             false
         }
 
+        // Share recipe via SMS
         val itemShare = menu.findItem(R.id.item_share)
         itemShare.setOnMenuItemClickListener { menuItem ->
             if (hasContactsPermission()) {
@@ -274,11 +288,27 @@ class RecipeViewActivity : AppCompatActivity() {
             false
         }
 
+        // Print recipe
         val itemPrint = menu.findItem(R.id.item_print)
         itemPrint.setOnMenuItemClickListener { menuItem ->
             createWebPrintJob(binding.viewport)
             false
         }
+
+        // Adjust serving size
+        val itemServSize = menu.findItem(R.id.item_serv_size)
+        itemServSize.setOnMenuItemClickListener { menuItem ->
+            if (servingSize == 0){
+                Toast.makeText(baseContext, getString(R.string.adjust_servings_error), Toast.LENGTH_LONG).show()
+            } else {
+                NumberOnlyDialog(R.string.adjust_servings_title, servingSize) {
+                    servingSize = it
+                    drawRecipe()
+                }.show(this.supportFragmentManager, null)
+            }
+            false
+        }
+
         return true
     }
 

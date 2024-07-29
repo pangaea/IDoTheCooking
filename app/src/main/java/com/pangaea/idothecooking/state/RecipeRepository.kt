@@ -9,6 +9,8 @@ import com.pangaea.idothecooking.state.db.dao.RecipeCategoryLinkDao
 import com.pangaea.idothecooking.state.db.dao.RecipeDao
 import com.pangaea.idothecooking.state.db.dao.RecipeDirectionDao
 import com.pangaea.idothecooking.state.db.dao.RecipeIngredientDao
+import com.pangaea.idothecooking.state.db.dao.ShoppingListDao
+import com.pangaea.idothecooking.state.db.dao.ShoppingListItemDao
 import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.Recipe
@@ -19,23 +21,43 @@ import java.util.Date
 import java.util.Optional
 import java.util.function.Consumer
 
-class RecipeRepository(private var recipeDao: RecipeDao) : RepositoryBase<Recipe>() {
+class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
 
-    var db: AppDatabase? = null
-    private var mDirectionDao: RecipeDirectionDao? = null
-    private var mIngredientDao: RecipeIngredientDao? = null
-    private var recipeCategoryLinkDao: RecipeCategoryLinkDao? = null
+//    var db: AppDatabase? = null
+//    private var mDirectionDao: RecipeDirectionDao? = null
+//    private var mIngredientDao: RecipeIngredientDao? = null
+//    private var recipeCategoryLinkDao: RecipeCategoryLinkDao? = null
 
-    constructor(
-        recipeDao: RecipeDao,
-        directionDao: RecipeDirectionDao,
-        ingredientDao: RecipeIngredientDao,
-        categoryLinkDao: RecipeCategoryLinkDao
-    ) : this(recipeDao) {
-        mDirectionDao = directionDao
-        mIngredientDao = ingredientDao
-        recipeCategoryLinkDao = categoryLinkDao
-    }
+//    lateinit var db: AppDatabase
+//    private lateinit var recipeDao: RecipeDao
+//    private lateinit var directionDao: RecipeDirectionDao
+//    private lateinit var ingredientDao: RecipeIngredientDao
+//    private lateinit var recipeCategoryLinkDao: RecipeCategoryLinkDao
+
+    val db = (application as IDoTheCookingApp).getDatabase()
+    private val recipeDao = db.recipeDao()!!
+    private val directionDao = db.recipeDirectionDao()!!
+    private val ingredientDao = db.recipeIngredientDao()!!
+    private val recipeCategoryLinkDao = db.recipeCategoryLinkDao()!!
+
+//    constructor(
+//        recipeDao: RecipeDao,
+//        directionDao: RecipeDirectionDao,
+//        ingredientDao: RecipeIngredientDao,
+//        categoryLinkDao: RecipeCategoryLinkDao
+//    ) : this(recipeDao) {
+//        mDirectionDao = directionDao
+//        mIngredientDao = ingredientDao
+//        recipeCategoryLinkDao = categoryLinkDao
+//    }
+
+//    constructor(application: Application) : this() {
+//        db = (application as IDoTheCookingApp).getDatabase()
+//        recipeDao = db.recipeDao()!!
+//        directionDao = db.recipeDirectionDao()!!
+//        ingredientDao = db.recipeIngredientDao()!!
+//        recipeCategoryLinkDao = db.recipeCategoryLinkDao()!!
+//    }
 
 //    fun init(application: Application) {
 //        db = (application as IDoTheCookingApp).getDatabase()
@@ -74,12 +96,12 @@ class RecipeRepository(private var recipeDao: RecipeDao) : RepositoryBase<Recipe
         updateWithTimestamp(recipe.recipe)
         val id: Int = recipeDao.updateData(recipe.recipe.id.toLong(), recipe.recipe.name, recipe.recipe.description,
             recipe.recipe.imageUri, recipe.recipe.servings, tc.dateToTimestamp(recipe.recipe.modifiedAt))
-        mDirectionDao?.deleteAllByRecipe(recipe.recipe.id)
+        directionDao.deleteAllByRecipe(recipe.recipe.id)
         insertDirections(recipe.directions, recipe.recipe.id)
-        mIngredientDao?.deleteAllByRecipe(recipe.recipe.id)
+        ingredientDao.deleteAllByRecipe(recipe.recipe.id)
         insertIngredients(recipe.ingredients, recipe.recipe.id)
 
-        recipeCategoryLinkDao?.deleteAllByRecipe(recipe.recipe.id)
+        recipeCategoryLinkDao.deleteAllByRecipe(recipe.recipe.id)
         insertCategoryLinks(recipe.categories, recipe.recipe.id)
         Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
             o.accept(id.toLong())
@@ -101,7 +123,7 @@ class RecipeRepository(private var recipeDao: RecipeDao) : RepositoryBase<Recipe
         while (i < size) {
             val item: Direction = items[i]
             item.recipe_id = idNew
-            mDirectionDao?.insert(item)
+            directionDao.insert(item)
             i++
         }
     }
@@ -112,7 +134,7 @@ class RecipeRepository(private var recipeDao: RecipeDao) : RepositoryBase<Recipe
         while (i < size) {
             val item: Ingredient = items[i]
             item.recipe_id = idNew
-            mIngredientDao?.insert(item)
+            ingredientDao.insert(item)
             i++
         }
     }

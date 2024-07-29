@@ -1,17 +1,22 @@
 package com.pangaea.idothecooking.ui.recipe.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.state.RecipeRepository
+import com.pangaea.idothecooking.state.ShoppingListRepository
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import kotlinx.coroutines.launch
 import java.util.function.Consumer
 
-class RecipeViewModel(private val recipeRepository: RecipeRepository, private val recipeId: Long?) : ViewModel() {
-    //val allRecipes: LiveData<List<Recipe>> = recipeRepository.allRecipes
+class RecipeViewModel(app: Application, private val recipeId: Long?) : ViewModel() {
+
+    private val recipeRepository = RecipeRepository(app)
+
     fun getAllRecipes(): LiveData<List<Recipe>> {
         return recipeRepository.getAllRecipes()
     }
@@ -35,11 +40,11 @@ class RecipeViewModel(private val recipeRepository: RecipeRepository, private va
     }
 }
 
-class RecipeViewModelFactory(private val recipeRepository: RecipeRepository, private val recipeId: Long?) : ViewModelProvider.Factory {
+class RecipeViewModelFactory(val app: Application, private val recipeId: Long?) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RecipeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return RecipeViewModel(recipeRepository, recipeId) as T
+            return RecipeViewModel(app, recipeId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

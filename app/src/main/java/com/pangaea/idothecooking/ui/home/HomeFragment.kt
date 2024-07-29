@@ -51,10 +51,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
-        val recipeRepo = db.recipeDao()?.let { RecipeRepository(it) }
-
-        recipeViewModel = recipeRepo?.let { RecipeViewModelFactory(it, null).create(RecipeViewModel::class.java) }!!
+        recipeViewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
         recipeViewModel.getAllRecipes().observe(viewLifecycleOwner) { recipes ->
             val linearLayout = root.findViewById<LinearLayout>(R.id.recipeHolder)
             linearLayout.removeAllViews()

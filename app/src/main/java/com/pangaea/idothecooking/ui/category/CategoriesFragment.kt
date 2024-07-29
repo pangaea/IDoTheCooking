@@ -35,9 +35,7 @@ class CategoriesFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_category_list, container, false)
         view.setBackgroundResource(R.mipmap.tablecloth3)
-        val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
-        val categoryRepo = db.categoryDao()?.let { CategoryRepository(it) }
-        viewModel = categoryRepo?.let { CategoryViewModelFactory(it, null).create(CategoryViewModel::class.java) }!!
+        viewModel = CategoryViewModelFactory(requireActivity().application, null).create(CategoryViewModel::class.java)
         viewModel.getAllCategories().observe(viewLifecycleOwner) { categories ->
             val list = view.findViewById<RecyclerView>(R.id.list)
             if (list is RecyclerView) {

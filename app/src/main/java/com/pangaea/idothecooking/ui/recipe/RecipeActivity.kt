@@ -51,20 +51,8 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
         }
 
         setSupportActionBar(binding.toolbar)
-        val db: AppDatabase = (application as IDoTheCookingApp).getDatabase()
-        val recipeRepo = db.recipeDao()?.let {
-            db.recipeDirectionDao()
-                ?.let { it1 ->
-                    db.recipeIngredientDao()?.let { it2 -> db.recipeCategoryLinkDao()
-                        ?.let { it3 -> RecipeRepository(it, it1, it2, it3) } }
-                }
-        }
 
-        viewModel = recipeRepo?.let {
-            RecipeViewModelFactory(it, recipeId.toLong())
-                .create(RecipeViewModel::class.java)
-        }!!
-
+        viewModel = RecipeViewModelFactory(application, recipeId.toLong()).create(RecipeViewModel::class.java)
         viewModel.getDetails()?.observeOnce(this) { recipes ->
             recipeDetails = recipes[0]
             title = resources.getString(R.string.title_activity_recipe_name)

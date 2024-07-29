@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.ui.shoppinglist.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +16,7 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import kotlinx.coroutines.launch
 import java.util.function.Consumer
 
-class ShoppingListViewModel(app: IDoTheCookingApp,
+class ShoppingListViewModel(app: Application,
                             private val shoppingListId: Long?) : ViewModel() {
 
     private val shoppingListRepository = ShoppingListRepository(app)
@@ -46,7 +47,7 @@ class ShoppingListViewModel(app: IDoTheCookingApp,
     }
 }
 
-class ShoppingListViewModelFactory(private val app: IDoTheCookingApp,
+class ShoppingListViewModelFactory(private val app: Application,
                                    private val shoppingListId: Long?) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ShoppingListViewModel::class.java)) {

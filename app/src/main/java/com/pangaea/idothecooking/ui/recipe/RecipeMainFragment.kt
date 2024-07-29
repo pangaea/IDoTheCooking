@@ -140,9 +140,7 @@ class RecipeMainFragment : Fragment() {
             fireCallback();
         }
 
-        val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
-        val categoryRepo = db.categoryDao()?.let { CategoryRepository(it) }
-        val viewModel = categoryRepo?.let { CategoryViewModelFactory(it, null).create(CategoryViewModel::class.java) }!!
+        val viewModel = CategoryViewModelFactory(requireActivity().application, null).create(CategoryViewModel::class.java)
         viewModel.getAllCategories().observe(viewLifecycleOwner) { categories ->
             recipe?.let {
                 val linkedCategoryIds = recipe.categories.map { o -> o.category_id }

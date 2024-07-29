@@ -83,7 +83,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         val btn = _view.findViewById<FloatingActionButton>(R.id.button_new_item)
         btn.setOnClickListener {
             this.let {
-                MeasuredItemDialog(null, { obj ->
+                MeasuredItemDialog(R.string.shopping_list_new_title, null, { obj ->
                     val adapter = list.adapter as ShoppingListItemsAdapter
                     val shoppingListItem = ShoppingListItem()
                     shoppingListItem.amount = obj.amount
@@ -158,13 +158,13 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
     override fun onItemClicked(index: Int) {
         val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
         val adapter: ShoppingListItemsAdapter = list.adapter as ShoppingListItemsAdapter
-        val ingredient: ShoppingListItem? = index.let { adapter.mItems?.get(it) }
-        if (ingredient != null) {
+        val shoppingListItem: ShoppingListItem? = index.let { adapter.mItems?.get(it) }
+        if (shoppingListItem != null) {
             this.let {
-                MeasuredItemDialog(ingredient, { obj ->
-                    ingredient.amount = obj.amount
-                    ingredient.unit = obj.unit
-                    ingredient.name = obj.name
+                MeasuredItemDialog(R.string.shopping_list_edit_title, shoppingListItem, { obj ->
+                    shoppingListItem.amount = obj.amount
+                    shoppingListItem.unit = obj.unit
+                    shoppingListItem.name = obj.name
                     _itemSave?.setAsEnabled()
                     adapter.notifyDataSetChanged()
                 }, { dialog, _ -> dialog.cancel() })

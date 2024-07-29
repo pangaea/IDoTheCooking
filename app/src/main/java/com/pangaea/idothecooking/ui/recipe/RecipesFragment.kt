@@ -45,10 +45,7 @@ class RecipesFragment : Fragment() {
     private var filterCategories: List<Int> = ArrayList()
 
     private fun buildList() {
-        val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
-        val recipeRepo = db.recipeDao()?.let { RecipeRepository(it) }
-        viewModel = recipeRepo?.let { RecipeViewModelFactory(it, null).create(RecipeViewModel::class.java) }!!
-        //viewModel.getAllRecipes().observe(viewLifecycleOwner) { recipes ->
+        viewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
         viewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipes ->
             var filteredList: List<RecipeDetails> = recipes
             if (filterCategories.isNotEmpty()) {
@@ -131,10 +128,8 @@ class RecipesFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.item_filter -> {
-                val db: AppDatabase = (activity?.application as IDoTheCookingApp).getDatabase()
-                val categoryRepo = db.categoryDao()?.let { CategoryRepository(it) }
-                val model = categoryRepo?.let { CategoryViewModelFactory(it, null).create(
-                    CategoryViewModel::class.java) }!!
+                val model = CategoryViewModelFactory(requireActivity().application, null).create(
+                    CategoryViewModel::class.java)
                 model.getAllCategories().observe(viewLifecycleOwner) { categories ->
                     RecipeFilterDialog(categories, filterCategories, sortBy) { categories: List<Category>, sortBy ->
                         this.sortBy = sortBy

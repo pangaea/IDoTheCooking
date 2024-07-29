@@ -20,16 +20,20 @@ import com.pangaea.idothecooking.state.db.entities.converters.TimestampConverter
 import java.util.Optional
 import java.util.function.Consumer
 
-class ShoppingListRepository() : RepositoryBase<ShoppingList>() {
-    lateinit var db: AppDatabase
-    private lateinit var shoppingListDao: ShoppingListDao
-    private lateinit var shoppingListItemDao: ShoppingListItemDao
+class ShoppingListRepository(application: Application) : RepositoryBase<ShoppingList>() {
+//    lateinit var db: AppDatabase
+//    private lateinit var shoppingListDao: ShoppingListDao
+//    private lateinit var shoppingListItemDao: ShoppingListItemDao
 
-    constructor(application: Application) : this() {
-        db = (application as IDoTheCookingApp).getDatabase()
-        shoppingListDao = db.shoppingListDao()!!
-        shoppingListItemDao = db.shoppingListItemDao()!!
-    }
+    val db = (application as IDoTheCookingApp).getDatabase()
+    private val shoppingListDao = db.shoppingListDao()!!
+    private val shoppingListItemDao = db.shoppingListItemDao()!!
+
+//    constructor(application: Application) : this() {
+//        db = (application as IDoTheCookingApp).getDatabase()
+//        shoppingListDao = db.shoppingListDao()!!
+//        shoppingListItemDao = db.shoppingListItemDao()!!
+//    }
 
     fun getAllShoppingLists(): LiveData<List<ShoppingList>> {
         return shoppingListDao.loadAllShoppingLists()

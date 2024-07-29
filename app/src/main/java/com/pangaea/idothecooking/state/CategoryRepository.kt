@@ -1,6 +1,8 @@
 package com.pangaea.idothecooking.state
 
+import android.app.Application
 import androidx.lifecycle.LiveData
+import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.state.db.dao.CategoryDao
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.Recipe
@@ -8,7 +10,10 @@ import java.util.Date
 import java.util.Optional
 import java.util.function.Consumer
 
-class CategoryRepository(private var categoryDao: CategoryDao) : RepositoryBase<Category>() {
+class CategoryRepository(application: Application) : RepositoryBase<Category>() {
+
+    val db = (application as IDoTheCookingApp).getDatabase()
+    private val categoryDao = db.categoryDao()!!
     fun getAllCategories(): LiveData<List<Category>> {
         return categoryDao.loadAllCategories()
     }

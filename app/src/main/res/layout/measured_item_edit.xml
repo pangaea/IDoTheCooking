@@ -18,14 +18,22 @@
         <TextView
             android:text="@string/ingredient_edit_amount"
             android:textSize="12sp"
+            android:layout_marginStart="26dp"
             android:layout_marginEnd="1dp"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
+<!--        <EditText-->
+<!--            android:id="@+id/amount_whole"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_marginStart="36dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:inputType="number" />-->
         <NumberPicker
             android:id="@+id/amount_whole"
             android:layout_width="50dp"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="26dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"/>
 
@@ -33,7 +41,7 @@
             android:text="@string/ingredient_edit_servings"
             android:textSize="12sp"
             android:gravity="center_vertical"
-            android:layout_margin="36dp"
+            android:layout_margin="26dp"
             android:layout_width="wrap_content"
             android:visibility="gone"
             android:layout_height="match_parent" />
@@ -41,9 +49,24 @@
         <NumberPicker
             android:id="@+id/amount_fraction"
             android:layout_width="50dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginEnd="26dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            app:hintAnimationEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="26dp"
+            android:layout_gravity="center_vertical"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/ingredient_unit_hint">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout >
@@ -54,20 +77,20 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            app:hintAnimationEnabled="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_gravity="top"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="@string/ingredient_unit_hint">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/unit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            app:hintAnimationEnabled="false"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_gravity="top"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            android:hint="@string/ingredient_unit_hint">-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/unit"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.textfield.TextInputLayout
             app:hintAnimationEnabled="false"

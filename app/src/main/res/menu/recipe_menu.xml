@@ -6,7 +6,7 @@
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/save"
         android:id="@+id/item_save"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"

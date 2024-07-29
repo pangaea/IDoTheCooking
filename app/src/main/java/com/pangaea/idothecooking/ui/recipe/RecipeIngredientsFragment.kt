@@ -73,7 +73,7 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         val btn = view.findViewById<FloatingActionButton>(R.id.button_new_item)
         btn.setOnClickListener {
             activity?.let {
-                MeasuredItemDialog(null, { obj ->
+                MeasuredItemDialog(R.string.ingredient_new_title, null, { obj ->
                     val adapter = list.adapter as RecipeIngredientsAdapter
                     val ingredient = Ingredient()
                     ingredient.amount = obj.amount
@@ -133,7 +133,7 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         val ingredient: Ingredient? = index.let { adapter.mItems?.get(it) }
         if (ingredient != null) {
             activity?.let {
-                MeasuredItemDialog(ingredient, { obj ->
+                MeasuredItemDialog(R.string.ingredient_edit_title, ingredient, { obj ->
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
