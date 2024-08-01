@@ -23,7 +23,6 @@ class ShoppingListRecyclerViewAdapter(private val values: MutableList<ShoppingLi
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -31,15 +30,6 @@ class ShoppingListRecyclerViewAdapter(private val values: MutableList<ShoppingLi
         val item = values[position]
         holder.contentView.text = item.name
         holder.itemView.setOnClickListener { listener.click(item.id) }
-    }
-
-    fun getItemById(id: Int): ShoppingList? {
-        values.forEach { shoppingList: ShoppingList ->
-            if (shoppingList.id == id) {
-                return shoppingList
-            }
-        }
-        return null
     }
 
     fun getItem(position: Int): ShoppingList {
@@ -57,10 +47,6 @@ class ShoppingListRecyclerViewAdapter(private val values: MutableList<ShoppingLi
         RecyclerView.ViewHolder(binding.root) {
         //val idView: TextView = binding.itemNumber
         val contentView: TextView = binding.content
-
-//        override fun toString(): String {
-//            return super.toString() + " '" + contentView.text + "'"
-//        }
     }
 
 }

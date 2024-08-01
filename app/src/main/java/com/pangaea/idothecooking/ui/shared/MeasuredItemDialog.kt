@@ -21,8 +21,8 @@ class MeasuredItemDialog(val resInt: Int,
                          private val listenerCancel: DialogInterface.OnClickListener) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
-        val layout: View =
-            requireActivity().layoutInflater.inflate(R.layout.measured_item_edit, null, false)!!
+        val layout: View = requireActivity().layoutInflater.inflate(R.layout.measured_item_edit,
+                                                                    null, false)!!
 
         // Get text views
         val amountWholeView = layout.findViewById<NumberPicker>(R.id.amount_whole)

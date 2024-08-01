@@ -99,4 +99,7 @@
     <string name="adjust_servings_error">Recipe serving size must be specified in order to adjust ingredients properly</string>
 
     <string name="select_phone_number">Select phone number</string>
+
+    <string name="export_to_shopping_list">Export to shopping list</string>
+    <string name="success_export_to_shopping_list">Successfully exported ingredients</string>
 </resources>

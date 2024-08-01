@@ -13,4 +13,9 @@
         android:title="@string/cancel"
         android:id="@+id/item_cancel"
         app:showAsAction="always" />
+    <item
+        android:orderInCategory="100"
+        android:title="Import from recipe"
+        android:id="@+id/import_from_recipe"
+        app:showAsAction="never" />
 </menu>

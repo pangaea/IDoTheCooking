@@ -6,22 +6,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.pangaea.idothecooking.R
 
-class PicklistDlg(val title: String, val options: List<String>,
-                  val callback: (selection: String) -> Unit) : DialogFragment() {
+class PicklistDlg(val title: String, val options: List<Pair<String, String>>,
+                  val callback: (selection: Pair<String, String>) -> Unit) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val listItems = options.toTypedArray()
-        var selectedItem: String = listItems[0]
+        var selectedItem: Pair<String, String> = listItems[0]
         return AlertDialog.Builder(requireContext())
             .setTitle(title)
             .setCancelable(false)
-            .setSingleChoiceItems(
-                listItems, 0,
-            ) { dialog, which ->
+            .setSingleChoiceItems(listItems.map(){o -> o.second}.toTypedArray(), 0) { dialog, which ->
                 selectedItem = listItems[which]
             }
-            .setPositiveButton(R.string.ok) { _, _ ->
+            .setPositiveButton(R.string.ok) { dialog, _ ->
                 callback(selectedItem)
+                dialog.dismiss()
             }
             .setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.dismiss()

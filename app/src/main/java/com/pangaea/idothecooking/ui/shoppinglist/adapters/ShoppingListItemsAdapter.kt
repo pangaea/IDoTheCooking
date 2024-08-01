@@ -3,6 +3,7 @@ package com.pangaea.idothecooking.ui.shoppinglist.adapters
 import android.content.Context
 import android.view.View
 import com.pangaea.idothecooking.R
+import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemsAdapter
@@ -11,7 +12,7 @@ import com.pangaea.idothecooking.utils.formatting.IngredientFormatter
 
 class ShoppingListItemsAdapter(
     val context: Context?,
-    items: MutableList<ShoppingListItem>?,
+    val items: MutableList<ShoppingListItem>?,
     private val mDragStartListener: OnStartDragListener
 ) :
     DraggableItemsAdapter<ShoppingListItem, ShoppingListItemViewHolder>(items,

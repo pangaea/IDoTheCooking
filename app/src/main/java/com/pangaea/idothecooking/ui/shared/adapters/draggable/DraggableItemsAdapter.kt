@@ -44,7 +44,8 @@ abstract class DraggableItemsAdapter<T, H: RecyclerView.ViewHolder>(
 
     override fun onItemDismiss(position: Int) {
         mItems!!.removeAt(position)
-        notifyItemRemoved(position)
+        //notifyItemRemoved(position)
+        notifyDataSetChanged()
         mDragStartListener.onItemChanged()
     }
 

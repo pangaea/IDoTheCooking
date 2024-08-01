@@ -30,6 +30,10 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.NumberOnlyDialog
 import com.pangaea.idothecooking.ui.shared.PicklistDlg
+import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
+import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
+import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
+import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 
 class RecipeViewActivity : AppCompatActivity() {
@@ -213,12 +217,12 @@ class RecipeViewActivity : AppCompatActivity() {
                                 }
                                 if (phoneNumbers.isNotEmpty()) {
                                     PicklistDlg(getString(R.string.select_phone_number),
-                                                phoneNumbers) { selectedNum: String ->
-                                        selectedPhoneNumber = selectedNum
+                                                phoneNumbers.map(){o -> Pair(o, o)}) { selectedNum: Pair<String, String> ->
+                                        selectedPhoneNumber = selectedNum.second
                                         if (hasSMSPermission()) {
-                                            sendSMS(selectedNum)
+                                            sendSMS(selectedNum.second)
                                         } else {
-                                            selectedPhoneNumber = selectedNum
+                                            selectedPhoneNumber = selectedNum.second
                                             requestSMSPermission()
                                         }
                                     }.show(this.supportFragmentManager, null)
@@ -304,6 +308,24 @@ class RecipeViewActivity : AppCompatActivity() {
                 NumberOnlyDialog(R.string.adjust_servings_title, servingSize) {
                     servingSize = it
                     drawRecipe()
+                }.show(this.supportFragmentManager, null)
+            }
+            false
+        }
+
+        // Export recipe ingredients
+        val exportToList = menu.findItem(R.id.export_to_list)
+        exportToList.setOnMenuItemClickListener { menuItem ->
+            val model = ShoppingListViewModelFactory(application, null).create(ShoppingListViewModel::class.java)
+            model.getAllShoppingLists().observeOnce(this) { shoppingLists ->
+                PicklistDlg(getString(R.string.export_to_shopping_list),
+                            shoppingLists.map() { o ->
+                                Pair(o.id.toString(), o.name)
+                            }) { shoppingList: Pair<String, String> ->
+                    IngredientsMigrationTool(application, this, recipeDetails.recipe.id,
+                                             shoppingList.first.toInt()).execute() {
+                        Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
+                    }
                 }.show(this.supportFragmentManager, null)
             }
             false

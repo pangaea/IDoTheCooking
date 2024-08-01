@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
@@ -17,11 +18,16 @@ import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityShoppingListBinding
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
+import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
+import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.MeasuredItemDialog
+import com.pangaea.idothecooking.ui.shared.PicklistDlg
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shoppinglist.adapters.ShoppingListItemsAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
+import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
+import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
 import com.pangaea.idothecooking.utils.extensions.setAsEnabled
@@ -60,24 +66,25 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         viewModel = ShoppingListViewModel((application as IDoTheCookingApp), shoppingListId.toLong())
         viewModel.getDetails()?.observeOnce(this) { shoppingLists ->
             shoppingListDetails = shoppingLists[0]
-            title = resources.getString(R.string.title_activity_recipe_name)
-                .replace("{0}", shoppingListDetails.shoppingList.name)
-
-//            if (textWatcher != null) {
-//                binding.name.removeTextChangedListener(textWatcher)
+            drawList()
+//            title = resources.getString(R.string.title_activity_recipe_name)
+//                .replace("{0}", shoppingListDetails.shoppingList.name)
+//
+////            if (textWatcher != null) {
+////                binding.name.removeTextChangedListener(textWatcher)
+////            }
+//            binding.name.setText(shoppingListDetails.shoppingList.name)
+//            /*textWatcher = */binding.name.doAfterTextChanged() {
+//                _itemSave?.setAsEnabled()
 //            }
-            binding.name.setText(shoppingListDetails.shoppingList.name)
-            /*textWatcher = */binding.name.doAfterTextChanged() {
-                _itemSave?.setAsEnabled()
-            }
-
-            val adapter = list.adapter as ShoppingListItemsAdapter
-            val data = shoppingListDetails.shoppingListItems.toMutableList()
-            data.sortWith { obj1, obj2 ->
-                Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-            }
-            adapter.setItems(data)
-            adapter.notifyDataSetChanged()
+//
+//            val adapter = list.adapter as ShoppingListItemsAdapter
+//            val data = shoppingListDetails.shoppingListItems.toMutableList()
+//            data.sortWith { obj1, obj2 ->
+//                Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+//            }
+//            adapter.setItems(data)
+//            adapter.notifyDataSetChanged()
         }
 
         val btn = _view.findViewById<FloatingActionButton>(R.id.button_new_item)
@@ -95,6 +102,24 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
             }
 
         }
+    }
+
+    private fun drawList() {
+        title = resources.getString(R.string.title_activity_recipe_name)
+            .replace("{0}", shoppingListDetails.shoppingList.name)
+        binding.name.setText(shoppingListDetails.shoppingList.name)
+        /*textWatcher = */binding.name.doAfterTextChanged() {
+            _itemSave?.setAsEnabled()
+        }
+
+        val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
+        val adapter = list.adapter as ShoppingListItemsAdapter
+        val data = shoppingListDetails.shoppingListItems.toMutableList()
+        data.sortWith { obj1, obj2 ->
+            Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+        }
+        adapter.setItems(data)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -124,6 +149,36 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         _itemSave?.setAsDisabled()
         itemSave.setOnMenuItemClickListener { menuItem ->
             saveShoppingList() { _itemSave?.setAsDisabled() }
+            false
+        }
+
+        // Import recipe ingredients
+        val importFromRecipe = menu.findItem(R.id.import_from_recipe)
+        importFromRecipe.setOnMenuItemClickListener { menuItem ->
+            val model = RecipeViewModelFactory(application, null).create(RecipeViewModel::class.java)
+            model.getAllRecipes().observeOnce(this) { recipes ->
+                PicklistDlg(getString(R.string.export_to_shopping_list),
+                            recipes.map() { o ->
+                                Pair(o.id.toString(), o.name)
+                            }) { recipe: Pair<String, String> ->
+                    val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
+                    val adapter = list.adapter as ShoppingListItemsAdapter
+                    val data = shoppingListDetails.shoppingListItems.toMutableList()
+                    IngredientsMigrationTool(application, this, recipe.first.toInt(),
+                                             shoppingListDetails.shoppingList.id).mergeShoppingList(data) { items ->
+                        //Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
+
+                        viewModel.getDetails()?.observeOnce(this) { shoppingLists ->
+                            shoppingListDetails = shoppingLists[0]
+                            adapter.setItems(items)
+                            _itemSave?.setAsEnabled()
+                            adapter.notifyDataSetChanged()
+                            //drawList()
+                            //_itemSave?.setAsDisabled()
+                        }
+                    }
+                }.show(this.supportFragmentManager, null)
+            }
             false
         }
 

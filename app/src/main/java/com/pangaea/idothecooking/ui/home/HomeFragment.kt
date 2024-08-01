@@ -29,6 +29,7 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
+import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 
 class HomeFragment : Fragment() {
 
@@ -86,7 +87,8 @@ class HomeFragment : Fragment() {
             }
         }
 
-        shoppingListViewModel = ShoppingListViewModel((activity?.application as IDoTheCookingApp), null)
+        shoppingListViewModel = ShoppingListViewModelFactory((activity?.application as IDoTheCookingApp),
+                                                             null).create(ShoppingListViewModel::class.java)
         shoppingListViewModel.getAllShoppingLists().observe(viewLifecycleOwner) { shoppingLists ->
             val linearLayout = root.findViewById<LinearLayout>(R.id.listsHolder)
             linearLayout.removeAllViews()

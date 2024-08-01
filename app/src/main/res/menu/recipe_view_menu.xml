@@ -30,4 +30,9 @@
         android:title="@string/adj_srv_size"
         android:id="@+id/item_serv_size"
         app:showAsAction="never" />
+    <item
+        android:orderInCategory="100"
+        android:title="@string/export_to_shopping_list"
+        android:id="@+id/export_to_list"
+        app:showAsAction="never" />
 </menu>
