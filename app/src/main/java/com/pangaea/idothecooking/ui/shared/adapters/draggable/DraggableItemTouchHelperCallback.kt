@@ -1,8 +1,6 @@
 package com.pangaea.idothecooking.ui.shared.adapters.draggable
 
-import android.content.ContentValues
 import android.graphics.Canvas
-import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
@@ -35,14 +33,14 @@ class DraggableItemTouchHelperCallback<T, H: RecyclerView.ViewHolder>(private va
         }
 
         // Notify the adapter of the move
-        mAdapter.onItemMove(source.adapterPosition, target.adapterPosition)
+        mAdapter.onItemMove(source.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
         // Notify the adapter of the dismissal
         viewHolder.itemView.clearFocus()
-        mAdapter.onItemDismiss(viewHolder.adapterPosition)
+        mAdapter.onItemDismiss(viewHolder.bindingAdapterPosition)
     }
 
     override fun onChildDraw(

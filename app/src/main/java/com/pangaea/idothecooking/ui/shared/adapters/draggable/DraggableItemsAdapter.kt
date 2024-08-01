@@ -49,6 +49,10 @@ abstract class DraggableItemsAdapter<T, H: RecyclerView.ViewHolder>(
         mDragStartListener.onItemChanged()
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
         Collections.swap(mItems, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)

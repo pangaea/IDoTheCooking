@@ -66,25 +66,20 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         viewModel = ShoppingListViewModel((application as IDoTheCookingApp), shoppingListId.toLong())
         viewModel.getDetails()?.observeOnce(this) { shoppingLists ->
             shoppingListDetails = shoppingLists[0]
-            drawList()
-//            title = resources.getString(R.string.title_activity_recipe_name)
-//                .replace("{0}", shoppingListDetails.shoppingList.name)
-//
-////            if (textWatcher != null) {
-////                binding.name.removeTextChangedListener(textWatcher)
-////            }
-//            binding.name.setText(shoppingListDetails.shoppingList.name)
-//            /*textWatcher = */binding.name.doAfterTextChanged() {
-//                _itemSave?.setAsEnabled()
-//            }
-//
-//            val adapter = list.adapter as ShoppingListItemsAdapter
-//            val data = shoppingListDetails.shoppingListItems.toMutableList()
-//            data.sortWith { obj1, obj2 ->
-//                Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-//            }
-//            adapter.setItems(data)
-//            adapter.notifyDataSetChanged()
+            title = resources.getString(R.string.title_activity_recipe_name)
+                .replace("{0}", shoppingListDetails.shoppingList.name)
+            binding.name.setText(shoppingListDetails.shoppingList.name)
+            /*textWatcher = */binding.name.doAfterTextChanged() {
+                _itemSave?.setAsEnabled()
+            }
+
+            val adapter = list.adapter as ShoppingListItemsAdapter
+            val data = shoppingListDetails.shoppingListItems.toMutableList()
+            data.sortWith { obj1, obj2 ->
+                Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+            }
+            adapter.setItems(data)
+            adapter.notifyDataSetChanged()
         }
 
         val btn = _view.findViewById<FloatingActionButton>(R.id.button_new_item)
@@ -102,24 +97,6 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
             }
 
         }
-    }
-
-    private fun drawList() {
-        title = resources.getString(R.string.title_activity_recipe_name)
-            .replace("{0}", shoppingListDetails.shoppingList.name)
-        binding.name.setText(shoppingListDetails.shoppingList.name)
-        /*textWatcher = */binding.name.doAfterTextChanged() {
-            _itemSave?.setAsEnabled()
-        }
-
-        val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
-        val adapter = list.adapter as ShoppingListItemsAdapter
-        val data = shoppingListDetails.shoppingListItems.toMutableList()
-        data.sortWith { obj1, obj2 ->
-            Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-        }
-        adapter.setItems(data)
-        adapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -167,15 +144,9 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
                     IngredientsMigrationTool(application, this, recipe.first.toInt(),
                                              shoppingListDetails.shoppingList.id).mergeShoppingList(data) { items ->
                         //Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
-
-                        viewModel.getDetails()?.observeOnce(this) { shoppingLists ->
-                            shoppingListDetails = shoppingLists[0]
-                            adapter.setItems(items)
-                            _itemSave?.setAsEnabled()
-                            adapter.notifyDataSetChanged()
-                            //drawList()
-                            //_itemSave?.setAsDisabled()
-                        }
+                        adapter.setItems(items)
+                        _itemSave?.setAsEnabled()
+                        adapter.notifyDataSetChanged()
                     }
                 }.show(this.supportFragmentManager, null)
             }
