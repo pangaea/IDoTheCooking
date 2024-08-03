@@ -82,6 +82,7 @@ class ShoppingListRepository(application: Application) : RepositoryBase<Shopping
         while (i < size) {
             val item: ShoppingListItem = items[i]
             item.shopping_list_id = idNew
+            item.order = i
             shoppingListItemDao.insert(item)
             i++
         }

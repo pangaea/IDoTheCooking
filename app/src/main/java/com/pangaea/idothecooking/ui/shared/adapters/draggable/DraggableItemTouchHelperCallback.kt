@@ -71,7 +71,10 @@ class DraggableItemTouchHelperCallback<T, H: RecyclerView.ViewHolder>(private va
                 itemViewHolder.onItemSelected()
             }
         } else {
-            mAdapter.notifyDataSetChanged()
+            //mAdapter.notifyDataSetChanged()
+            if (viewHolder != null) {
+                mAdapter.notifyItemChanged(viewHolder.bindingAdapterPosition)
+            }
         }
         super.onSelectedChanged(viewHolder, actionState)
     }

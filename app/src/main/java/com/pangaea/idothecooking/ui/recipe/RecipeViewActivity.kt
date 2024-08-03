@@ -62,9 +62,6 @@ class RecipeViewActivity : AppCompatActivity() {
         viewModel.getDetails()?.observe(this) { recipes ->
             recipeDetails = recipes[0]
             servingSize = recipeDetails.recipe.servings
-            if (servingSize == 0) {
-                // Hide adjust servings button since we have no way to
-            }
             title = resources.getString(R.string.title_activity_recipe_name).replace("{0}", recipeDetails.recipe.name)
             drawRecipe()
         }
@@ -96,7 +93,6 @@ class RecipeViewActivity : AppCompatActivity() {
                     if (adjRatio != 1.0) {
                         adjAmount = ingredient.amount!! * adjRatio
                     }
-                    //val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
                     val frac: Pair<String, Double>? = adjAmount?.vulgarFraction
                     if (frac != null) {
                         val amount = frac.first + " " + ingredient.unit
@@ -322,7 +318,12 @@ class RecipeViewActivity : AppCompatActivity() {
                             shoppingLists.map() { o ->
                                 Pair(o.id.toString(), o.name)
                             }) { shoppingList: Pair<String, String> ->
-                    IngredientsMigrationTool(application, this, recipeDetails.recipe.id,
+                    var adjRatio = 1.0
+                    if (recipeDetails.recipe.servings > 0) {
+                        // Avoid division by zero
+                        adjRatio = (servingSize.toDouble() / recipeDetails.recipe.servings)
+                    }
+                    IngredientsMigrationTool(application, this, recipeDetails.recipe.id, adjRatio,
                                              shoppingList.first.toInt()).execute() {
                         Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
                     }

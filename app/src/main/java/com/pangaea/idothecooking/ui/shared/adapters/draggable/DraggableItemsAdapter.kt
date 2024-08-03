@@ -36,8 +36,7 @@ abstract class DraggableItemsAdapter<T, H: RecyclerView.ViewHolder>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): H {
         val view: View =
             LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        val itemViewHolder = createHolder(view)
-        return itemViewHolder
+        return createHolder(view)
     }
 
     abstract fun createHolder(view: View): H
@@ -47,10 +46,6 @@ abstract class DraggableItemsAdapter<T, H: RecyclerView.ViewHolder>(
         //notifyItemRemoved(position)
         notifyDataSetChanged()
         mDragStartListener.onItemChanged()
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return position
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {

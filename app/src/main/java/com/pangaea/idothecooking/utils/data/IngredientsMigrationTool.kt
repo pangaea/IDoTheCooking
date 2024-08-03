@@ -20,7 +20,7 @@ import java.util.Locale
 import java.util.function.Consumer
 
 class IngredientsMigrationTool(val app: Application, private val lifecycleOwner: LifecycleOwner,
-                               private val recipeId: Int, private val shoppingListId: Int?) {
+                               private val recipeId: Int, val adjRatio: Double, private val shoppingListId: Int?) {
     private val recipeRepository = RecipeRepository(app)
     private val shoppingListRepository = ShoppingListRepository(app)
 
@@ -33,8 +33,7 @@ class IngredientsMigrationTool(val app: Application, private val lifecycleOwner:
         return !(num != null && num > 0)
     }
 
-    fun mergeShoppingList(shoppingListItems: MutableList<ShoppingListItem>,
-                          callback: (shoppingListItems: MutableList<ShoppingListItem>) -> Unit) {
+    private fun mergeIngredientsIntoShoppingListItems(shoppingListItems: MutableList<ShoppingListItem>, ingredients: List<Ingredient>) {
         val existingItemsMap: MutableMap<String, ShoppingListItem> = emptyMap<String, ShoppingListItem>().toMutableMap()
 
         // Iterate existing list items to avoid duplicates
@@ -42,24 +41,29 @@ class IngredientsMigrationTool(val app: Application, private val lifecycleOwner:
             val key = createKey(shoppingListItem)
             existingItemsMap[key] = shoppingListItem
         }
+        ingredients.forEach { ingredient: Ingredient ->
+            val item = existingItemsMap[createKey(ingredient)]
+            if (item != null) {
+                if (!isNullOrZero(item.amount) && !isNullOrZero(ingredient.amount)) {
+                    item.amount = ingredient.amount?.let { item.amount?.plus((it * adjRatio)) }
+                }
+            } else {
+                val newItem = ShoppingListItem()
+                newItem.name = ingredient.name
+                newItem.unit = ingredient.unit
+                newItem.amount = ingredient.amount?.times(adjRatio)
+                shoppingListItems.add(newItem)
+            }
+        }
+    }
+
+    fun mergeShoppingList(shoppingListItems: MutableList<ShoppingListItem>,
+                          callback: (shoppingListItems: MutableList<ShoppingListItem>) -> Unit) {
 
         // Pull ingredients from recipe
         recipeRepository.getRecipeWithDetails(recipeId.toLong()).observeOnce(lifecycleOwner) { recipes ->
             val recipe: RecipeDetails = recipes[0]
-            recipe.ingredients.forEach { ingredient: Ingredient ->
-                val item = existingItemsMap[createKey(ingredient)]
-                if (item != null) {
-                    if (!isNullOrZero(item.amount) && !isNullOrZero(ingredient.amount)) {
-                        item.amount = ingredient.amount?.let { item.amount?.plus(it) }
-                    }
-                } else {
-                    val z = ShoppingListItem()
-                    z.name = ingredient.name
-                    z.unit = ingredient.unit
-                    z.amount = ingredient.amount
-                    shoppingListItems.add(z)
-                }
-            }
+            mergeIngredientsIntoShoppingListItems(shoppingListItems, recipe.ingredients)
 
             // Fire callback with updated list items
             callback(shoppingListItems)

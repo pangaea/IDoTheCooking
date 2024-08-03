@@ -123,6 +123,7 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         while (i < size) {
             val item: Direction = items[i]
             item.recipe_id = idNew
+            item.order = i
             directionDao.insert(item)
             i++
         }
@@ -134,6 +135,7 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         while (i < size) {
             val item: Ingredient = items[i]
             item.recipe_id = idNew
+            item.order = i
             ingredientDao.insert(item)
             i++
         }
@@ -145,7 +147,7 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         while (i < size) {
             val item: RecipeCategoryLink = items[i]
             item.recipe_id = idNew
-            recipeCategoryLinkDao?.insert(item)
+            recipeCategoryLinkDao.insert(item)
             i++
         }
     }

@@ -141,8 +141,8 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
                     val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
                     val adapter = list.adapter as ShoppingListItemsAdapter
                     val data = shoppingListDetails.shoppingListItems.toMutableList()
-                    IngredientsMigrationTool(application, this, recipe.first.toInt(),
-                                             shoppingListDetails.shoppingList.id).mergeShoppingList(data) { items ->
+                    IngredientsMigrationTool(application, this, recipe.first.toInt(), 1.0,
+                                             shoppingListDetails.shoppingList.id).mergeShoppingList(adapter.mItems!!) { items ->
                         //Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
                         adapter.setItems(items)
                         _itemSave?.setAsEnabled()
