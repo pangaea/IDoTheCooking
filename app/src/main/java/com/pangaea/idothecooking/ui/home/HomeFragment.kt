@@ -10,14 +10,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentHomeBinding
-import com.pangaea.idothecooking.state.RecipeRepository
-import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingList
@@ -46,9 +43,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -89,22 +83,35 @@ class HomeFragment : Fragment() {
 
         shoppingListViewModel = ShoppingListViewModelFactory((activity?.application as IDoTheCookingApp),
                                                              null).create(ShoppingListViewModel::class.java)
-        shoppingListViewModel.getAllShoppingLists().observe(viewLifecycleOwner) { shoppingLists ->
+        shoppingListViewModel.getAllShoppingListsWithDetails().observe(viewLifecycleOwner) { shoppingLists ->
             val linearLayout = root.findViewById<LinearLayout>(R.id.listsHolder)
             linearLayout.removeAllViews()
-            for ((index, shoppingList: ShoppingList) in shoppingLists.withIndex()) {
+            for ((index, shoppingListDetails: ShoppingListDetails) in shoppingLists.withIndex()) {
                 val shoppingListLayout: View =
                     requireActivity().layoutInflater.inflate(R.layout.home_recent_shopping_list,
                                                              null,false)!!
                 val content = shoppingListLayout.findViewById<TextView>(R.id.content)
-                content.text = shoppingList.name
+                content.text = shoppingListDetails.shoppingList.name
                 shoppingListLayout.rootView.setOnClickListener{
                     val intent = Intent(activity, ShoppingListActivity::class.java)
                     val b = Bundle()
-                    b.putInt("id", shoppingList.id)
+                    b.putInt("id", shoppingListDetails.shoppingList.id)
                     intent.putExtras(b)
                     startActivity(intent)
                 }
+
+                var isComplete = true
+                shoppingListDetails.shoppingListItems.forEach { item ->
+                    isComplete = isComplete && item.checked
+                }
+
+                val image3 = shoppingListLayout.findViewById<ImageView>(R.id.recipeImage3)
+                if (isComplete) {
+                    image3.setImageResource(android.R.drawable.checkbox_on_background)
+                } else {
+                    image3.setImageResource(android.R.drawable.checkbox_off_background)
+                }
+
                 linearLayout.addView(shoppingListLayout)
                 if (index >= 2) break;
             }
