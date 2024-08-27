@@ -26,7 +26,7 @@
     font: 16px Arial, sans-serif;
  }
  .general_info {
-    padding-bottom: 20px;
+    padding-bottom: 2px;
  }
  .general_info img {
     float: left;
