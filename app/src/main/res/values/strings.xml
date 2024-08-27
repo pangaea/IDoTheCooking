@@ -6,6 +6,7 @@
     <string name="nav_header_subtitle">Manage your cooking needs in one place</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="app_internal_name">IDoTheCooking</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_recipes">Recipes</string>
@@ -31,6 +32,8 @@
     <string name="edit">Edit</string>
     <string name="adj_srv_size">Adjust Serving Size</string>
     <string name="filter">Filter</string>
+    <string name="export_data">Export All Data</string>
+    <string name="import_data">Import From File</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
@@ -90,6 +93,7 @@
 
     <string name="categories_dlg_title">Select Category</string>
     <string name="categories_dlg_clear_all">Clear All</string>
+    <string name="category_referenced_warning">This category is referenced in {{0}} recipes. Do you want to delete it anyway?</string>
 
     <string name="recipe_sent_success">Recipe \'{{0}}\' Sent</string>
     <string name="recipe_sent_failed">Recipe \'{{0}}\' Failed</string>
@@ -102,4 +106,20 @@
 
     <string name="export_to_shopping_list">Export to shopping list</string>
     <string name="success_export_to_shopping_list">Successfully exported ingredients</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

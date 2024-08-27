@@ -5,10 +5,15 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 
 @Dao
 interface RecipeCategoryLinkDao {
+
+    @Query("SELECT * FROM recipe_category_links WHERE category_id IN (:categoryIds)")
+    fun loadRecipeLinksByCategory(categoryIds: IntArray): LiveData<List<RecipeCategoryLink>>
+
     @Insert
     suspend fun insert(recipeCategoryLink: RecipeCategoryLink): Long
 

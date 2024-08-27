@@ -24,6 +24,7 @@ import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
+import com.pangaea.idothecooking.utils.extensions.observeOnce
 import java.util.function.Consumer
 
 
@@ -62,8 +63,24 @@ class CategoriesFragment : Fragment() {
                 context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){position: Int ->
                     val adapter = list.adapter as CategoryRecyclerViewAdapter
                     val category: Category = adapter.getItem(position)
-                    viewModel.delete(category)
-                    adapter.removeAt(position)
+                    viewModel.getAllLinkedRecipe(category.id).observeOnce(requireActivity()) { links ->
+                        if (links.isNotEmpty()) {
+                            val msg = getString(R.string.category_referenced_warning).replace("{{0}}", links.size.toString())
+                            val deleteAlertBuilder = AlertDialog.Builder(requireContext())
+                                .setMessage(msg)
+                                .setCancelable(true)
+                                .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.dismiss() }
+                                .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                                    viewModel.delete(category)
+                                    adapter.removeAt(position)
+                                }
+                            val deleteAlert = deleteAlertBuilder.create()
+                            deleteAlert.show()
+                        } else {
+                            viewModel.delete(category)
+                            adapter.removeAt(position)
+                        }
+                    }
                 }).attachToRecyclerView(list) }
             }
         }

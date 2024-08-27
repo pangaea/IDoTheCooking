@@ -6,6 +6,7 @@ import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.state.db.dao.CategoryDao
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.Recipe
+import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 import java.util.Date
 import java.util.Optional
 import java.util.function.Consumer
@@ -14,15 +15,22 @@ class CategoryRepository(application: Application) : RepositoryBase<Category>() 
 
     val db = (application as IDoTheCookingApp).getDatabase()
     private val categoryDao = db.categoryDao()!!
+    private val recipeCategoryLinkDao = db.recipeCategoryLinkDao()!!
+
     fun getAllCategories(): LiveData<List<Category>> {
         return categoryDao.loadAllCategories()
     }
 
-    suspend fun insert(category: Category, callback: Consumer<Long>?) {
-        val id: Long = categoryDao.insert(insertWithTimestamp(category))
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id)
-        }
+    fun getAllRecipeLinks(id: Int): LiveData<List<RecipeCategoryLink>> {
+        return recipeCategoryLinkDao.loadRecipeLinksByCategory(intArrayOf(id))
+    }
+
+    suspend fun insert(category: Category): Long {
+        return categoryDao.insert(insertWithTimestamp(category))
+    }
+
+    suspend fun bulkInsert(categories: List<Category>): List<Long> {
+        return categoryDao.bulkInsert(*bulkInsertWithTimestamps(categories).toTypedArray())
     }
 
     suspend fun update(category: Category) {

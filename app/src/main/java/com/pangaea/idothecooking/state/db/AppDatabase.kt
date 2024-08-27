@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.state.db
 
+import android.app.Application
 import android.content.Context
 import android.os.AsyncTask
 import androidx.room.Database
@@ -26,9 +27,12 @@ import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
+import com.pangaea.idothecooking.utils.data.JsonImportTool
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.future.future
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 @Database(version = 1, entities = [Recipe::class, Ingredient::class, Direction::class,
     Category::class, RecipeCategoryLink::class, ShoppingList::class, ShoppingListItem::class], exportSchema = false)
@@ -73,32 +77,6 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        fun createIngredient(order: Int, count: Double, unit: String, name: String): Ingredient {
-            val ingredient = Ingredient()
-            ingredient.order = order
-            ingredient.amount = count
-            ingredient.unit = unit
-            ingredient.name = name
-            return ingredient
-        }
-
-        fun createShoppingListItem(order: Int, count: Double, unit: String, name: String): ShoppingListItem {
-            val item = ShoppingListItem()
-            item.order = order
-            item.amount = count
-            item.unit = unit
-            item.name = name
-            return item
-        }
-
-        fun createDirection(order: Int, content: String): Direction {
-//            val direction = Direction()
-//            direction.order = order
-//            direction.content = content
-//            return direction
-            return Direction(0, 0, order, content)
-        }
-
         private class PopulateDbAsync(appContext: Context?) :
             AsyncTask<Void?, Void?, Void?>() {
             private val mainApp: IDoTheCookingApp
@@ -107,9 +85,9 @@ abstract class AppDatabase : RoomDatabase() {
                 mainApp = appContext as IDoTheCookingApp
             }
 
-            private fun getStr(id: Int): String {
-                return appContext?.getResources()?.getString(id) ?: ""
-            }
+//            private fun getStr(id: Int): String {
+//                return appContext?.getResources()?.getString(id) ?: ""
+//            }
 
             @Deprecated("Deprecated in Java")
             @OptIn(DelicateCoroutinesApi::class)
@@ -120,82 +98,33 @@ abstract class AppDatabase : RoomDatabase() {
                 return null
             }
 
+            fun ReadJSONFromAssets(context: Context, path: String): String {
+                val identifier = "[ReadJSON]"
+                try {
+                    val file = context.assets.open("$path")
+                    val bufferedReader = BufferedReader(InputStreamReader(file))
+                    val stringBuilder = StringBuilder()
+                    bufferedReader.useLines { lines ->
+                        lines.forEach {
+                            stringBuilder.append(it)
+                        }
+                    }
+                    val jsonString = stringBuilder.toString()
+                    return jsonString
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    return ""
+                }
+            }
+
             suspend fun initDatabase() {
-                val categoryRepository = CategoryRepository(mainApp)
-                val cat1 = Category(0, "Breakfast")
-                var cat1Id: Long = 0; var cat2Id: Long = 0; var cat3Id: Long = 0; var cat4Id: Long = 0
-                categoryRepository.insert(cat1) {cat1Id = it}
-                val cat2 = Category(0, "Lunch")
-                categoryRepository.insert(cat2) {cat2Id = it}
-                val cat3 = Category(0, "Dinner")
-                categoryRepository.insert(cat3) {cat3Id = it}
-                val cat4 = Category(0, "Desert")
-                categoryRepository.insert(cat4) {cat4Id = it}
-
-                val recipeRepo = RecipeRepository(mainApp)
-
-                val recipe = Recipe()
-                recipe.name = "Grilled Cheese"
-                recipe.description = "Made with two different kinds of cheese"
-                val directions: MutableList<Direction> = arrayListOf()
-                directions.add(
-                    createDirection(
-                        0,
-                        "Put both american and cheddar cheese in bread"
-                    )
-                )
-                directions.add(createDirection(1, "Heat butter in a pan"))
-                directions.add(
-                    createDirection(
-                        2,
-                        "Cook sandwich in pan until cheese is melted and the bread is nice a brown"
-                    )
-                )
-                val ingredients: MutableList<Ingredient> = arrayListOf()
-                //ingredients.add(Ingredient(0, 0, 0, "Potato bread",2.00, ""))
-                //ingredients.add(Ingredient(0, 0, 1, "American cheese",3.00, ""))
-                //ingredients.add(Ingredient(0, 0, 2, "Butter",2.50, "tbsp"))
-                ingredients.add(createIngredient(0, 2.00, "", "Potato bread"))
-                ingredients.add(createIngredient(1, 3.00, "", "American cheese"))
-                ingredients.add(createIngredient(2, 2.50, "tbsp", "Butter"))
-                val categories: MutableList<RecipeCategoryLink> = arrayListOf()
-                categories.add(RecipeCategoryLink(0, 0, cat1Id.toInt()))
-                categories.add(RecipeCategoryLink(0, 0, cat2Id.toInt()))
-                val details = RecipeDetails(recipe, ingredients, directions, categories)
-                recipeRepo.insert(details) {}
-
-
-                val recipe2 = Recipe()
-                recipe2.name = "Hot Dog"
-                recipe2.description = "Boiled in water"
-                val directions2: MutableList<Direction> = arrayListOf()
-                directions2.add(createDirection(0, "Boil water"))
-                directions2.add(createDirection(1, "Put hot dogs in boiling water"))
-                val ingredients2: MutableList<Ingredient> = arrayListOf()
-                ingredients2.add(createIngredient(0, 1.00, "", "Hot dog"))
-                ingredients2.add(createIngredient(1, 1.00, "", "Hot dog bun"))
-                val categories2: MutableList<RecipeCategoryLink> = arrayListOf()
-                categories2.add(RecipeCategoryLink(0, 0, cat3Id.toInt()))
-                categories2.add(RecipeCategoryLink(0, 0, cat4Id.toInt()))
-                val details2 = RecipeDetails(recipe2, ingredients2, directions2, categories2)
-                recipeRepo.insert(details2) {}
-
-                val shoppingListRepo = ShoppingListRepository(mainApp)
-                val shoppingList1 = ShoppingList()
-                shoppingList1.name = "Groceries"
-                shoppingList1.description = "Normal grocery list"
-                val listItems: MutableList<ShoppingListItem> = arrayListOf()
-                listItems.add(createShoppingListItem(0, 1.00, "gallon", "Milk"))
-                listItems.add(createShoppingListItem(1, 2.00, "box", "Cereal"))
-                shoppingListRepo.insert(ShoppingListDetails(shoppingList1, listItems)) {}
-
-                val shoppingList2 = ShoppingList()
-                shoppingList2.name = "Thanksgiving"
-                shoppingList2.description = "Thanksgiving list"
-                val listItems2: MutableList<ShoppingListItem> = arrayListOf()
-                listItems2.add(createShoppingListItem(0, 1.00, "", "Turkey"))
-                listItems2.add(createShoppingListItem(1, 5.00, "", "Corn on the cob"))
-                shoppingListRepo.insert(ShoppingListDetails(shoppingList2, listItems2)) {}
+                val json: String? = appContext?.let { ReadJSONFromAssets(it, "init_basic.json") }
+                if (json != null) {
+                    val p = JsonImportTool(mainApp, emptyMap<String, Int>().toMutableMap(),
+                                   emptyMap<String, Int>().toMutableMap(),
+                                   emptyMap<String, Int>().toMutableMap())
+                    p.import(json)
+                }
             }
         }
     }

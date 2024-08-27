@@ -1,0 +1,116 @@
+{
+  "categories":[
+    {
+      "name":"Breakfast"
+    },
+    {
+      "name":"Desert"
+    },
+    {
+      "name":"Dinner"
+    },
+    {
+      "name":"Lunch"
+    }
+  ],
+  "recipes":[
+    {
+      "description":"Boiled in water",
+      "name":"Hot Dog",
+      "servings":1,
+      "ingredients":[
+        {
+          "amount":1.0,
+          "name":"Hot dog",
+          "unit":"",
+          "order":0
+        },
+        {
+          "amount":1.0,
+          "name":"Hot dog bun",
+          "unit":"",
+          "order":1
+        }
+      ],
+      "directions":[
+        {
+          "content":"Boil water",
+          "order":0
+        },
+        {
+          "content":"Put hot dogs in boiling water",
+          "order":1
+        }
+      ],
+      "categories": [
+        "Dinner",
+        "Lunch"
+      ]
+    },
+    {
+      "description":"Made with two different kinds of cheese",
+      "name":"Grilled Cheese",
+      "servings":2,
+      "ingredients":[
+        {
+          "amount":2.5,
+          "name":"Butter",
+          "unit":"tbsp",
+          "order":0
+        },
+        {
+          "amount":2.0,
+          "name":"Potato bread",
+          "unit":"",
+          "order":1
+        },
+        {
+          "amount":4.0,
+          "name":"American cheese",
+          "unit":"",
+          "order":2
+        }
+      ],
+      "directions":[
+        {
+          "content":"Put both american and cheddar cheese in bread",
+          "order":0
+        },
+        {
+          "content":"Heat butter in a pan kkjkhjhk",
+          "order":1
+        },
+        {
+          "content":"Cook sandwich in pan until cheese is melted and the bread is nice a brown",
+          "order":2
+        }
+      ],
+      "categories": [
+        "Dinner",
+        "Lunch"
+      ]
+    }
+  ],
+  "shoppingLists":[
+    {
+      "description":"Normal grocery list",
+      "name":"Groceries",
+      "shoppingListItems":[
+        {
+          "amount":1.0,
+          "name":"Milk",
+          "unit":"gallon",
+          "checked":true,
+          "order":0
+        },
+        {
+          "amount":0.5,
+          "name":"American cheese",
+          "unit":"lb",
+          "checked":false,
+          "order":1
+        }
+      ]
+    }
+  ]
+}

@@ -160,7 +160,16 @@ dependencies {
 }
 
 dependencies {
+    implementation("androidx.preference:preference:1.2.1")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.8.+")
+    implementation("com.google.code.gson:gson:2.8.6")
 }
+
+//dependencies {
+//    implementation("com.google.api-client:google-api-client:2.0.0")
+//    implementation("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
+//    implementation("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0")
+//}

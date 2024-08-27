@@ -14,6 +14,7 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import kotlinx.coroutines.launch
+import java.util.Optional
 import java.util.function.Consumer
 
 class ShoppingListViewModel(app: Application,
@@ -37,10 +38,16 @@ class ShoppingListViewModel(app: Application,
     }
 
     fun insert(shoppingList: ShoppingListDetails, callback: Consumer<Long>) = viewModelScope.launch {
-        shoppingListRepository.insert(shoppingList, callback)
+        val id = shoppingListRepository.insert(shoppingList)
+        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+            o.accept(id)
+        }
     }
     fun update(shoppingList: ShoppingListDetails, callback: Consumer<Long>) = viewModelScope.launch {
-        shoppingListRepository.update(shoppingList, callback)
+        val id = shoppingListRepository.update(shoppingList)
+        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+            o.accept(id)
+        }
     }
     fun delete(shoppingList: ShoppingList) = viewModelScope.launch {
         shoppingListRepository.delete(shoppingList)

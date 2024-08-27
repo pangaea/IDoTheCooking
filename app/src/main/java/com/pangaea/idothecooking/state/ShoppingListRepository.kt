@@ -21,19 +21,9 @@ import java.util.Optional
 import java.util.function.Consumer
 
 class ShoppingListRepository(application: Application) : RepositoryBase<ShoppingList>() {
-//    lateinit var db: AppDatabase
-//    private lateinit var shoppingListDao: ShoppingListDao
-//    private lateinit var shoppingListItemDao: ShoppingListItemDao
-
     val db = (application as IDoTheCookingApp).getDatabase()
     private val shoppingListDao = db.shoppingListDao()!!
     private val shoppingListItemDao = db.shoppingListItemDao()!!
-
-//    constructor(application: Application) : this() {
-//        db = (application as IDoTheCookingApp).getDatabase()
-//        shoppingListDao = db.shoppingListDao()!!
-//        shoppingListItemDao = db.shoppingListItemDao()!!
-//    }
 
     fun getAllShoppingLists(): LiveData<List<ShoppingList>> {
         return shoppingListDao.loadAllShoppingLists()
@@ -51,15 +41,13 @@ class ShoppingListRepository(application: Application) : RepositoryBase<Shopping
         return shoppingListDao.loadShoppingListWithDetailsByIds(intArrayOf(id.toInt()))
     }
 
-    suspend fun insert(shoppingList: ShoppingListDetails, callback: Consumer<Long>?) {
+    suspend fun insert(shoppingList: ShoppingListDetails): Long {
         val id: Long = shoppingListDao.insert(insertWithTimestamp(shoppingList.shoppingList))
         insertShoppingListItems(shoppingList.shoppingListItems, id.toInt())
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id)
-        }
+        return id
     }
 
-    suspend fun update(shoppingList: ShoppingListDetails, callback: Consumer<Long>?) {
+    suspend fun update(shoppingList: ShoppingListDetails): Long {
         val tc = TimestampConverter()
         updateWithTimestamp(shoppingList.shoppingList)
         val id: Int = shoppingListDao.updateData(shoppingList.shoppingList.id.toLong(),
@@ -67,9 +55,7 @@ class ShoppingListRepository(application: Application) : RepositoryBase<Shopping
                                                  tc.dateToTimestamp(shoppingList.shoppingList.modifiedAt))
         shoppingListItemDao.deleteAllByShoppingList(shoppingList.shoppingList.id)
         insertShoppingListItems(shoppingList.shoppingListItems, shoppingList.shoppingList.id)
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id.toLong())
-        }
+        return id.toLong()
     }
 
     suspend fun delete(shoppingList: ShoppingList) {

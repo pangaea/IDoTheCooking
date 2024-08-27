@@ -10,20 +10,35 @@ import com.pangaea.idothecooking.state.RecipeRepository
 import com.pangaea.idothecooking.state.ShoppingListRepository
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.Recipe
+import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import kotlinx.coroutines.launch
+import java.util.Optional
 import java.util.function.Consumer
 
-class CategoryViewModel(app: Application, private val recipeId: Long?) : ViewModel() {
+class CategoryViewModel(app: Application, private val categoryId: Long?) : ViewModel() {
     private val categoryRepository = CategoryRepository(app)
 
     fun getAllCategories(): LiveData<List<Category>> {
         return categoryRepository.getAllCategories()
     }
 
+    fun getAllLinkedRecipe(id: Int): LiveData<List<RecipeCategoryLink>> {
+        return categoryRepository.getAllRecipeLinks(id)
+    }
+
     fun insert(category: Category, callback: Consumer<Long>) = viewModelScope.launch {
-        categoryRepository.insert(category, callback)
+        val id: Long = categoryRepository.insert(category)
+        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+            o.accept(id)
+        }
+    }
+    fun bulkInsert(categories: List<Category>, callback: Consumer<List<Long>>) = viewModelScope.launch {
+        val ids: List<Long> = categoryRepository.bulkInsert(categories)
+        Optional.ofNullable(callback).ifPresent { o: Consumer<List<Long>> ->
+            o.accept(ids)
+        }
     }
     fun update(category: Category) = viewModelScope.launch {
         categoryRepository.update(category)

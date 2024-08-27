@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.pangaea.idothecooking.state.db.entities.Category
-import com.pangaea.idothecooking.state.db.entities.Recipe
-import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
+
 
 @Dao
 interface CategoryDao {
@@ -17,6 +17,9 @@ interface CategoryDao {
 
     @Insert
     suspend fun insert(category: Category): Long
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun bulkInsert(vararg categories: Category): List<Long>
 
     @Update
     suspend fun update(category: Category)

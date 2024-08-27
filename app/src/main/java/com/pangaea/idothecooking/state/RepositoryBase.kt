@@ -11,6 +11,10 @@ open class RepositoryBase<T: BaseEntity> {
         return o
     }
 
+    fun bulkInsertWithTimestamps(objs: List<T>): List<T> {
+        return objs.map {obj -> insertWithTimestamp(obj)}
+    }
+
     fun updateWithTimestamp(o: T): T {
         val curTime = System.currentTimeMillis()
         o.modifiedAt = Date(curTime)
