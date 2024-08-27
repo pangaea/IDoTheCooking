@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.print.PrintAttributes
-import android.print.PrintJob
 import android.print.PrintManager
 import android.provider.ContactsContract
 import android.telephony.SmsManager
@@ -16,16 +15,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.navigateUp
-import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityRecipeViewBinding
-import com.pangaea.idothecooking.state.RecipeRepository
-import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
+import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
+import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.NumberOnlyDialog
@@ -42,6 +38,7 @@ class RecipeViewActivity : AppCompatActivity() {
     private var recipeId: Int = -1
     private lateinit var recipeDetails: RecipeDetails
     private var servingSize: Int = 0;
+    private val categoryMap = emptyMap<Int, String>().toMutableMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +55,16 @@ class RecipeViewActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         viewModel = RecipeViewModelFactory(application, recipeId.toLong()).create(RecipeViewModel::class.java)
+        val categoryViewModel = CategoryViewModelFactory(application, null).create(CategoryViewModel::class.java)
 
         viewModel.getDetails()?.observe(this) { recipes ->
             recipeDetails = recipes[0]
             servingSize = recipeDetails.recipe.servings
             title = resources.getString(R.string.title_activity_recipe_name).replace("{0}", recipeDetails.recipe.name)
-            drawRecipe()
+            categoryViewModel.getAllCategories().observe(this) { categories ->
+                categoryMap.putAll(categories.associateBy({ it.id }, { it.name }).toMap())
+                drawRecipe()
+            }
         }
     }
 
@@ -123,11 +124,14 @@ class RecipeViewActivity : AppCompatActivity() {
             imageElem = "<img length=\"100px\" width=\"100px\" src=\""+ recipeDetails.recipe.imageUri.toString() + "\">";
         }
 
+        val htmlRecipeCategories = recipeDetails.categories.map{o -> categoryMap[o.category_id]!!}.joinToString(", ")
+
         var htmlRecipe = getString(template)
         htmlRecipe = htmlRecipe.replace("{{title}}", recipeDetails.recipe.name).replace("{{description}}", recipeDetails.recipe.description)
             .replace("{{ingredients}}", ingredientBuilder.toString())
             .replace("{{directions}}", directionBuilder.toString())
             .replace("{{image}}", imageElem)
+            .replace("{{categories}}", htmlRecipeCategories)
 
         if (recipeDetails.recipe.servings > 0) {
             htmlRecipe = htmlRecipe.replace("{{servings}}", servingSize.toString())
