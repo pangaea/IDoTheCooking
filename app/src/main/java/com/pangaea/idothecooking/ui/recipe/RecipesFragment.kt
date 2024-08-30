@@ -43,28 +43,36 @@ class RecipesFragment : Fragment() {
     private lateinit var viewModel: RecipeViewModel
     private var sortBy: SortBy = SortBy.ModifiedBy
     private var filterCategories: List<Int> = ArrayList()
+    private var _view: View? = null
 
     private fun buildList() {
         viewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
-        viewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipes ->
-            var filteredList: List<RecipeDetails> = recipes
-            if (filterCategories.isNotEmpty()) {
-                filteredList = recipes.filter { o ->
-                    o.categories.map { n -> n.category_id }
-                        .any { n -> filterCategories.contains(n) }
+        val list = _view?.findViewById<RecyclerView>(R.id.list)
+        if (list is RecyclerView) {
+            context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){ position: Int ->
+                val adapter = list.adapter as RecipeRecyclerViewAdapter
+                val recipe: Recipe = adapter.getItem(position)
+                viewModel.delete(recipe)
+                adapter.removeAt(position)
+            }).attachToRecyclerView(list) }
+
+            viewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipes ->
+                var filteredList: List<RecipeDetails> = recipes
+                if (filterCategories.isNotEmpty()) {
+                    filteredList = recipes.filter { o ->
+                        o.categories.map { n -> n.category_id }
+                            .any { n -> filterCategories.contains(n) }
+                    }
                 }
-            }
 
-            if (sortBy == SortBy.Name) {
-                // Sort by recipe name
-                filteredList = filteredList.sortedBy { o -> o.recipe.name }
-            } else if (sortBy == SortBy.CreatedBy) {
-                // Sort by recipe created
-                filteredList = filteredList.sortedBy { o -> o.recipe.createdAt }.asReversed()
-            }
+                if (sortBy == SortBy.Name) {
+                    // Sort by recipe name
+                    filteredList = filteredList.sortedBy { o -> o.recipe.name }
+                } else if (sortBy == SortBy.CreatedBy) {
+                    // Sort by recipe created
+                    filteredList = filteredList.sortedBy { o -> o.recipe.createdAt }.asReversed()
+                }
 
-            val list = view?.findViewById<RecyclerView>(R.id.list)
-            if (list is RecyclerView) {
                 with(list) {
                     //addItemDecoration(RecipeItemDecoration(this.context));
                     layoutManager = LinearLayoutManager(context)
@@ -83,13 +91,6 @@ class RecipesFragment : Fragment() {
 
                 //list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
                 list.layoutManager = LinearLayoutManager(context)
-                context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){ position: Int ->
-                    //val list = view?.findViewById<RecyclerView>(R.id.list)
-                    val adapter = list.adapter as RecipeRecyclerViewAdapter
-                    val recipe: Recipe = adapter.getItem(position)
-                    viewModel.delete(recipe)
-                    adapter.removeAt(position)
-                }).attachToRecyclerView(list) }
             }
         }
     }
@@ -97,6 +98,7 @@ class RecipesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
+        _view = view
         setHasOptionsMenu(true)
         buildList()
 

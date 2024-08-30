@@ -37,8 +37,34 @@ class CategoriesFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_category_list, container, false)
         view.setBackgroundResource(R.mipmap.tablecloth3)
         viewModel = CategoryViewModelFactory(requireActivity().application, null).create(CategoryViewModel::class.java)
+
+        // Create touch listener
+        val list = view.findViewById<RecyclerView>(R.id.list)
+        ItemTouchHelper(SwipeDeleteHelper(requireContext(), list) { position: Int ->
+            val adapter = list.adapter as CategoryRecyclerViewAdapter
+            val category: Category = adapter.getItem(position)
+            viewModel.getAllLinkedRecipe(category.id).observeOnce(requireActivity()) { links ->
+                if (links.isNotEmpty()) {
+                    val msg = getString(R.string.category_referenced_warning).replace("{{0}}", links.size.toString())
+                    val deleteAlertBuilder = AlertDialog.Builder(requireContext())
+                        .setMessage(msg)
+                        .setCancelable(true)
+                        .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.dismiss() }
+                        .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                            viewModel.delete(category)
+                            adapter.removeAt(position)
+                        }
+                    val deleteAlert = deleteAlertBuilder.create()
+                    deleteAlert.show()
+                } else {
+                    viewModel.delete(category)
+                    adapter.removeAt(position)
+                }
+            }
+        }).attachToRecyclerView(list)
+
         viewModel.getAllCategories().observe(viewLifecycleOwner) { categories ->
-            val list = view.findViewById<RecyclerView>(R.id.list)
+            //val list = view.findViewById<RecyclerView>(R.id.list)
             if (list is RecyclerView) {
                 with(list) {
                     //addItemDecoration(RecipeItemDecoration(this.context));
@@ -59,29 +85,6 @@ class CategoriesFragment : Fragment() {
                     // Add line separator
                     list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
                 }
-
-                context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){position: Int ->
-                    val adapter = list.adapter as CategoryRecyclerViewAdapter
-                    val category: Category = adapter.getItem(position)
-                    viewModel.getAllLinkedRecipe(category.id).observeOnce(requireActivity()) { links ->
-                        if (links.isNotEmpty()) {
-                            val msg = getString(R.string.category_referenced_warning).replace("{{0}}", links.size.toString())
-                            val deleteAlertBuilder = AlertDialog.Builder(requireContext())
-                                .setMessage(msg)
-                                .setCancelable(true)
-                                .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.dismiss() }
-                                .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                                    viewModel.delete(category)
-                                    adapter.removeAt(position)
-                                }
-                            val deleteAlert = deleteAlertBuilder.create()
-                            deleteAlert.show()
-                        } else {
-                            viewModel.delete(category)
-                            adapter.removeAt(position)
-                        }
-                    }
-                }).attachToRecyclerView(list) }
             }
         }
 

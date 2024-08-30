@@ -43,10 +43,17 @@ class ShoppingListsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_shopping_list_list, container, false)
-        viewModel = ShoppingListViewModel(activity?.application as IDoTheCookingApp, null)
-        viewModel.getAllShoppingLists().observe(viewLifecycleOwner) {
-            val list = view.findViewById<RecyclerView>(R.id.list)
-            if (list is RecyclerView) {
+        val list = view.findViewById<RecyclerView>(R.id.list)
+        if (list is RecyclerView) {
+            context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){ position: Int ->
+                val adapter = list.adapter as ShoppingListRecyclerViewAdapter
+                val shoppingList: ShoppingList = adapter.getItem(position)
+                viewModel.delete(shoppingList)
+                adapter.removeAt(position)
+            }).attachToRecyclerView(list) }
+
+            viewModel = ShoppingListViewModel(activity?.application as IDoTheCookingApp, null)
+            viewModel.getAllShoppingLists().observe(viewLifecycleOwner) {
                 with(list) {
                     layoutManager = when {
                         columnCount <= 1 -> LinearLayoutManager(context)
@@ -55,8 +62,6 @@ class ShoppingListsFragment : Fragment() {
 
                     val listener = object : RecycleViewClickListener() {
                         override fun click(id: Int) {
-    //                            val shoppingList: ShoppingList? = (adapter as ShoppingListRecyclerViewAdapter).getItemById(id)
-    //                            assert (shoppingList != null)
                             val shoppingListIntent = Intent(activity, ShoppingListActivity::class.java)
                             val bundle = Bundle()
                             bundle.putInt("id", id.toInt())
@@ -65,19 +70,8 @@ class ShoppingListsFragment : Fragment() {
                         }
                     }
                     adapter = ShoppingListRecyclerViewAdapter(it.toMutableList(), listener)
-
-    //                    adapter = ShoppingListRecyclerViewAdapter(it.toMutableList(), RecipeRecyclerClickListener(){
-    //                        override fun click(id: Int) {}
-    //
-    //                    })
                 }
             }
-            context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){ position: Int ->
-                val adapter = list.adapter as ShoppingListRecyclerViewAdapter
-                val shoppingList: ShoppingList = adapter.getItem(position)
-                viewModel.delete(shoppingList)
-                adapter.removeAt(position)
-            }).attachToRecyclerView(list) }
         }
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
