@@ -31,7 +31,6 @@ import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewMode
 import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
-import kotlin.reflect.jvm.internal.impl.resolve.constants.StringValue
 
 class RecipeViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeViewBinding

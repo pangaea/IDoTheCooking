@@ -1,17 +1,11 @@
 package com.pangaea.idothecooking.ui.shoppinglist.viewmodels
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.pangaea.idothecooking.IDoTheCookingApp
-import com.pangaea.idothecooking.state.CategoryRepository
 import com.pangaea.idothecooking.state.ShoppingListRepository
-import com.pangaea.idothecooking.state.db.AppDatabase
-import com.pangaea.idothecooking.state.db.entities.Recipe
-import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.ui.shared.DisplayException

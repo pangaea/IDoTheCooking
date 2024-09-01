@@ -1,12 +1,9 @@
 package com.pangaea.idothecooking.utils.data
 
 import android.app.Application
-import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewModelScope
 import com.pangaea.idothecooking.state.RecipeRepository
 import com.pangaea.idothecooking.state.ShoppingListRepository
-import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.MeasuredItem
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
@@ -15,7 +12,6 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.utils.extensions.observeOnce
-import kotlinx.coroutines.launch
 import java.util.Locale
 import java.util.function.Consumer
 
