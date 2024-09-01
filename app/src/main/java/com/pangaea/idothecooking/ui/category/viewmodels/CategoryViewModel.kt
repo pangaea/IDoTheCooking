@@ -8,11 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.pangaea.idothecooking.state.CategoryRepository
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
+import com.pangaea.idothecooking.ui.shared.DisplayException
 import kotlinx.coroutines.launch
 import java.util.Optional
 import java.util.function.Consumer
 
-class CategoryViewModel(app: Application, private val categoryId: Long?) : ViewModel() {
+class CategoryViewModel(val app: Application, private val categoryId: Long?) : ViewModel() {
     private val categoryRepository = CategoryRepository(app)
 
     fun getAllCategories(): LiveData<List<Category>> {
@@ -24,22 +25,38 @@ class CategoryViewModel(app: Application, private val categoryId: Long?) : ViewM
     }
 
     fun insert(category: Category, callback: Consumer<Long>) = viewModelScope.launch {
-        val id: Long = categoryRepository.insert(category)
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id)
+        try {
+            val id: Long = categoryRepository.insert(category)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+                o.accept(id)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
         }
     }
     fun bulkInsert(categories: List<Category>, callback: Consumer<List<Long>>) = viewModelScope.launch {
-        val ids: List<Long> = categoryRepository.bulkInsert(categories)
-        Optional.ofNullable(callback).ifPresent { o: Consumer<List<Long>> ->
-            o.accept(ids)
+        try {
+            val ids: List<Long> = categoryRepository.bulkInsert(categories)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<List<Long>> ->
+                o.accept(ids)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
         }
     }
     fun update(category: Category) = viewModelScope.launch {
-        categoryRepository.update(category)
+        try {
+            categoryRepository.update(category)
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
+        }
     }
     fun delete(category: Category) = viewModelScope.launch {
-        categoryRepository.delete(category)
+        try {
+            categoryRepository.delete(category)
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
+        }
     }
 }
 

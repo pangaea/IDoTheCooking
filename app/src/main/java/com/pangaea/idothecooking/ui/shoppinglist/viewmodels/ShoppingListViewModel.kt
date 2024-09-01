@@ -1,6 +1,7 @@
 package com.pangaea.idothecooking.ui.shoppinglist.viewmodels
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,11 +14,12 @@ import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
+import com.pangaea.idothecooking.ui.shared.DisplayException
 import kotlinx.coroutines.launch
 import java.util.Optional
 import java.util.function.Consumer
 
-class ShoppingListViewModel(app: Application,
+class ShoppingListViewModel(val app: Application,
                             private val shoppingListId: Long?) : ViewModel() {
 
     private val shoppingListRepository = ShoppingListRepository(app)
@@ -38,19 +40,31 @@ class ShoppingListViewModel(app: Application,
     }
 
     fun insert(shoppingList: ShoppingListDetails, callback: Consumer<Long>) = viewModelScope.launch {
-        val id = shoppingListRepository.insert(shoppingList)
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id)
+        try {
+            val id = shoppingListRepository.insert(shoppingList)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+                o.accept(id)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
         }
     }
     fun update(shoppingList: ShoppingListDetails, callback: Consumer<Long>) = viewModelScope.launch {
-        val id = shoppingListRepository.update(shoppingList)
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id)
+        try {
+            val id = shoppingListRepository.update(shoppingList)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+                o.accept(id)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
         }
     }
     fun delete(shoppingList: ShoppingList) = viewModelScope.launch {
-        shoppingListRepository.delete(shoppingList)
+        try {
+            shoppingListRepository.delete(shoppingList)
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
+        }
     }
 }
 

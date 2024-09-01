@@ -20,7 +20,8 @@ import java.util.Locale
 import java.util.function.Consumer
 
 class IngredientsMigrationTool(val app: Application, private val lifecycleOwner: LifecycleOwner,
-                               private val recipeId: Int, val adjRatio: Double, private val shoppingListId: Int?) {
+                               private val recipeId: Int, private val listName: String,
+                               val adjRatio: Double, private val shoppingListId: Int?) {
     private val recipeRepository = RecipeRepository(app)
     private val shoppingListRepository = ShoppingListRepository(app)
 
@@ -88,12 +89,12 @@ class IngredientsMigrationTool(val app: Application, private val lifecycleOwner:
 
     fun execute(callback: Consumer<Long>) {
         // Query shopping list or create a new one
-        if (shoppingListId != null) {
+        if (shoppingListId != null && shoppingListId > 0) {
             shoppingListRepository.getShoppingListWithDetails(shoppingListId.toLong()).observeOnce(lifecycleOwner) { shoppingLists ->
                 mergeAndSaveShoppingList(shoppingLists[0], callback)
                 }
         } else {
-            mergeAndSaveShoppingList(ShoppingListDetails(ShoppingList(0, "New List", ""), emptyList()), callback)
+            mergeAndSaveShoppingList(ShoppingListDetails(ShoppingList(0, listName, ""), emptyList()), callback)
         }
     }
 }

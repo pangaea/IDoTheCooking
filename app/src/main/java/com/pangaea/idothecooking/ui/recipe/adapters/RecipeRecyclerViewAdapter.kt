@@ -31,7 +31,7 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.setBackgroundResource(R.mipmap.paper2)
+        holder.itemView.setBackgroundResource(R.mipmap.paper3)
         val item = values[position]
         if (item.imageUri == null || item.imageUri!!.isEmpty()) {
             holder.imageView.visibility = View.GONE

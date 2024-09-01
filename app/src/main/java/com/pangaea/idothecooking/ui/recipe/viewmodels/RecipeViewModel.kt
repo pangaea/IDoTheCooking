@@ -5,16 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.state.RecipeRepository
-import com.pangaea.idothecooking.state.ShoppingListRepository
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
+import com.pangaea.idothecooking.ui.shared.DisplayException
 import kotlinx.coroutines.launch
 import java.util.Optional
 import java.util.function.Consumer
 
-class RecipeViewModel(app: Application, private val recipeId: Long?) : ViewModel() {
+class RecipeViewModel(val app: Application, private val recipeId: Long?) : ViewModel() {
 
     private val recipeRepository = RecipeRepository(app)
 
@@ -30,20 +29,40 @@ class RecipeViewModel(app: Application, private val recipeId: Long?) : ViewModel
     fun getDetails(): LiveData<List<RecipeDetails>>? {
         return recipeId?.let { recipeRepository.getRecipeWithDetails(it) }
     }
+//    fun handleErrors(callback: () -> Long): Long {
+//        try {
+//            return callback()
+//        } catch(e: Exception) {
+//            Toast.makeText(app.baseContext, e.message, Toast.LENGTH_LONG).show()
+//        }
+//        return -1
+//    }
     fun insert(recipe: RecipeDetails, callback: Consumer<Long>) = viewModelScope.launch {
-        val id = recipeRepository.insert(recipe)
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id)
+        try {
+            val id = recipeRepository.insert(recipe)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+                o.accept(id)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
         }
     }
     fun update(recipe: RecipeDetails, callback: Consumer<Long>?) = viewModelScope.launch {
-        val id = recipeRepository.update(recipe)
-        Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
-            o.accept(id)
+        try {
+            val id = recipeRepository.update(recipe)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+                o.accept(id)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
         }
     }
     fun delete(recipe: Recipe) = viewModelScope.launch {
-        recipeRepository.delete(recipe)
+        try {
+            recipeRepository.delete(recipe)
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
+        }
     }
 }
 

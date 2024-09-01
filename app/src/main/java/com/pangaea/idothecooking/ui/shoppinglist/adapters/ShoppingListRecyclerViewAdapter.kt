@@ -26,7 +26,7 @@ class ShoppingListRecyclerViewAdapter(private val values: MutableList<ShoppingLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //holder.itemView.setBackgroundResource(R.mipmap.paper2)
+        holder.itemView.setBackgroundResource(R.mipmap.paper2)
         val item = values[position]
         holder.contentView.text = item.name
         holder.itemView.setOnClickListener { listener.click(item.id) }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item"
     android:layout_width="fill_parent"
-    android:layout_height="?listPreferredItemHeight"
+    android:layout_height="36dp"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal">
 
@@ -18,9 +18,9 @@
 
     <ImageView
         android:id="@+id/handle"
-        android:layout_width="?listPreferredItemHeight"
+        android:layout_width="36dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical|right"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:scaleType="center"
         android:src="@mipmap/ic_reorder_grey_500_24dp" />
 </LinearLayout>

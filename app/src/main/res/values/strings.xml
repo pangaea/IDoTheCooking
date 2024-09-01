@@ -94,6 +94,7 @@
     <string name="categories_dlg_title">Select Category</string>
     <string name="categories_dlg_clear_all">Clear All</string>
     <string name="category_referenced_warning">This category is referenced in {{0}} recipes. Do you want to delete it anyway?</string>
+    <string name="category_create_new"><![CDATA[<create new>]]></string>
 
     <string name="recipe_sent_success">Recipe \'{{0}}\' Sent</string>
     <string name="recipe_sent_failed">Recipe \'{{0}}\' Failed</string>
@@ -119,7 +120,9 @@
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="exception_generic">There was an error trying to save this record.</string>
+    <string name="exception_duplicate_name">You cannot use a duplicate name. Please try again with a unique name.</string>
 </resources>
