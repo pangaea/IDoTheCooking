@@ -1,7 +1,6 @@
 package com.pangaea.idothecooking
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -30,10 +30,9 @@ import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewMode
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
-import java.io.BufferedReader
+import com.pangaea.idothecooking.utils.llm.PromptGateway
 import java.io.FileNotFoundException
 import java.io.InputStream
-import java.io.InputStreamReader
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -87,14 +86,18 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_import -> {
+                val promptGateway = PromptGateway.getInstance(baseContext)
+                promptGateway.generateResponseAsync("Suggest chicken dinner recipe")
+
+
 //                val json: String = ReadJSONFromAssets(baseContext, "grilledcheese.json")
 //                JsonAsyncImportTool(application, this).import(json) {}
 
-                val openDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "text/*"
-                }
-                startActivityForResult(openDocumentIntent, OPEN_DOCUMENT_REQUEST_CODE)
+//                val openDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
+//                    addCategory(Intent.CATEGORY_OPENABLE)
+//                    type = "text/*"
+//                }
+//                startActivityForResult(openDocumentIntent, OPEN_DOCUMENT_REQUEST_CODE)
                 true
             }
             else -> super.onOptionsItemSelected(item)
