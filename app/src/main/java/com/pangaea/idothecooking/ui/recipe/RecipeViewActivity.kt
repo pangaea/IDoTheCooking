@@ -68,13 +68,13 @@ class RecipeViewActivity : AppCompatActivity() {
         }
     }
 
-    fun drawRecipe() {
+    private fun drawRecipe() {
         val htmlRecipe = renderRecipe(R.string.html_recipe, R.string.html_recipe_ingredient,
                                       R.string.html_recipe_direction)
         binding.viewport.loadDataWithBaseURL(null, htmlRecipe, "text/html", "utf-8", null);
     }
 
-    fun renderRecipe(template: Int, ingredientTemplate: Int, directionTemplate: Int): String {
+    private fun renderRecipe(template: Int, ingredientTemplate: Int, directionTemplate: Int): String {
         val ingredientBuilder = StringBuilder()
         val htmlRecipeIngredient = getString(ingredientTemplate)
         val ingredients = recipeDetails.ingredients.toMutableList()
