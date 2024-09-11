@@ -1,10 +1,10 @@
 {
   "categories":[
     {
-      "name":"Air Fryer"
+      "name":"Lunch"
     },
     {
-      "name":"Drink"
+      "name":"Dinner"
     }
   ],
   "recipes": [
@@ -48,9 +48,8 @@
         }
       ],
       "categories": [
-        "Breakfast",
         "Lunch",
-        "Air Fryer"
+        "Dinner"
       ]
     }
   ]
