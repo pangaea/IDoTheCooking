@@ -3,16 +3,16 @@ package com.pangaea.idothecooking.ui.shared
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.pangaea.idothecooking.R
+import com.pangaea.idothecooking.utils.extensions.resIdByName
+import java.io.File
 import java.io.InputStream
 
 
@@ -43,16 +43,24 @@ class ImageAssetsDialog(private val selection: String?, val callback: (imageUri:
 
         val names = requireActivity().baseContext.assets.list("image_library")
         val imageGroup: LinearLayout = layout.findViewById(R.id.radio_group);
-        names?.forEachIndexed { index, s ->
+        names?.forEachIndexed { index, fileName ->
             val row: View =
                 requireActivity().layoutInflater.inflate(R.layout.image_asset_item, null, false)!!
             val libraryImage: ImageView = row.findViewById(R.id.library_image);
-            val ims: InputStream = requireActivity().baseContext.assets.open("image_library/${s}")
+            val ims: InputStream = requireActivity().baseContext.assets.open("image_library/${fileName}")
             libraryImage.setImageDrawable(Drawable.createFromStream(ims, null))
             val libraryCheckbox: RadioButton = row.findViewById(R.id.library_checkbox);
-            libraryCheckbox.isChecked = selection?.endsWith(s) ?: false
+            libraryCheckbox.isChecked = selection?.endsWith(fileName) ?: false
             libraryCheckbox.id = index
-            libraryCheckbox.text = s
+            val resId = requireActivity().baseContext.resIdByName(File(fileName).nameWithoutExtension, "string")
+            if (resId > 0) {
+                val text = getString(resId)
+                libraryCheckbox.text = text
+            } else {
+                libraryCheckbox.text = fileName
+            }
+
+            //libraryCheckbox.text = s
             setRadioButton(libraryCheckbox)
             imageGroup.addView(row)
         }
@@ -61,8 +69,10 @@ class ImageAssetsDialog(private val selection: String?, val callback: (imageUri:
         val imagesView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         imagesView.setView(layout)
             .setPositiveButton(resources.getString(R.string.update)) { dialog, _ ->
-                val imageButton: RadioButton = layout.findViewById(checkedId);
-                callback(imageButton.text.toString())
+                val fileName = names?.get(checkedId)
+                if (fileName != null ) {
+                    callback(fileName)
+                }
                 dialog.cancel()
             }
             .setNegativeButton(R.string.cancel) { dialog, _ ->
