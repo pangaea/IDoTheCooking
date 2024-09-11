@@ -86,7 +86,7 @@ class RecipesFragment : Fragment() {
                             startActivity(intent)
                         }
                     }
-                    adapter = RecipeRecyclerViewAdapter(filteredList.map{o -> o.recipe}.toMutableList(), listener)
+                    adapter = RecipeRecyclerViewAdapter(filteredList.map{o -> o.recipe}.toMutableList(), listener, requireActivity())
                 }
 
                 //list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))

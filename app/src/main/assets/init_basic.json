@@ -18,6 +18,7 @@
       "description":"Boiled in water",
       "name":"Hot Dog",
       "servings":1,
+      "imageUri": "android_asset://image_library/hot_dog.jpg",
       "ingredients":[
         {
           "amount":1.0,
@@ -51,6 +52,7 @@
       "description":"Made with two different kinds of cheese",
       "name":"Grilled Cheese",
       "servings":2,
+      "imageUri": "android_asset://image_library/grilled_cheese.jpg",
       "ingredients":[
         {
           "amount":2.5,

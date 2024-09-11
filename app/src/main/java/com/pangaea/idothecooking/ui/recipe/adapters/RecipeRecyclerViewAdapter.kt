@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.ui.recipe.adapters
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeItemBinding
 import com.pangaea.idothecooking.state.db.entities.Recipe
+import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 
 
@@ -17,7 +19,8 @@ import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
  * [RecyclerView.Adapter] that can display a [Recipe].
  */
 class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
-                                private val listener: RecycleViewClickListener) :
+                                private val listener: RecycleViewClickListener,
+                                private val activity: Activity) :
     RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,12 +39,13 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
         if (item.imageUri == null || item.imageUri!!.isEmpty()) {
             holder.imageView.visibility = View.GONE
         } else {
-            try {
-                Glide.with(holder.imageView.context)
-                    .load(item.imageUri)
-                    .into(holder.imageView)
-            } catch(_: Exception) {
-            }
+            ImageTool(holder.imageView, activity).display(item.imageUri!!)
+//            try {
+//                Glide.with(holder.imageView.context)
+//                    .load(item.imageUri)
+//                    .into(holder.imageView)
+//            } catch(_: Exception) {
+//            }
         }
 
         holder.contentView.text = item.name

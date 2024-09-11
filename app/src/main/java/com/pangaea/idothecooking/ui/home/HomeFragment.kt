@@ -24,6 +24,7 @@ import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
@@ -56,11 +57,7 @@ class HomeFragment : Fragment() {
                                                              null,false)!!
                 val image = recipeLayout.findViewById<ImageView>(R.id.recipeImage)
                 if (recipe.imageUri != null && !recipe.imageUri!!.isEmpty()) {
-                    try {
-                        Glide.with(requireActivity().baseContext)
-                            .load(recipe.imageUri)
-                            .into(image)
-                    } catch(_: Exception) {}
+                    ImageTool(image, requireActivity()).display(recipe.imageUri!!)
                 } else {
                     image.visibility = View.GONE
                 }

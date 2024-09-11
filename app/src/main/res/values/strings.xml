@@ -125,4 +125,6 @@
 
     <string name="exception_generic">There was an error trying to save this record.</string>
     <string name="exception_duplicate_name">You cannot use a duplicate name. Please try again with a unique name.</string>
+
+    <string name="image_library_title">Select an image from the library</string>
 </resources>

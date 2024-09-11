@@ -49,8 +49,8 @@ class RecipeFilterDialog(
         }
 
         //build the alert dialog child of this fragment
-        val ingredientView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-        ingredientView.setView(layout)
+        val categoryView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        categoryView.setView(layout)
             .setPositiveButton(resources.getString(R.string.update)) { dialog, _ ->
                 val selectedCategories = ArrayList<Category>()
                 for (n in categories.indices){
@@ -78,7 +78,7 @@ class RecipeFilterDialog(
             .setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.cancel()
             }
-        return ingredientView.create()
+        return categoryView.create()
     }
 
     override fun onResume() {

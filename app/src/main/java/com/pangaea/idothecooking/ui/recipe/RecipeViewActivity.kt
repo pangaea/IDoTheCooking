@@ -24,6 +24,7 @@ import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shared.NumberOnlyDialog
 import com.pangaea.idothecooking.ui.shared.PicklistDlg
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
@@ -121,10 +122,17 @@ class RecipeViewActivity : AppCompatActivity() {
 
         var imageElem = ""
         if (!recipeDetails.recipe.imageUri.isNullOrEmpty()) {
-            imageElem = "<img length=\"100px\" width=\"100px\" src=\""+ recipeDetails.recipe.imageUri.toString() + "\">";
+            if (recipeDetails.recipe.imageUri!!.startsWith(ImageTool.assetProtocol)) {
+                val assetName = recipeDetails.recipe.imageUri!!.substring(ImageTool.assetProtocol.length)
+                imageElem = "<img length=\"100px\" width=\"100px\" src=\""+  "file:///android_asset/${assetName}" + "\">";
+            } else {
+                imageElem =
+                    "<img length=\"100px\" width=\"100px\" src=\"" + recipeDetails.recipe.imageUri.toString() + "\">";
+            }
         }
 
-        val htmlRecipeCategories = recipeDetails.categories.map{o -> categoryMap[o.category_id]!!}.joinToString(", ")
+        val htmlRecipeCategories =
+            recipeDetails.categories.joinToString(", ") { o -> categoryMap[o.category_id]!! }
 
         var htmlRecipe = getString(template)
         htmlRecipe = htmlRecipe.replace("{{title}}", recipeDetails.recipe.name).replace("{{description}}", recipeDetails.recipe.description)

@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_import -> {
-//                val json: String = ReadJSONFromAssets(baseContext, "grilledcheese.json")
+//                val json: String = ReadJSONFromAssets(baseContext, "GrilledCheese.json")
 //                JsonAsyncImportTool(application, this).import(json) {}
 
                 val openDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {

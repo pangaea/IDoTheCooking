@@ -10,9 +10,9 @@
   "recipes": [
     {
       "description": "Made with two different kinds of cheese",
-      "imageUri": "content://media/picker/0/com.android.providers.media.photopicker/media/1000000431",
       "name": "Grilled Cheese 2",
       "servings": 1,
+      "imageUri": "android_asset://image_library/grilled_cheese.jpg",
       "ingredients": [
         {
           "amount": 2.0,

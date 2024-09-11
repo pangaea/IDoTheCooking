@@ -1,6 +1,8 @@
 package com.pangaea.idothecooking.ui.recipe
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeMainBinding
@@ -19,6 +22,13 @@ import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
+import com.pangaea.idothecooking.ui.shared.ImageAssetsDialog
+import com.pangaea.idothecooking.ui.shared.ImageTool
+import com.pangaea.idothecooking.ui.shared.PicklistDlg
+import com.pangaea.idothecooking.ui.shoppinglist.adapters.ShoppingListItemsAdapter
+import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
+import com.pangaea.idothecooking.utils.extensions.setAsEnabled
+import java.io.InputStream
 
 
 /**
@@ -59,6 +69,7 @@ class RecipeMainFragment : Fragment() {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -70,15 +81,9 @@ class RecipeMainFragment : Fragment() {
             binding.editName.setText(recipe.recipe.name)
             binding.editDesc.setText(recipe.recipe.description)
             if (recipe.recipe.imageUri == null || recipe.recipe.imageUri!!.isEmpty()) {
-                binding.editImage.setImageDrawable(getResources().getDrawable(R.mipmap.image_placeholder3))
+                binding.editImage.setImageDrawable(resources.getDrawable(R.mipmap.image_placeholder3))
             } else {
-                try {
-                    activity?.let { it1 ->
-                        Glide.with(it1.baseContext)
-                            .load(recipe.recipe.imageUri)
-                            .into(binding.editImage)
-                    }
-                } catch(_: Exception) {}
+                ImageTool(binding.editImage, requireActivity()).display(recipe.recipe.imageUri!!)
                 imageUri = recipe.recipe.imageUri!!
             }
 
@@ -110,8 +115,18 @@ class RecipeMainFragment : Fragment() {
                 popupMenu.menuInflater.inflate(R.menu.edit_image_menu, popupMenu.menu)
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
-                        R.id.item_library -> {
+                        R.id.item_gallery -> {
                             pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        }
+                        R.id.item_library -> {
+                            val names = requireActivity().baseContext.assets.list("image_library")
+                            if (names != null) {
+                                ImageAssetsDialog(imageUri) { o ->
+                                    imageUri = "asset://image_library/${o}"
+                                    ImageTool(binding.editImage, requireActivity()).display(imageUri)
+                                    fireCallback();
+                                }.show(childFragmentManager, null)
+                            }
                         }
                         R.id.item_clear -> {
                             imageUri = ""

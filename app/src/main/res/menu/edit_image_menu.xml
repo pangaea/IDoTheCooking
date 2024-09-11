@@ -2,7 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:icon="@android:drawable/ic_menu_save"
-        android:title="Search Library"
+        android:title="Image Gallery"
+        android:id="@+id/item_gallery" />
+    <item
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="Image Library"
         android:id="@+id/item_library" />
     <item
         android:icon="@android:drawable/ic_menu_save"
