@@ -166,6 +166,7 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.8.+")
     implementation("com.google.code.gson:gson:2.8.6")
+    implementation("com.robertlevonyan.view:MaterialExpansionPanel:2.1.3")
 }
 
 //dependencies {

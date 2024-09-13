@@ -13,6 +13,7 @@ import com.pangaea.idothecooking.state.db.entities.MeasuredItem
 import com.pangaea.idothecooking.utils.extensions.fractionValues
 import com.pangaea.idothecooking.utils.extensions.fractions
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
+import com.robertlevonyan.views.expandable.Expandable
 
 
 class MeasuredItemDialog(val resInt: Int,
@@ -41,10 +42,11 @@ class MeasuredItemDialog(val resInt: Int,
         amountFractionView.maxValue = reversedFractions.size - 1
         amountFractionView.displayedValues = reversedFractions.toTypedArray()
 
+        val expandablePanel: Expandable = layout.findViewById<Expandable>(R.id.expandable)
         val ingredientView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         var buttonText = resources.getString(R.string.update)
         if (measuredItem != null) {
-            if (measuredItem.amount != null) {
+            if (measuredItem.amount != null && measuredItem.amount!! > 0) {
                 val wholeNum = measuredItem.amount!!.toInt() ?: 0
                 amountWholeView.value = wholeNum
 //                amountWholeView.setText(wholeNum.toString())
@@ -54,6 +56,9 @@ class MeasuredItemDialog(val resInt: Int,
                     amountFractionView.value =
                         reversedFractions.indexOf((measuredItem.amount!! - wholeNum).vulgarFraction.first)
                 }
+                expandablePanel.expand()
+            } else {
+                expandablePanel.collapse()
             }
 
             //val unitView: TextView = layout.findViewById(R.id.unit)
@@ -64,6 +69,13 @@ class MeasuredItemDialog(val resInt: Int,
         } else {
             //ingredientView.setTitle(resources.getString(R.string.ingredient_new_title))
             buttonText = resources.getString(R.string.add)
+
+            // Total hack. Fix this later
+            if (resInt == R.string.ingredient_new_title) {
+                expandablePanel.expand()
+            } else {
+                expandablePanel.collapse()
+            }
         }
         ingredientView.setTitle(resources.getString(resInt))
         ingredientView.setView(layout)

@@ -111,7 +111,7 @@
 
     <string name="export_to_shopping_list">Export to shopping list</string>
     <string name="success_export_to_shopping_list">Successfully exported ingredients</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings Activity</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -131,4 +131,5 @@
     <string name="exception_duplicate_name">You cannot use a duplicate name. Please try again with a unique name.</string>
 
     <string name="image_library_title">Select from the library</string>
+    <string name="detailed_measurements">Detailed Measurements</string>
 </resources>
