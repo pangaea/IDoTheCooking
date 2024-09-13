@@ -2,7 +2,6 @@ package com.pangaea.idothecooking.ui.recipe
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeMainBinding
 import com.pangaea.idothecooking.state.db.entities.Recipe
@@ -23,12 +20,9 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.shared.ImageAssetsDialog
+import com.pangaea.idothecooking.ui.shared.SelectAssetsDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
-import com.pangaea.idothecooking.ui.shared.PicklistDlg
-import com.pangaea.idothecooking.ui.shoppinglist.adapters.ShoppingListItemsAdapter
-import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
-import com.pangaea.idothecooking.utils.extensions.setAsEnabled
-import java.io.InputStream
+import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
 
 
 /**
@@ -119,14 +113,11 @@ class RecipeMainFragment : Fragment() {
                             pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                         }
                         R.id.item_library -> {
-                            val names = requireActivity().baseContext.assets.list("image_library")
-                            if (names != null) {
-                                ImageAssetsDialog(imageUri) { o ->
-                                    imageUri = "asset://image_library/${o}"
-                                    ImageTool(binding.editImage, requireActivity()).display(imageUri)
-                                    fireCallback();
-                                }.show(childFragmentManager, null)
-                            }
+                            ImageAssetsDialog(imageUri) { o ->
+                                imageUri = "asset://image_library/${o}"
+                                ImageTool(binding.editImage, requireActivity()).display(imageUri)
+                                fireCallback();
+                            }.show(childFragmentManager, null)
                         }
                         R.id.item_clear -> {
                             imageUri = ""

@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -30,6 +31,9 @@ import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewMode
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.InputStream
@@ -113,7 +117,9 @@ class MainActivity : AppCompatActivity() {
                         val stream: InputStream? = application.contentResolver.openInputStream(contentUri)
                         if (stream != null) {
                             JsonAsyncImportTool(application, this).import(stream.readAllBytes().toString(Charset.defaultCharset())){
-                                println("Import Complete")
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    Toast.makeText(applicationContext, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
+                                }
                             }
                         }
                     } catch (exception: FileNotFoundException) {
@@ -182,23 +188,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-//    fun ReadJSONFromAssets(context: Context, path: String): String {
-//        val identifier = "[ReadJSON]"
-//        try {
-//            val file = context.assets.open("$path")
-//            val bufferedReader = BufferedReader(InputStreamReader(file))
-//            val stringBuilder = StringBuilder()
-//            bufferedReader.useLines { lines ->
-//                lines.forEach {
-//                    stringBuilder.append(it)
-//                }
-//            }
-//            val jsonString = stringBuilder.toString()
-//            return jsonString
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            return ""
-//        }
-//    }
 }

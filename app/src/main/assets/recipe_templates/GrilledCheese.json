@@ -12,7 +12,7 @@
       "description": "Made with two different kinds of cheese",
       "name": "Grilled Cheese 2",
       "servings": 1,
-      "imageUri": "android_asset://image_library/grilled_cheese.jpg",
+      "imageUri": "asset://image_library/GrilledCheese.jpg",
       "ingredients": [
         {
           "amount": 2.0,

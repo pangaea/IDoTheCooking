@@ -1,0 +1,82 @@
+{
+  "categories":[
+    {
+      "name":"Dinner"
+    }
+  ],
+  "recipes": [
+    {
+      "description":"",
+      "imageUri":"asset://image_library/MashedPotatoes.jpg",
+      "name":"Mashed Potatoes",
+      "servings":8,
+      "ingredients":[
+        {
+          "amount":4.0,
+          "name":"Potatoes",
+          "unit":"lbs",
+          "order":0
+        },
+        {
+          "amount":3.0,
+          "name":"Garlic",
+          "unit":"cloves",
+          "order":1
+        },
+        {
+          "amount":0.3333333333333333,
+          "name":"melted butter",
+          "unit":"cup",
+          "order":2
+        },
+        {
+          "amount":1.0,
+          "name":"milk",
+          "unit":"cup",
+          "order":3
+        },
+        {
+          "amount":0.0,
+          "name":"salt",
+          "unit":"",
+          "order":4
+        },
+        {
+          "amount":0.0,
+          "name":"pepper",
+          "unit":"",
+          "order":5
+        }
+      ],
+      "directions":[
+        {
+          "content":"Peel potatoes and cut into quarters.",
+          "order":0
+        },
+        {
+          "content":"Boil potatoes in salted water for 15 minutes.",
+          "order":1
+        },
+        {
+          "content":"Heat milk and put aside",
+          "order":2
+        },
+        {
+          "content":"Add potatoes and butter in pot and start mashing.",
+          "order":3
+        },
+        {
+          "content":"Add milk, a little at a time, until proper consistency is reached.",
+          "order":4
+        },
+        {
+          "content":"Add salt and pepper as desired",
+          "order":5
+        }
+      ],
+      "categories":[
+        "Dinner"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "categories":[
+    {
+      "name":"Dinner"
+    },
+    {
+      "name":"Sausage"
+    }
+  ],
+  "recipes": [
+    {
+      "description":"Delicious on rice or on a roll",
+      "imageUri":"asset://image_library/SausagePeppers.jpg",
+      "name":"Sausage & Pepper",
+      "servings":2,
+      "ingredients":[
+        {
+          "amount":6.0,
+          "name":"Italian sausages",
+          "unit":"",
+          "order":0
+        },
+        {
+          "amount":1.0,
+          "name":"Red pepper",
+          "unit":"",
+          "order":1
+        },
+        {
+          "amount":1.0,
+          "name":"Green pepper",
+          "unit":"",
+          "order":2
+        },
+        {
+          "amount":1.0,
+          "name":"Onion",
+          "unit":"",
+          "order":3
+        },
+        {
+          "amount":0.25,
+          "name":"Olive oil",
+          "unit":"cup",
+          "order":4
+        },
+        {
+          "amount":1.0,
+          "name":"Salt",
+          "unit":"tbsp",
+          "order":5
+        },
+        {
+          "amount":0.3333333333333333,
+          "name":"Oregano",
+          "unit":"tsp",
+          "order":6
+        },
+        {
+          "amount":1.0,
+          "name":"Red wine vinegar",
+          "unit":"tbsp",
+          "order":7
+        },
+        {
+          "amount":1.0,
+          "name":"Garlic",
+          "unit":"clove ",
+          "order":8
+        },
+        {
+          "amount":1.0,
+          "name":"Pepper",
+          "unit":"tsp",
+          "order":9
+        }
+      ],
+      "directions":[
+        {
+          "content":"Cook sausages and put aside",
+          "order":0
+        },
+        {
+          "content":"Cut up the peppers and onions",
+          "order":1
+        },
+        {
+          "content":"Heat pan and pour olive oil in and let in heat up",
+          "order":2
+        },
+        {
+          "content":"Mix in other ingredients",
+          "order":3
+        },
+        {
+          "content":"Cook until vegetables turn soft",
+          "order":4
+        },
+        {
+          "content":"Add sausages to vegetables to saute",
+          "order":5
+        },
+        {
+          "content":"Serve on bun or plate",
+          "order":6
+        }
+      ],
+      "categories":[
+        "Dinner","Sausage"
+      ]
+    }
+  ]
+}

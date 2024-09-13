@@ -6,4 +6,9 @@
         android:title="@string/filter"
         android:id="@+id/item_filter"
         app:showAsAction="always" />
+    <item
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/search_recipe_library"
+        android:id="@+id/item_library"
+        app:showAsAction="never" />
 </menu>

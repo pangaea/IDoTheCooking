@@ -34,6 +34,7 @@
     <string name="filter">Filter</string>
     <string name="export_data">Export All Data</string>
     <string name="import_data">Import From File</string>
+    <string name="import_complete">Import Complete</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
@@ -105,6 +106,9 @@
 
     <string name="select_phone_number">Select phone number</string>
 
+    <string name="search_recipe_library">Search Recipe Library</string>
+    <string name="selection_required">Please select an option</string>
+
     <string name="export_to_shopping_list">Export to shopping list</string>
     <string name="success_export_to_shopping_list">Successfully exported ingredients</string>
     <string name="title_activity_settings">SettingsActivity</string>
@@ -126,5 +130,5 @@
     <string name="exception_generic">There was an error trying to save this record.</string>
     <string name="exception_duplicate_name">You cannot use a duplicate name. Please try again with a unique name.</string>
 
-    <string name="image_library_title">Select an image from the library</string>
+    <string name="image_library_title">Select from the library</string>
 </resources>

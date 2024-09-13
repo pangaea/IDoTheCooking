@@ -28,6 +28,7 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.utils.data.JsonImportTool
+import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.future.future
@@ -98,27 +99,8 @@ abstract class AppDatabase : RoomDatabase() {
                 return null
             }
 
-            fun ReadJSONFromAssets(context: Context, path: String): String {
-                val identifier = "[ReadJSON]"
-                try {
-                    val file = context.assets.open("$path")
-                    val bufferedReader = BufferedReader(InputStreamReader(file))
-                    val stringBuilder = StringBuilder()
-                    bufferedReader.useLines { lines ->
-                        lines.forEach {
-                            stringBuilder.append(it)
-                        }
-                    }
-                    val jsonString = stringBuilder.toString()
-                    return jsonString
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    return ""
-                }
-            }
-
             suspend fun initDatabase() {
-                val json: String? = appContext?.let { ReadJSONFromAssets(it, "init_basic.json") }
+                val json: String? = appContext?.readJSONFromAssets("init_basic.json")
                 if (json != null) {
                     val p = JsonImportTool(mainApp, emptyMap<String, Int>().toMutableMap(),
                                    emptyMap<String, Int>().toMutableMap(),

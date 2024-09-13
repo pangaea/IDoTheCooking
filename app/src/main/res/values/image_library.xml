@@ -6,6 +6,7 @@
     <string name="AsianChickenSalad">Asian Chicken Salad</string>
     <string name="AsparagusSeafoodSoup">Asparagus Seafood Soup</string>
     <string name="BakedClams">Baked Clams</string>
+    <string name="BakedPotatoes">Baked Potatoes</string>
     <string name="BakedRavioli">Baked Ravioli</string>
     <string name="BakedZiti">Baked Ziti</string>
     <string name="BeefShishKabobs">Beef Shish Kabobs</string>
@@ -59,6 +60,7 @@
     <string name="LazyMansWings">Lazy Mans Wings</string>
     <string name="LemonChicken">Lemon Chicken</string>
     <string name="Manicotti">Manicotti</string>
+    <string name="MashedPotatoes">Mashed Potatoes</string>
     <string name="MeatballParmHero">Meatball Parm Hero</string>
     <string name="NeapolitanPizza">Neapolitan Pizza</string>
     <string name="NewYorkCheesecake">New York Cheesecake</string>

@@ -1,6 +1,7 @@
 package com.pangaea.idothecooking.ui.recipe
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,27 +10,33 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
-import com.pangaea.idothecooking.state.CategoryRepository
-import com.pangaea.idothecooking.state.RecipeRepository
-import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
-import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
+import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
+import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
+import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
+import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 
 /**
@@ -139,6 +146,20 @@ class RecipesFragment : Fragment() {
                         buildList()
                     }.show(childFragmentManager, null)
                 }
+                return true
+            }
+            R.id.item_library -> {
+                RecipeTemplateAssetsDialog(null) { fileName ->
+                    // Import template
+                    val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
+                    if (json != null) {
+                        JsonAsyncImportTool(requireActivity().application, this).import(json){
+                            CoroutineScope(Dispatchers.Main).launch {
+                                Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }.show(childFragmentManager, null)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

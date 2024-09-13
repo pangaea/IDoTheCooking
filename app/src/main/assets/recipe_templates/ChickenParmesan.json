@@ -1,0 +1,102 @@
+{
+  "categories":[
+    {
+      "name":"Dinner"
+    },
+    {
+      "name":"Chicken"
+    }
+  ],
+  "recipes": [
+    {
+      "description":"Delicious and easy to make",
+      "imageUri":"asset://image_library/ChickenParmHero.jpg",
+      "name":"Chicken Parmesan",
+      "servings":3,
+      "ingredients":[
+        {
+          "amount":1.5,
+          "name":"chicken breast",
+          "unit":"lbs",
+          "order":0
+        },
+        {
+          "amount":0.25,
+          "name":"olive oil",
+          "unit":"cup",
+          "order":1
+        },
+        {
+          "amount":0.0,
+          "name":"Italian bread crumbs",
+          "unit":"",
+          "order":2
+        },
+        {
+          "amount":24.0,
+          "name":"marinara sauce",
+          "unit":"oz",
+          "order":3
+        },
+        {
+          "amount":1.0,
+          "name":"shredded mozzarella cheese",
+          "unit":"cup",
+          "order":4
+        },
+        {
+          "amount":0.0,
+          "name":"salt",
+          "unit":"",
+          "order":5
+        },
+        {
+          "amount":0.0,
+          "name":"pepper",
+          "unit":"",
+          "order":6
+        },
+        {
+          "amount":0.0,
+          "name":"fresh basil",
+          "unit":"",
+          "order":7
+        }
+      ],
+      "directions":[
+        {
+          "content":"heat olive oil in pan",
+          "order":0
+        },
+        {
+          "content":"dredge chicken breast in bread crumbs",
+          "order":1
+        },
+        {
+          "content":"cook chicken in the pan to 165°",
+          "order":2
+        },
+        {
+          "content":"pour half the sauce into casserole dish",
+          "order":3
+        },
+        {
+          "content":"place chicken in dish evenly and cover with remaining sauce",
+          "order":4
+        },
+        {
+          "content":"cover chicken with cheese and chopped basil ",
+          "order":5
+        },
+        {
+          "content":"heat in oven at 425° for 15 minutes",
+          "order":6
+        }
+      ],
+      "categories":[
+        "Dinner",
+        "Chicken"
+      ]
+    }
+  ]
+}
