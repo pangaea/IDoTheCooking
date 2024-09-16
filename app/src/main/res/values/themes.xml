@@ -46,6 +46,20 @@
         <item name="android:layout_marginEnd">10dp</item>
     </style>
 
+    <style name="recipeListItemHolder">
+<!--        <item name="android:paddingStart">14dp</item>-->
+<!--        <item name="android:paddingEnd">10dp</item>-->
+<!--        <item name="android:paddingTop">10dp</item>-->
+<!--        <item name="android:paddingBottom">20dp</item>-->
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@drawable/border</item>
+    </style>
+
+<!--    <style name="SelectableItemBackground">-->
+<!--        <item name="android:theme">@style/SelectableItemTheme</item>-->
+<!--        <item name="android:background">?attr/selectableItemBackground</item>-->
+<!--    </style>-->
+
     <style name="homeAddButton" parent="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
         <item name="icon">@android:drawable/ic_input_add</item>
         <item name="android:layout_marginStart">10dp</item>
