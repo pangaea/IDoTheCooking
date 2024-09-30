@@ -33,7 +33,6 @@
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:lines="1"
-            android:maxLines="1"
             android:singleLine="true"
             android:fadeScrollbars="false"
             android:textSize="12sp"

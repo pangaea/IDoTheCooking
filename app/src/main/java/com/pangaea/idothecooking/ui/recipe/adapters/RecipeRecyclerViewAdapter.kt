@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeItemBinding
 import com.pangaea.idothecooking.state.db.entities.Recipe
+import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 
@@ -18,7 +19,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 /**
  * [RecyclerView.Adapter] that can display a [Recipe].
  */
-class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
+class RecipeRecyclerViewAdapter(private val values: MutableList<RecipeDetails>,
                                 private val listener: RecycleViewClickListener,
                                 private val activity: Activity) :
     RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>() {
@@ -35,11 +36,14 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //holder.itemView.setBackgroundResource(R.mipmap.paper3)
+//        val param = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+//        param.marginEnd = 10
+//        holder.itemView.layoutParams = param
         val item = values[position]
-        if (item.imageUri == null || item.imageUri!!.isEmpty()) {
+        if (item.recipe.imageUri == null || item.recipe.imageUri!!.isEmpty()) {
             holder.imageView.visibility = View.GONE
         } else {
-            ImageTool(holder.imageView, activity).display(item.imageUri!!)
+            ImageTool(activity).display(holder.imageView, item.recipe.imageUri!!)
 //            try {
 //                Glide.with(holder.imageView.context)
 //                    .load(item.imageUri)
@@ -48,12 +52,17 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<Recipe>,
 //            }
         }
 
-        holder.contentView.text = item.name
-        holder.descView.text = item.description
-        holder.itemView.setOnClickListener { listener.click(item.id) }
+        holder.contentView.text = item.recipe.name
+        holder.descView.text = item.recipe.description
+        if (item.recipe.description.isEmpty()) {
+            holder.descView.text = item.ingredients.map { it.name }.joinToString(", ")
+        } else {
+            holder.descView.text = item.recipe.description
+        }
+        holder.itemView.setOnClickListener { listener.click(item.recipe.id) }
     }
 
-    fun getItem(position: Int): Recipe {
+    fun getItem(position: Int): RecipeDetails {
         return values[position]
     }
 

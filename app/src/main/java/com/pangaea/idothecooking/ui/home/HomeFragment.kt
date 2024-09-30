@@ -48,16 +48,17 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         recipeViewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
-        recipeViewModel.getAllRecipes().observe(viewLifecycleOwner) { recipes ->
+        recipeViewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
             val linearLayout = root.findViewById<LinearLayout>(R.id.recipeHolder)
             linearLayout.removeAllViews()
-            for ((index, recipe: Recipe) in recipes.withIndex()) {
+            for ((index, recipeDetails: RecipeDetails) in recipesDetails.withIndex()) {
+                val recipe = recipeDetails.recipe
                 val recipeLayout: View =
                     requireActivity().layoutInflater.inflate(R.layout.home_recent_recipe,
                                                              null,false)!!
                 val image = recipeLayout.findViewById<ImageView>(R.id.recipeImage)
                 if (recipe.imageUri != null && !recipe.imageUri!!.isEmpty()) {
-                    ImageTool(image, requireActivity()).display(recipe.imageUri!!)
+                    ImageTool(requireActivity()).display(image, recipe.imageUri!!)
                 } else {
                     image.visibility = View.GONE
                 }
@@ -65,7 +66,11 @@ class HomeFragment : Fragment() {
                 val content = recipeLayout.findViewById<TextView>(R.id.content)
                 content.text = recipe.name
                 val description = recipeLayout.findViewById<TextView>(R.id.description)
-                description.text = recipe.description
+                if (recipe.description.isEmpty()) {
+                    description.text = recipeDetails.ingredients.map { it.name }.joinToString(", ")
+                } else {
+                    description.text = recipe.description
+                }
                 recipeLayout.rootView.setOnClickListener{
                     val intent = Intent(activity, RecipeViewActivity::class.java)
                     val b = Bundle()
@@ -89,6 +94,10 @@ class HomeFragment : Fragment() {
                                                              null,false)!!
                 val content = shoppingListLayout.findViewById<TextView>(R.id.content)
                 content.text = shoppingListDetails.shoppingList.name
+
+                val description = shoppingListLayout.findViewById<TextView>(R.id.description)
+                description.text = shoppingListDetails.shoppingListItems.map { it.name }.joinToString(", ")
+
                 shoppingListLayout.rootView.setOnClickListener{
                     val intent = Intent(activity, ShoppingListActivity::class.java)
                     val b = Bundle()

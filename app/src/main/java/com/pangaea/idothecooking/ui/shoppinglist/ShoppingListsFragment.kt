@@ -47,13 +47,13 @@ class ShoppingListsFragment : Fragment() {
         if (list is RecyclerView) {
             context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){ position: Int ->
                 val adapter = list.adapter as ShoppingListRecyclerViewAdapter
-                val shoppingList: ShoppingList = adapter.getItem(position)
+                val shoppingList: ShoppingList = adapter.getItem(position).shoppingList
                 viewModel.delete(shoppingList)
                 adapter.removeAt(position)
             }).attachToRecyclerView(list) }
 
             viewModel = ShoppingListViewModel(activity?.application as IDoTheCookingApp, null)
-            viewModel.getAllShoppingLists().observe(viewLifecycleOwner) {
+            viewModel.getAllShoppingListsWithDetails().observe(viewLifecycleOwner) {
                 with(list) {
                     layoutManager = when {
                         columnCount <= 1 -> LinearLayoutManager(context)

@@ -44,7 +44,7 @@
     <string name="ingredients_tab">Ingredients</string>
     <string name="instructions_tab">Instructions</string>
 
-    <string name="home_recipes_title">My Recipes</string>
+    <string name="home_recipes_title">Recipes</string>
     <string name="home_recently_updated">Recently updated:</string>
     <string name="home_create_new">Create New</string>
     <string name="home_view_all">View All</string>
@@ -116,6 +116,7 @@
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
+    <string name="auto_save_header">AutoSave</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
@@ -127,9 +128,17 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
+    <!-- Auto-save Preferences -->
+    <string name="auto_save_title">Enable AutoSave</string>
+
     <string name="exception_generic">There was an error trying to save this record.</string>
     <string name="exception_duplicate_name">You cannot use a duplicate name. Please try again with a unique name.</string>
 
     <string name="image_library_title">Select from the library</string>
     <string name="detailed_measurements">Detailed Measurements</string>
+
+    <string name="image_menu_image_gallery">Image Gallery</string>
+    <string name="image_menu_take_picture">Take A Picture</string>
+    <string name="image_menu_image_library">Image Library</string>
+    <string name="image_menu_clear">Clear</string>
 </resources>

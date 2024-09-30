@@ -2,15 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:icon="@android:drawable/ic_menu_save"
-        android:title="Image Gallery"
+        android:title="@string/image_menu_image_gallery"
         android:id="@+id/item_gallery" />
     <item
         android:icon="@android:drawable/ic_menu_save"
-        android:title="Image Library"
+        android:title="@string/image_menu_take_picture"
+        android:id="@+id/item_camera" />
+    <item
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/image_menu_image_library"
         android:id="@+id/item_library" />
     <item
         android:icon="@android:drawable/ic_menu_save"
-        android:title="Clear"
+        android:title="@string/image_menu_clear"
         android:id="@+id/item_clear" />
     <!--item
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
