@@ -24,6 +24,7 @@ import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
@@ -111,11 +112,11 @@ class HomeFragment : Fragment() {
                     isComplete = isComplete && item.checked
                 }
 
-                val image3 = shoppingListLayout.findViewById<ImageView>(R.id.recipeImage3)
+                val image = shoppingListLayout.findViewById<ImageView>(R.id.recipeImage)
                 if (isComplete) {
-                    image3.setImageResource(android.R.drawable.checkbox_on_background)
+                    image.setImageResource(android.R.drawable.checkbox_on_background)
                 } else {
-                    image3.setImageResource(android.R.drawable.checkbox_off_background)
+                    image.setImageResource(android.R.drawable.checkbox_off_background)
                 }
 
                 linearLayout.addView(shoppingListLayout)
@@ -124,7 +125,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.createNewRecipe.setOnClickListener(){
-            NameOnlyDialog(R.string.create_recipe_title, null) { name ->
+            CreateRecipeDialog { name ->
                 val recipe = Recipe()
                 recipe.name = name
                 recipe.description = ""

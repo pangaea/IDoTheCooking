@@ -8,98 +8,126 @@
     tools:context=".ui.home.HomeFragment"
     android:isScrollContainer="true"
     android:orientation="vertical">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/alipay_login"
         style="@style/homePanel">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:src="@mipmap/recipe_icon"
-                android:layout_width="100dp"
-                android:layout_height="80dp"/>
+        <RelativeLayout
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:background="@android:color/white">
 
+            <!--  This is the main content -->
+            <RelativeLayout
+                android:layout_width="fill_parent" android:layout_height="fill_parent"
+                android:layout_marginTop="30dp" android:layout_marginBottom="5dp"
+                android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
+                android:background="@drawable/home_block"
+                android:orientation="vertical" android:paddingTop="30dp" android:paddingBottom="30dp"
+                android:paddingStart="5dp" android:paddingEnd="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/createNewRecipe"
+                            android:text="@string/home_create_new"
+                            android:background="@drawable/roundedbutton"
+                            style="@style/homeAddButton"/>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/viewRecipes"
+                            android:text="@string/home_view_all"
+                            android:background="@drawable/roundedbutton"
+                            style="@style/homeListButton"/>
+                    </LinearLayout>
+                    <TextView
+                        style="@style/homeRecipeRecentTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/home_recently_updated" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/recipeHolder"
+                        style="@style/recipeHolder"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 style="@style/homeRecipeTitle"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:background="@android:color/white" android:paddingTop="5dp"
+                android:paddingStart="5dp" android:paddingEnd="5dp"
+                android:layout_marginStart="30dp" android:textColor="@android:color/black"
                 android:text="@string/home_recipes_title" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/createNewRecipe"
-                android:text="@string/home_create_new"
-                style="@style/homeAddButton"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/viewRecipes"
-                android:text="@string/home_view_all"
-                style="@style/homeListButton"/>
-        </LinearLayout>
-        <TextView
-            style="@style/homeRecipeRecentTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/home_recently_updated" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recipeHolder"
-            style="@style/recipeHolder"
-            android:orientation="vertical">
+        </RelativeLayout>
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:src="@mipmap/sl"
-                android:layout_width="100dp"
-                android:layout_height="80dp"/>
+        <RelativeLayout
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:background="@android:color/white">
 
+            <!--  This is the main content -->
+            <RelativeLayout
+                android:layout_width="fill_parent" android:layout_height="fill_parent"
+                android:layout_marginTop="25dp" android:layout_marginBottom="5dp"
+                android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
+                android:background="@drawable/home_block"
+                android:orientation="vertical" android:paddingTop="30dp" android:paddingBottom="30dp"
+                android:paddingStart="5dp" android:paddingEnd="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/createNewList"
+                            android:text="@string/home_create_new"
+                            android:background="@drawable/roundedbutton"
+                            style="@style/homeAddButton"/>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/viewShoppingLists"
+                            android:text="@string/home_view_all"
+                            android:background="@drawable/roundedbutton"
+                            style="@style/homeListButton"/>
+                    </LinearLayout>
+                    <TextView
+                        style="@style/homeRecipeRecentTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/home_recently_updated" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/listsHolder"
+                        style="@style/recipeHolder"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 style="@style/homeListsTitle"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:background="@android:color/white" android:paddingTop="5dp"
+                android:paddingStart="5dp" android:paddingEnd="5dp"
+                android:layout_marginStart="30dp" android:textColor="@android:color/black"
                 android:text="@string/menu_shopping_lists" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/createNewList"
-                android:text="@string/home_create_new"
-                style="@style/homeAddButton"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/viewShoppingLists"
-                android:text="@string/home_view_all"
-                style="@style/homeListButton"/>
-        </LinearLayout>
-        <TextView
-            style="@style/homeRecipeRecentTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/home_recently_updated" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listsHolder"
-            style="@style/recipeHolder"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
+        </RelativeLayout>
     </LinearLayout>
     </ScrollView>
 </LinearLayout>

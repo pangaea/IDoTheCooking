@@ -27,6 +27,7 @@ import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
@@ -117,7 +118,7 @@ class RecipesFragment : Fragment() {
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab?.setOnClickListener {
-            NameOnlyDialog(R.string.create_recipe_title, null) { name ->
+            CreateRecipeDialog { name ->
                 val recipe = Recipe()
                 recipe.name = name
                 recipe.description = ""
