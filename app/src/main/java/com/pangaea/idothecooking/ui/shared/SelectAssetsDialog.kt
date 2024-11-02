@@ -1,21 +1,16 @@
 package com.pangaea.idothecooking.ui.shared
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.CompoundButton
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.pangaea.idothecooking.R
-import com.pangaea.idothecooking.utils.extensions.resIdByName
-import java.io.File
-import java.io.InputStream
 
 
 abstract class SelectAssetsDialog(private val path: String, private val selection: String?,
@@ -44,7 +39,7 @@ abstract class SelectAssetsDialog(private val path: String, private val selectio
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val layout: View =
-            requireActivity().layoutInflater.inflate(R.layout.image_asset_library, null, false)!!
+            requireActivity().layoutInflater.inflate(R.layout.select_asset_library, null, false)!!
 
         val names = requireActivity().baseContext.assets.list(path)
         val imageGroup: LinearLayout = layout.findViewById(R.id.radio_group);

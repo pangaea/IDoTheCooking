@@ -3,9 +3,9 @@
     <solid android:color="@color/sticky_item_background"/>
     <corners
         android:topLeftRadius="10dp"
-        android:topRightRadius="10dp"
-        android:bottomLeftRadius="10dp"
-        android:bottomRightRadius="10dp"/>
+        android:topRightRadius="0dp"
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"/>
     <stroke
         android:width="4px"
         android:color="#000000" />

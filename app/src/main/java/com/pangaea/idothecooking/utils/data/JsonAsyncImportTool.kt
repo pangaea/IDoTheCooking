@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import java.util.Optional
 import java.util.function.Consumer
 
-class JsonAsyncImportTool(val app: Application, private val lifecycleOwner: LifecycleOwner) {
+class JsonAsyncImportTool(val app: Application, private var replaceName: String?, private val lifecycleOwner: LifecycleOwner) {
     data class ImportContext(var categoryMap: MutableMap<String, Int>,
                              var recipeMap: MutableMap<String, Int>,
                              var shoppingListMap: MutableMap<String, Int>)
@@ -46,7 +46,7 @@ class JsonAsyncImportTool(val app: Application, private val lifecycleOwner: Life
         try {
             loadData(importContext) { cxt ->
                 GlobalScope.launch {
-                    val errs = JsonImportTool(app,
+                    val errs = JsonImportTool(app, replaceName,
                                               cxt.categoryMap,
                                               cxt.recipeMap,
                                               cxt.shoppingListMap).import(json)

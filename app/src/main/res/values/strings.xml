@@ -56,6 +56,7 @@
     <string name="recipe_servings">Servings</string>
     <string name="recipe_categories">Categories</string>
     <string name="recipe_select_categories">Select Categories</string>
+    <string name="recipe_name_missing">Name is required</string>
 
     <string name="ingredient_amount_hint">#</string>
     <string name="ingredient_unit_hint">Units</string>

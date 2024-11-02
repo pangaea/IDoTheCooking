@@ -1,7 +1,6 @@
 package com.pangaea.idothecooking.ui.recipe
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Category
@@ -28,7 +26,6 @@ import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
-import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
@@ -37,8 +34,6 @@ import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 /**
  * A fragment representing a list of Recipes.
@@ -118,17 +113,29 @@ class RecipesFragment : Fragment() {
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab?.setOnClickListener {
-            CreateRecipeDialog { name ->
-                val recipe = Recipe()
-                recipe.name = name
-                recipe.description = ""
-                val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                viewModel.insert(details) { id: Long ->
-                    val recipeIntent = Intent(activity, RecipeActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putInt("id", id.toInt())
-                    recipeIntent.putExtras(bundle)
-                    startActivity(recipeIntent)
+            CreateRecipeDialog { name, fileName ->
+                if (fileName == null) {
+                    val recipe = Recipe()
+                    recipe.name = name
+                    recipe.description = ""
+                    val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
+                    viewModel.insert(details) { id: Long ->
+                        val recipeIntent = Intent(activity, RecipeActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putInt("id", id.toInt())
+                        recipeIntent.putExtras(bundle)
+                        startActivity(recipeIntent)
+                    }
+                } else {
+                    // Import template
+                    val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
+                    if (json != null) {
+                        JsonAsyncImportTool(requireActivity().application, name, this).import(json){
+                            CoroutineScope(Dispatchers.Main).launch {
+                                Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
                 }
             }.show(childFragmentManager, null)
         }
@@ -160,7 +167,7 @@ class RecipesFragment : Fragment() {
                     // Import template
                     val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
                     if (json != null) {
-                        JsonAsyncImportTool(requireActivity().application, this).import(json){
+                        JsonAsyncImportTool(requireActivity().application, null, this).import(json){
                             CoroutineScope(Dispatchers.Main).launch {
                                 Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
                             }

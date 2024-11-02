@@ -10,7 +10,7 @@
   "recipes": [
     {
       "description": "Made with two different kinds of cheese",
-      "name": "Grilled Cheese 2",
+      "name": "Grilled Cheese",
       "servings": 1,
       "imageUri": "asset://image_library/GrilledCheese.jpg",
       "ingredients": [

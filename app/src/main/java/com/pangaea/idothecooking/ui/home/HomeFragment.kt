@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.bumptech.glide.Glide
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentHomeBinding
@@ -29,6 +29,11 @@ import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
+import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
+import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -125,17 +130,29 @@ class HomeFragment : Fragment() {
         }
 
         binding.createNewRecipe.setOnClickListener(){
-            CreateRecipeDialog { name ->
-                val recipe = Recipe()
-                recipe.name = name
-                recipe.description = ""
-                val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                recipeViewModel.insert(details) { id: Long ->
-                    val recipeIntent = Intent(activity, RecipeActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putInt("id", id.toInt())
-                    recipeIntent.putExtras(bundle)
-                    startActivity(recipeIntent)
+            CreateRecipeDialog { name, fileName ->
+                if (fileName == null) {
+                    val recipe = Recipe()
+                    recipe.name = name
+                    recipe.description = ""
+                    val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
+                    recipeViewModel.insert(details) { id: Long ->
+                        val recipeIntent = Intent(activity, RecipeActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putInt("id", id.toInt())
+                        recipeIntent.putExtras(bundle)
+                        startActivity(recipeIntent)
+                    }
+                } else {
+                    // Import template
+                    val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
+                    if (json != null) {
+                        JsonAsyncImportTool(requireActivity().application, name, this).import(json){
+                            CoroutineScope(Dispatchers.Main).launch {
+                                Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
                 }
             }.show(childFragmentManager, null)
         }

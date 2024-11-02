@@ -17,7 +17,8 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 
-class JsonImportTool(val app: Application, private var categoryMap: MutableMap<String, Int>,
+class JsonImportTool(val app: Application, private var replaceName: String?,
+                     private var categoryMap: MutableMap<String, Int>,
                      private var recipeMap: MutableMap<String, Int>,
                      private var shoppingListMap: MutableMap<String, Int>) {
     enum class MessageType { ERROR, WARNING, INFORMATION }
@@ -62,27 +63,53 @@ class JsonImportTool(val app: Application, private var categoryMap: MutableMap<S
         val recipesNode: JsonNode? = node.get("recipes")
         if (recipesNode != null && recipesNode.isArray) {
             val newRecipes: MutableList<RecipeDetails> = emptyList<RecipeDetails>().toMutableList()
-            for (objNode in recipesNode) {
-                if (recipeMap[objNode.get("name").textValue()] == null) {
+            //for ((index, objNode) in recipesNode) {
+            recipesNode.forEachIndexed { index, objNode ->
+                val recipeName: String = if (index == 0 && replaceName != null) replaceName!! else objNode.get("name").textValue()
+                if (recipeMap[recipeName] == null) {
+                    val recipe: Recipe = mapper.convertValue(objNode, Recipe::class.java)
+                    recipe.name = recipeName
                     newRecipes.add(RecipeDetails(// Recipe
-                        mapper.convertValue(objNode, Recipe::class.java),
+                        recipe,
                         // List<Ingredients>
-                        objNode.get("ingredients").map{
+                        objNode.get("ingredients").map {
                             mapper.convertValue(it, Ingredient::class.java)
                         },
                         // List<Directions>
-                        objNode.get("directions").map{
+                        objNode.get("directions").map {
                             mapper.convertValue(it, Direction::class.java)
                         },
                         // List<RecipeCategoryLink>
-                        objNode.get("categories").filter{
-                            categoryMap[it.asText()] != null}.map{
+                        objNode.get("categories").filter {
+                            categoryMap[it.asText()] != null
+                        }.map {
                             val link = RecipeCategoryLink()
                             link.category_id = categoryMap[it.asText()]!!
                             link
                         }))
                 }
             }
+//            for (objNode in recipesNode) {
+//                if (recipeMap[objNode.get("name").textValue()] == null) {
+//                    newRecipes.add(RecipeDetails(// Recipe
+//                        mapper.convertValue(objNode, Recipe::class.java),
+//                        // List<Ingredients>
+//                        objNode.get("ingredients").map{
+//                            mapper.convertValue(it, Ingredient::class.java)
+//                        },
+//                        // List<Directions>
+//                        objNode.get("directions").map{
+//                            mapper.convertValue(it, Direction::class.java)
+//                        },
+//                        // List<RecipeCategoryLink>
+//                        objNode.get("categories").filter{
+//                            categoryMap[it.asText()] != null}.map{
+//                            val link = RecipeCategoryLink()
+//                            link.category_id = categoryMap[it.asText()]!!
+//                            link
+//                        }))
+//                }
+//            }
 
             newRecipes.forEach {recipe ->
                 try {
