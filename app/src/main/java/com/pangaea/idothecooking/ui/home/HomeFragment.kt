@@ -26,6 +26,7 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
+import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
@@ -130,31 +131,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.createNewRecipe.setOnClickListener(){
-            CreateRecipeDialog { name, fileName ->
-                if (fileName == null) {
-                    val recipe = Recipe()
-                    recipe.name = name
-                    recipe.description = ""
-                    val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                    recipeViewModel.insert(details) { id: Long ->
-                        val recipeIntent = Intent(activity, RecipeActivity::class.java)
-                        val bundle = Bundle()
-                        bundle.putInt("id", id.toInt())
-                        recipeIntent.putExtras(bundle)
-                        startActivity(recipeIntent)
-                    }
-                } else {
-                    // Import template
-                    val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
-                    if (json != null) {
-                        JsonAsyncImportTool(requireActivity().application, name, this).import(json){
-                            CoroutineScope(Dispatchers.Main).launch {
-                                Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                }
-            }.show(childFragmentManager, null)
+            CreateRecipeDialog(CreateRecipeAdapter(this, recipeViewModel)).show(childFragmentManager, null)
         }
 
         binding.createNewList.setOnClickListener(){

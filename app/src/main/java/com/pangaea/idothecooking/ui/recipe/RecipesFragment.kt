@@ -27,6 +27,7 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
+import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
@@ -113,31 +114,7 @@ class RecipesFragment : Fragment() {
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab?.setOnClickListener {
-            CreateRecipeDialog { name, fileName ->
-                if (fileName == null) {
-                    val recipe = Recipe()
-                    recipe.name = name
-                    recipe.description = ""
-                    val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                    viewModel.insert(details) { id: Long ->
-                        val recipeIntent = Intent(activity, RecipeActivity::class.java)
-                        val bundle = Bundle()
-                        bundle.putInt("id", id.toInt())
-                        recipeIntent.putExtras(bundle)
-                        startActivity(recipeIntent)
-                    }
-                } else {
-                    // Import template
-                    val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
-                    if (json != null) {
-                        JsonAsyncImportTool(requireActivity().application, name, this).import(json){
-                            CoroutineScope(Dispatchers.Main).launch {
-                                Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                }
-            }.show(childFragmentManager, null)
+            CreateRecipeDialog(CreateRecipeAdapter(this, viewModel)).show(childFragmentManager, null)
         }
         return view
     }

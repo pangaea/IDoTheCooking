@@ -16,10 +16,11 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
+import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeCallBackListener
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import java.io.InputStream
 
-class CreateRecipeDialog(val callback: (name: String, fileName: String?) -> Unit) : DialogFragment() {
+class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFragment() {
     lateinit var layout: View
     var fileNames: Array<String>? = null
     var displayNames: MutableList<String>? = null
@@ -58,7 +59,7 @@ class CreateRecipeDialog(val callback: (name: String, fileName: String?) -> Unit
                     if(checkedId >= 0) {
                         fileName = fileNames?.get(checkedId)
                     }
-                    callback(nameView.text.toString(), fileName)
+                    callback.createRecipe(nameView.text.toString(), fileName)
                     dlg.cancel()
                 }
             }
