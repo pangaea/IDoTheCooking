@@ -15,7 +15,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel: RecipeViewModel) : CreateRecipeCallBackListener {
+class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel: RecipeViewModel)
+    : CreateRecipeCallBackListener {
     override fun createRecipe(name: String, fileName: String?) {
         if (fileName == null) {
             val recipe = Recipe()

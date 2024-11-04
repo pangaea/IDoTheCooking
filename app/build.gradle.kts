@@ -140,8 +140,6 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     val room_version = "2.6.0"
     implementation("androidx.room:room-runtime:$room_version")
-    //annotationProcessor("androidx.room:room-compiler:$room_version")
-    //annotationProcessor("androidx.room:room-compiler:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     // For Kotlin use kapt instead of annotationProcessor
 
@@ -168,9 +166,3 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.robertlevonyan.view:MaterialExpansionPanel:2.1.3")
 }
-
-//dependencies {
-//    implementation("com.google.api-client:google-api-client:2.0.0")
-//    implementation("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
-//    implementation("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0")
-//}
