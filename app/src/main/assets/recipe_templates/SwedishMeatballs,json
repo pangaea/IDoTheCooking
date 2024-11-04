@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "name": "Appetizer"
+    }
+  ],
+  "recipes": [
+    {
+      "description":"Sweet and delicious",
+      "imageUri":"asset://image_library/SwedishMeatballs.jpg",
+      "name":"Swedish Meatballs",
+      "servings":10,
+      "ingredients":[
+         {
+            "amount":2.0,
+            "name":"frozen meatballs",
+            "unit":"lbs",
+            "order":0
+         },
+         {
+            "amount":12.0,
+            "name":"chili sauce",
+            "unit":"oz",
+            "order":1
+         },
+         {
+            "amount":1.5,
+            "name":"cups grape jelly",
+            "unit":"cups",
+            "order":2
+         },
+         {
+            "amount":2.0,
+            "name":"brown sugar",
+            "unit":"tbsp",
+            "order":3
+         }
+      ],
+      "directions":[
+         {
+            "content":"Brown meatballs",
+            "order":0
+         },
+         {
+            "content":"Heat jelly, chili sauce and brown sugar in pan",
+            "order":1
+         },
+         {
+            "content":"Add meatballs to sauce",
+            "order":2
+         },
+         {
+            "content":"Cover and simmer for 1 to 2 hours",
+            "order":3
+         }
+      ],
+      "categories":[
+         "Appetizer"
+      ]
+    }
+  ]
+}

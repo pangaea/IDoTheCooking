@@ -1,0 +1,104 @@
+{
+  "categories": [
+    {
+      "name": "Dinner"
+    },
+    {
+      "name": "Sausage"
+    }
+  ],
+  "recipes": [
+    {
+      "description": "Ground sausage baked into crescent rolls with cheese and pepperoni.",
+      "imageUri": "asset://image_library/SausageCrescentRolls.jpg",
+      "name": "Sausage Crescent Rolls",
+      "servings": 4,
+      "ingredients": [
+        {
+          "amount": 1.0,
+          "name": "Ground sausage",
+          "unit": "lb",
+          "order": 0
+        },
+        {
+          "amount": 8.0,
+          "name": "Cream cheese",
+          "unit": "oz",
+          "order": 1
+        },
+        {
+          "amount": 8.0,
+          "name": "Crescent rolls (2)",
+          "unit": "oz",
+          "order": 2
+        },
+        {
+          "amount": 1.0,
+          "name": "Egg",
+          "unit": "",
+          "order": 3
+        },
+        {
+          "amount": 0.0,
+          "name": "Poppy seeds",
+          "unit": "",
+          "order": 4
+        },
+        {
+          "amount": 0.0,
+          "name": "Pepperoni",
+          "unit": "",
+          "order": 5
+        },
+        {
+          "amount": 0.0,
+          "name": "Cheddar cheese",
+          "unit": "",
+          "order": 6
+        }
+      ],
+      "directions": [
+        {
+          "content": "Preheat oven to 350",
+          "order": 0
+        },
+        {
+          "content": "Brown sausage and drain",
+          "order": 1
+        },
+        {
+          "content": "Mix in cream cheese while still hot",
+          "order": 2
+        },
+        {
+          "content": "Arrange crescent rolls into rectangles.",
+          "order": 3
+        },
+        {
+          "content": "Place pepperoni length wise",
+          "order": 4
+        },
+        {
+          "content": "Pour sausage mixture and cheddar cheese in the center and fold over to cover it",
+          "order": 5
+        },
+        {
+          "content": "Place on cookie sheet (seem down) and brush with egg whites",
+          "order": 6
+        },
+        {
+          "content": "Sprinkle with poppy seeds",
+          "order": 7
+        },
+        {
+          "content": "Sprinkle with poppy seeds",
+          "order": 8
+        }
+      ],
+      "categories": [
+        "Dinner",
+        "Sausage"
+      ]
+    }
+  ]
+}

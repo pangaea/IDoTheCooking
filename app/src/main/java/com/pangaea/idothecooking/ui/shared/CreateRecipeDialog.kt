@@ -31,6 +31,7 @@ class CreateRecipeDialog(val callback: (name: String, fileName: String?) -> Unit
 
         fileNames = requireActivity().baseContext.assets.list("recipe_templates")
         val imageGroup: LinearLayout = layout.findViewById(R.id.radio_group);
+        drawRowView(-1, "", imageGroup)
         fileNames?.forEachIndexed { index, fileName ->
             drawRowView(index, fileName, imageGroup)
         }
@@ -70,6 +71,9 @@ class CreateRecipeDialog(val callback: (name: String, fileName: String?) -> Unit
     protected var checkedId = -1
     protected fun setRadioButton(radioButton: RadioButton) {
         radioButtons.add(radioButton)
+        if (radioButton.id < 0) {
+            radioButton.isChecked = true
+        }
         radioButton.setOnCheckedChangeListener(mOnCheckedChangeListener)
     }
 
@@ -80,41 +84,55 @@ class CreateRecipeDialog(val callback: (name: String, fileName: String?) -> Unit
             }
             for (radioButton in radioButtons) {
                 if (radioButton.id != checkedId) {
-                    val nameView: EditText = layout.findViewById(R.id.name);
-                    nameView.setText(displayNames?.get(checkedId))
                     radioButton.isChecked = false
                 }
+            }
+            if (checkedId >= 0) {
+                val nameView: EditText = layout.findViewById(R.id.name)
+                nameView.setText(displayNames?.get(checkedId))
+            } else {
+                val nameView: EditText = layout.findViewById(R.id.name)
+                nameView.setText("")
             }
         }
 
     private fun drawRowView(index: Int, fileName: String, imageGroup: LinearLayout) {
         val row: View =
             requireActivity().layoutInflater.inflate(R.layout.recipe_template_asset_item, null, false)!!
-        val libraryCheckbox: RadioButton = row.findViewById(R.id.library_checkbox);
+        val libraryCheckbox: RadioButton = row.findViewById(R.id.library_checkbox)
         //libraryCheckbox.isChecked = selection?.endsWith(fileName) ?: false
         libraryCheckbox.id = index
         //libraryCheckbox.text = fileName
         setRadioButton(libraryCheckbox)
 
-        val json: String? = context?.readJSONFromAssets("recipe_templates/${fileName}")
-        val mapper = ObjectMapper()
-        val node: JsonNode = mapper.readTree(json)
-        val recipesNode: JsonNode? = node.get("recipes")
-        if (recipesNode != null && recipesNode.isArray) {
-            for (objNode in recipesNode) {
-                val imageUri = objNode.get("imageUri").textValue()
-                val libraryImage: ImageView = row.findViewById(R.id.library_image);
-                val ims: InputStream = requireActivity().baseContext.assets.open(imageUri.substring("asset://".length))
-                libraryImage.setImageDrawable(Drawable.createFromStream(ims, null))
+        if (index >= 0 && fileName.isNotEmpty()) {
+            val json: String? = context?.readJSONFromAssets("recipe_templates/${fileName}")
+            val mapper = ObjectMapper()
+            val node: JsonNode = mapper.readTree(json)
+            val recipesNode: JsonNode? = node.get("recipes")
+            if (recipesNode != null && recipesNode.isArray) {
+                for (objNode in recipesNode) {
+                    val imageUri = objNode.get("imageUri").textValue()
+                    val libraryImage: ImageView = row.findViewById(R.id.library_image)
+                    val ims: InputStream =
+                        requireActivity().baseContext.assets.open(imageUri.substring("asset://".length))
+                    libraryImage.setImageDrawable(Drawable.createFromStream(ims, null))
 
-                val recipeName: TextView = row.findViewById(R.id.recipe_name);
-                recipeName.text = objNode.get("name").textValue()
-                displayNames?.add(objNode.get("name").textValue())
+                    val recipeName: TextView = row.findViewById(R.id.recipe_name)
+                    recipeName.text = objNode.get("name").textValue()
+                    displayNames?.add(objNode.get("name").textValue())
 
-                val recipeDesc: TextView = row.findViewById(R.id.recipe_desc);
-                recipeDesc.text = objNode.get("description").textValue()
-                break
+                    val recipeDesc: TextView = row.findViewById(R.id.recipe_desc)
+                    recipeDesc.text = objNode.get("description").textValue()
+                }
             }
+        } else {
+            val libraryImage: ImageView = row.findViewById(R.id.library_image)
+            libraryImage.setImageResource(R.mipmap.recipe_icon)
+            val recipeName: TextView = row.findViewById(R.id.recipe_name);
+            recipeName.text = resources.getText(R.string.create_from_scratch)
+            val recipeDesc: TextView = row.findViewById(R.id.recipe_desc)
+            recipeDesc.text = resources.getText(R.string.create_from_scratch_desc)
         }
         imageGroup.addView(row)
     }
