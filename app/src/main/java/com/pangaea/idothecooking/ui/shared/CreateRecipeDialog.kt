@@ -20,15 +20,16 @@ import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeCallBackListener
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import java.io.InputStream
 
-class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFragment() {
+open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFragment() {
     lateinit var layout: View
-    var fileNames: Array<String>? = null
-    var displayNames: MutableList<String>? = null
+    private var fileNames: Array<String>? = null
+    private var displayNames: MutableList<String>? = null
+    private val radioButtons: MutableList<RadioButton> = emptyList<RadioButton>().toMutableList()
+    private var checkedId = -1
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         layout = requireActivity().layoutInflater.inflate(R.layout.create_recipe_form, null, false)!!
         displayNames = mutableListOf<String>()
-
 
         fileNames = requireActivity().baseContext.assets.list("recipe_templates")
         val imageGroup: LinearLayout = layout.findViewById(R.id.radio_group);
@@ -36,9 +37,6 @@ class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFra
         fileNames?.forEachIndexed { index, fileName ->
             drawRowView(index, fileName, imageGroup)
         }
-
-
-
 
         val nameView = layout.findViewById<TextInputEditText>(R.id.name)
         val dlg: AlertDialog = AlertDialog.Builder(requireContext())
@@ -64,13 +62,11 @@ class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFra
                 }
             }
         }
+        nameView.requestFocus()
         return dlg;
     }
 
-
-    private val radioButtons: MutableList<RadioButton> = emptyList<RadioButton>().toMutableList()
-    protected var checkedId = -1
-    protected fun setRadioButton(radioButton: RadioButton) {
+    private fun setRadioButton(radioButton: RadioButton) {
         radioButtons.add(radioButton)
         if (radioButton.id < 0) {
             radioButton.isChecked = true
@@ -101,9 +97,7 @@ class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFra
         val row: View =
             requireActivity().layoutInflater.inflate(R.layout.recipe_template_asset_item, null, false)!!
         val libraryCheckbox: RadioButton = row.findViewById(R.id.library_checkbox)
-        //libraryCheckbox.isChecked = selection?.endsWith(fileName) ?: false
         libraryCheckbox.id = index
-        //libraryCheckbox.text = fileName
         setRadioButton(libraryCheckbox)
 
         if (index >= 0 && fileName.isNotEmpty()) {
@@ -137,11 +131,6 @@ class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFra
         }
         imageGroup.addView(row)
     }
-
-
-
-
-
 
     override fun onResume() {
         super.onResume()
