@@ -126,7 +126,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         onBackPressedDispatcher.addCallback(this, callbackBack)
     }
 
-    private val saveHandler = ThrottledUpdater(1000)
+    private val saveHandler = ThrottledUpdater(500)
     private fun handleChangeEvent() {
         val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
         if (sharedPreferences.getBoolean("auto_save_lists", false)) {
