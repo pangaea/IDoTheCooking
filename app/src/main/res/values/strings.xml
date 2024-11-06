@@ -132,7 +132,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <!-- Auto-save Preferences -->
-    <string name="auto_save_title">Enable AutoSave</string>
+    <string name="auto_save_lists_title">Enable For Shopping Lists</string>
 
     <string name="exception_generic">There was an error trying to save this record.</string>
     <string name="exception_duplicate_name">You cannot use a duplicate name. Please try again with a unique name.</string>

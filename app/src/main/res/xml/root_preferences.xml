@@ -20,8 +20,8 @@
     <PreferenceCategory app:title="@string/auto_save_header">
 
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/auto_save_title" />
+            app:key="auto_save_lists"
+            app:title="@string/auto_save_lists_title" />
 
 <!--        <SwitchPreferenceCompat-->
 <!--            app:dependency="sync"-->
