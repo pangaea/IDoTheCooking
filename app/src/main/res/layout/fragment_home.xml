@@ -22,10 +22,10 @@
             <!--  This is the main content -->
             <RelativeLayout
                 android:layout_width="fill_parent" android:layout_height="fill_parent"
-                android:layout_marginTop="30dp" android:layout_marginBottom="5dp"
+                android:layout_marginTop="30dp" android:layout_marginBottom="20dp"
                 android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
                 android:background="@drawable/home_block"
-                android:orientation="vertical" android:paddingTop="30dp" android:paddingBottom="30dp"
+                android:orientation="vertical" android:paddingTop="30dp" android:paddingBottom="0dp"
                 android:paddingStart="5dp" android:paddingEnd="5dp">
 
                 <LinearLayout
@@ -82,7 +82,7 @@
                 android:layout_marginTop="25dp" android:layout_marginBottom="5dp"
                 android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
                 android:background="@drawable/home_block"
-                android:orientation="vertical" android:paddingTop="30dp" android:paddingBottom="30dp"
+                android:orientation="vertical" android:paddingTop="30dp" android:paddingBottom="0dp"
                 android:paddingStart="5dp" android:paddingEnd="5dp">
 
                 <LinearLayout

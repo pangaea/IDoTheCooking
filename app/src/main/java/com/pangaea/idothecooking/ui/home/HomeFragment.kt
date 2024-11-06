@@ -1,6 +1,7 @@
 package com.pangaea.idothecooking.ui.home
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentHomeBinding
@@ -52,7 +54,14 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return drawHomeScreen()
+    }
+
+    private fun drawHomeScreen() : View {
         val root: View = binding.root
+
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val itemsCount = sharedPreferences.getInt("recent_items_count2", 3)//!!.toInt()
 
         recipeViewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
         recipeViewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
@@ -86,7 +95,7 @@ class HomeFragment : Fragment() {
                     startActivity(intent)
                 }
                 linearLayout.addView(recipeLayout)
-                if (index >= 2) break;
+                if (index >= (itemsCount-1)) break;
             }
         }
 
@@ -126,7 +135,7 @@ class HomeFragment : Fragment() {
                 }
 
                 linearLayout.addView(shoppingListLayout)
-                if (index >= 2) break;
+                if (index >= (itemsCount-1)) break;
             }
         }
 
@@ -167,5 +176,6 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
+        drawHomeScreen()
     }
 }
