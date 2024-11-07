@@ -2,6 +2,7 @@ package com.pangaea.idothecooking.state
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.room.Transaction
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.dao.RecipeCategoryLinkDao
@@ -41,12 +42,14 @@ class ShoppingListRepository(application: Application) : RepositoryBase<Shopping
         return shoppingListDao.loadShoppingListWithDetailsByIds(intArrayOf(id.toInt()))
     }
 
+    @Transaction
     suspend fun insert(shoppingList: ShoppingListDetails): Long {
         val id: Long = shoppingListDao.insert(insertWithTimestamp(shoppingList.shoppingList))
         insertShoppingListItems(shoppingList.shoppingListItems, id.toInt())
         return id
     }
 
+    @Transaction
     suspend fun update(shoppingList: ShoppingListDetails): Long {
         val tc = TimestampConverter()
         updateWithTimestamp(shoppingList.shoppingList)

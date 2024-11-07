@@ -15,14 +15,12 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllRecipes(): LiveData<List<Recipe>>
 
-    @Transaction
     @Query("SELECT * FROM recipes ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllRecipesWithDetails(): LiveData<List<RecipeDetails>>
 
     @Query("SELECT * FROM recipes WHERE id IN (:recipeIds)")
     fun loadRecipesByIds(recipeIds: IntArray): LiveData<List<Recipe>>
 
-    @Transaction
     @Query("SELECT * FROM recipes WHERE id IN (:recipeIds) order by modified_at COLLATE NOCASE desc")
     fun loadRecipesWithDetailsByIds(recipeIds: IntArray): LiveData<List<RecipeDetails>>
 

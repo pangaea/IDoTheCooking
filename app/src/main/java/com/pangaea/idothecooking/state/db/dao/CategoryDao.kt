@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.pangaea.idothecooking.state.db.entities.Category
 
@@ -18,6 +19,7 @@ interface CategoryDao {
     @Insert
     suspend fun insert(category: Category): Long
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun bulkInsert(vararg categories: Category): List<Long>
 

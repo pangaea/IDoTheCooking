@@ -2,6 +2,7 @@ package com.pangaea.idothecooking.state
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.room.Transaction
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.dao.CategoryDao
@@ -44,6 +45,7 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         return recipeDao.loadRecipesWithDetailsByIds(intArrayOf(id.toInt()))
     }
 
+    @Transaction
     suspend fun insert(recipe: RecipeDetails): Long {
         val id: Long = recipeDao.insert(insertWithTimestamp(recipe.recipe))
         insertDirections(recipe.directions, id.toInt())
@@ -52,6 +54,7 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         return id
     }
 
+    @Transaction
     suspend fun update(recipe: RecipeDetails): Long {
         val tc = TimestampConverter()
         updateWithTimestamp(recipe.recipe)
