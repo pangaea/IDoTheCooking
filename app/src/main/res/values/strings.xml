@@ -35,6 +35,9 @@
     <string name="export_data">Export All Data</string>
     <string name="import_data">Import From File</string>
     <string name="import_complete">Import Complete</string>
+    <string name="import_error_recipe_exists">Recipe [{0}] already exists</string>
+    <string name="import_error_recipe">Error saving recipe [{0}]</string>
+    <string name="import_error_shopping_list">Error saving shopping list [{0}]</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>

@@ -10,6 +10,7 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
+import com.pangaea.idothecooking.utils.data.JsonImportTool
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,18 @@ class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel:
             if (json != null) {
                 JsonAsyncImportTool(fragment.requireActivity().application, name, fragment).import(json){
                     CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(fragment.context, fragment.getString(R.string.import_complete), Toast.LENGTH_LONG).show()
+                        if (it.isEmpty()) {
+                            Toast.makeText(fragment.context,
+                                           fragment.getString(R.string.import_complete),
+                                           Toast.LENGTH_LONG).show()
+                        } else {
+                            val errs: String = it.map{
+                                it.message
+                            }.joinToString { it -> it }
+                            Toast.makeText(fragment.context,
+                                           errs,
+                                           Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
