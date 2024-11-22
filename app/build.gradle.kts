@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,6 +18,14 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        // Load the values from apikey.properties file
+        val keystoreFile = project.rootProject.file("apikey.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+        val apiKey = properties.getProperty("OPENAI_API_KEY") ?: ""
+        buildConfigField("String", "OPENAI_API_KEY", apiKey)
+        ////////////////////////////////////
 
         testInstrumentationRunner = "androidx.test.ext.junit.runners.AndroidJUnit4"
         vectorDrawables {
@@ -165,4 +175,13 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.8.+")
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.robertlevonyan.view:MaterialExpansionPanel:2.1.3")
+}
+
+dependencies {
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
 }

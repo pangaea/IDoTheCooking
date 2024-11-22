@@ -20,6 +20,7 @@
     <string name="previous">Previous</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="update">Update</string>
@@ -147,4 +148,13 @@
     <string name="image_menu_take_picture">Take A Picture</string>
     <string name="image_menu_image_library">Image Library</string>
     <string name="image_menu_clear">Clear</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="recipe_generator">Recipe Generator</string>
+    <string name="generated_from_openai">Generated from OpenAi</string>
+    <string name="new_ai_recipe">New AI Recipe</string>
+    <string name="description_missing">Description required</string>
+    <string name="description_hint">Describe the recipe you are looking for...</string>
+    <string name="import_recipe">Import</string>
 </resources>
