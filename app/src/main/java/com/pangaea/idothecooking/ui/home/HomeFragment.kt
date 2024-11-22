@@ -1,6 +1,7 @@
 package com.pangaea.idothecooking.ui.home
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.bumptech.glide.Glide
+import androidx.preference.PreferenceManager
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentHomeBinding
@@ -24,7 +26,9 @@ import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
+import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
@@ -45,19 +49,27 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return drawHomeScreen()
+    }
+
+    private fun drawHomeScreen() : View {
         val root: View = binding.root
 
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val itemsCount = sharedPreferences.getInt("recent_items_count2", 3)//!!.toInt()
+
         recipeViewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
-        recipeViewModel.getAllRecipes().observe(viewLifecycleOwner) { recipes ->
+        recipeViewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
             val linearLayout = root.findViewById<LinearLayout>(R.id.recipeHolder)
             linearLayout.removeAllViews()
-            for ((index, recipe: Recipe) in recipes.withIndex()) {
+            for ((index, recipeDetails: RecipeDetails) in recipesDetails.withIndex()) {
+                val recipe = recipeDetails.recipe
                 val recipeLayout: View =
                     requireActivity().layoutInflater.inflate(R.layout.home_recent_recipe,
                                                              null,false)!!
                 val image = recipeLayout.findViewById<ImageView>(R.id.recipeImage)
                 if (recipe.imageUri != null && !recipe.imageUri!!.isEmpty()) {
-                    ImageTool(image, requireActivity()).display(recipe.imageUri!!)
+                    ImageTool(requireActivity()).display(image, recipe.imageUri!!)
                 } else {
                     image.visibility = View.GONE
                 }
@@ -65,7 +77,11 @@ class HomeFragment : Fragment() {
                 val content = recipeLayout.findViewById<TextView>(R.id.content)
                 content.text = recipe.name
                 val description = recipeLayout.findViewById<TextView>(R.id.description)
-                description.text = recipe.description
+                if (recipe.description.isEmpty()) {
+                    description.text = recipeDetails.ingredients.map { it.name }.joinToString(", ")
+                } else {
+                    description.text = recipe.description
+                }
                 recipeLayout.rootView.setOnClickListener{
                     val intent = Intent(activity, RecipeViewActivity::class.java)
                     val b = Bundle()
@@ -74,7 +90,7 @@ class HomeFragment : Fragment() {
                     startActivity(intent)
                 }
                 linearLayout.addView(recipeLayout)
-                if (index >= 2) break;
+                if (index >= (itemsCount-1)) break;
             }
         }
 
@@ -89,6 +105,10 @@ class HomeFragment : Fragment() {
                                                              null,false)!!
                 val content = shoppingListLayout.findViewById<TextView>(R.id.content)
                 content.text = shoppingListDetails.shoppingList.name
+
+                val description = shoppingListLayout.findViewById<TextView>(R.id.description)
+                description.text = shoppingListDetails.shoppingListItems.map { it.name }.joinToString(", ")
+
                 shoppingListLayout.rootView.setOnClickListener{
                     val intent = Intent(activity, ShoppingListActivity::class.java)
                     val b = Bundle()
@@ -102,32 +122,20 @@ class HomeFragment : Fragment() {
                     isComplete = isComplete && item.checked
                 }
 
-                val image3 = shoppingListLayout.findViewById<ImageView>(R.id.recipeImage3)
+                val image = shoppingListLayout.findViewById<ImageView>(R.id.recipeImage)
                 if (isComplete) {
-                    image3.setImageResource(android.R.drawable.checkbox_on_background)
+                    image.setImageResource(android.R.drawable.checkbox_on_background)
                 } else {
-                    image3.setImageResource(android.R.drawable.checkbox_off_background)
+                    image.setImageResource(android.R.drawable.checkbox_off_background)
                 }
 
                 linearLayout.addView(shoppingListLayout)
-                if (index >= 2) break;
+                if (index >= (itemsCount-1)) break;
             }
         }
 
         binding.createNewRecipe.setOnClickListener(){
-            NameOnlyDialog(R.string.create_recipe_title, null) { name ->
-                val recipe = Recipe()
-                recipe.name = name
-                recipe.description = ""
-                val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                recipeViewModel.insert(details) { id: Long ->
-                    val recipeIntent = Intent(activity, RecipeActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putInt("id", id.toInt())
-                    recipeIntent.putExtras(bundle)
-                    startActivity(recipeIntent)
-                }
-            }.show(childFragmentManager, null)
+            CreateRecipeDialog(CreateRecipeAdapter(this, recipeViewModel)).show(childFragmentManager, null)
         }
 
         binding.createNewList.setOnClickListener(){
@@ -163,5 +171,6 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
+        drawHomeScreen()
     }
 }

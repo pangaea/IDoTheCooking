@@ -4,6 +4,7 @@ import android.app.Application
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.CategoryRepository
 import com.pangaea.idothecooking.state.RecipeRepository
 import com.pangaea.idothecooking.state.ShoppingListRepository
@@ -17,7 +18,8 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 
-class JsonImportTool(val app: Application, private var categoryMap: MutableMap<String, Int>,
+class JsonImportTool(val app: Application, private var replaceName: String?,
+                     private var categoryMap: MutableMap<String, Int>,
                      private var recipeMap: MutableMap<String, Int>,
                      private var shoppingListMap: MutableMap<String, Int>) {
     enum class MessageType { ERROR, WARNING, INFORMATION }
@@ -52,7 +54,9 @@ class JsonImportTool(val app: Application, private var categoryMap: MutableMap<S
         }
         importRecipes(node)
         importShoppingLists(node)
-        messages.add(ParseLog(MessageType.INFORMATION, "Import complete"))
+        if (messages.isEmpty()) {
+            messages.add(ParseLog(MessageType.INFORMATION, app.getString(R.string.import_complete)))
+        }
         return messages;
     }
 
@@ -62,25 +66,34 @@ class JsonImportTool(val app: Application, private var categoryMap: MutableMap<S
         val recipesNode: JsonNode? = node.get("recipes")
         if (recipesNode != null && recipesNode.isArray) {
             val newRecipes: MutableList<RecipeDetails> = emptyList<RecipeDetails>().toMutableList()
-            for (objNode in recipesNode) {
-                if (recipeMap[objNode.get("name").textValue()] == null) {
+            //for ((index, objNode) in recipesNode) {
+            recipesNode.forEachIndexed { index, objNode ->
+                val recipeName: String = if (index == 0 && replaceName != null) replaceName!! else objNode.get("name").textValue()
+                if (recipeMap[recipeName] == null) {
+                    val recipe: Recipe = mapper.convertValue(objNode, Recipe::class.java)
+                    recipe.name = recipeName
                     newRecipes.add(RecipeDetails(// Recipe
-                        mapper.convertValue(objNode, Recipe::class.java),
+                        recipe,
                         // List<Ingredients>
-                        objNode.get("ingredients").map{
+                        objNode.get("ingredients").map {
                             mapper.convertValue(it, Ingredient::class.java)
                         },
                         // List<Directions>
-                        objNode.get("directions").map{
+                        objNode.get("directions").map {
                             mapper.convertValue(it, Direction::class.java)
                         },
                         // List<RecipeCategoryLink>
-                        objNode.get("categories").filter{
-                            categoryMap[it.asText()] != null}.map{
+                        objNode.get("categories").filter {
+                            categoryMap[it.asText()] != null
+                        }.map {
                             val link = RecipeCategoryLink()
                             link.category_id = categoryMap[it.asText()]!!
                             link
                         }))
+                } else {
+                    messages.add(ParseLog(MessageType.ERROR,
+                                          app.getString(R.string.import_error_recipe_exists)
+                                              .replace("{0}", recipeName)))
                 }
             }
 
@@ -90,7 +103,8 @@ class JsonImportTool(val app: Application, private var categoryMap: MutableMap<S
                     recipeMap[recipe.recipe.name] = id.toInt()
                 } catch (e: Exception) {
                     messages.add(ParseLog(MessageType.ERROR, e.message.let{e.message} ?:
-                        ("Error saving recipe " + recipe.recipe.name)))
+                    app.getString(R.string.import_error_recipe_exists)
+                        .replace("{0}", recipe.recipe.name)))
                 }
             }
             println("Recipe Import Complete")
@@ -120,7 +134,8 @@ class JsonImportTool(val app: Application, private var categoryMap: MutableMap<S
                     recipeMap[shoppingList.shoppingList.name] = id.toInt()
                 } catch (e: Exception) {
                     messages.add(ParseLog(MessageType.ERROR, e.message.let{e.message} ?:
-                        ("Error saving shopping list " + shoppingList.shoppingList.name)))
+                    app.getString(R.string.import_error_shopping_list)
+                        .replace("{0}", shoppingList.shoppingList.name)))
                 }
             }
             println("Shopping List Import Complete")

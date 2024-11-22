@@ -1,14 +1,17 @@
 package com.pangaea.idothecooking.ui.shoppinglist
 
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +29,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouch
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shoppinglist.adapters.ShoppingListItemsAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
-import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
+import com.pangaea.idothecooking.utils.ThrottledUpdater
 import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
@@ -39,7 +42,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
     private lateinit var shoppingListDetails: ShoppingListDetails
     private var mItemTouchHelper: ItemTouchHelper? = null
     private lateinit var _view: View
-    var _itemSave: MenuItem? = null
+    private var _itemSave: MenuItem? = null
 
     private lateinit var binding: ActivityShoppingListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +74,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
             binding.name.setText(shoppingListDetails.shoppingList.name)
             /*textWatcher = */binding.name.doAfterTextChanged() {
                 _itemSave?.setAsEnabled()
+                handleChangeEvent()
             }
 
             val adapter = list.adapter as ShoppingListItemsAdapter
@@ -97,6 +101,37 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
             }
 
         }
+
+        // Handle back navigation
+        val self = this
+        val callbackBack = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                isEnabled = false
+                this.remove()
+                if (_itemSave?.isEnabled == true) {
+                    val deleteAlertBuilder = AlertDialog.Builder(self)
+                        .setMessage(resources.getString(R.string.exit_with_save))
+                        .setCancelable(true)
+                        .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressedDispatcher.onBackPressed() }
+                        .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                            saveShoppingList() { onBackPressedDispatcher.onBackPressed() }
+                        }
+                    val deleteAlert = deleteAlertBuilder.create()
+                    deleteAlert.show()
+                } else {
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callbackBack)
+    }
+
+    private val saveHandler = ThrottledUpdater(500)
+    private fun handleChangeEvent() {
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+        if (sharedPreferences.getBoolean("auto_save_lists", false)) {
+            saveHandler.delayedUpdate { saveShoppingList() { _itemSave?.setAsDisabled() } }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -104,20 +139,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         menuInflater.inflate(R.menu.shopping_list_menu, menu)
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            if (_itemSave?.isEnabled == true) {
-                val deleteAlertBuilder = AlertDialog.Builder(this)
-                    .setMessage(resources.getString(R.string.exit_with_save))
-                    .setCancelable(true)
-                    .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressed() }
-                    .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                        saveShoppingList() { onBackPressed() }
-                    }
-                val deleteAlert = deleteAlertBuilder.create()
-                deleteAlert.show()
-            } else {
-                onBackPressed()
-            }
-            //onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             false
         }
 
@@ -146,6 +168,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
                         //Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
                         adapter.setItems(items)
                         _itemSave?.setAsEnabled()
+                        handleChangeEvent()
                         adapter.notifyDataSetChanged()
                     }
                 }.show(this.supportFragmentManager, null)
@@ -179,6 +202,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
 
     override fun onItemChanged() {
         _itemSave?.setAsEnabled()
+        handleChangeEvent()
     }
 
     override fun onItemClicked(index: Int) {
@@ -192,6 +216,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
                     shoppingListItem.unit = obj.unit
                     shoppingListItem.name = obj.name
                     _itemSave?.setAsEnabled()
+                    handleChangeEvent()
                     adapter.notifyDataSetChanged()
                 }, { dialog, _ -> dialog.cancel() })
                     .show(supportFragmentManager, null)

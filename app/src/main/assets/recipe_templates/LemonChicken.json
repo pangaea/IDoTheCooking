@@ -1,0 +1,146 @@
+{
+  "categories": [
+    {
+      "name": "Dinner"
+    },
+    {
+      "name": "Air fryer"
+    },
+    {
+      "name": "Chicken"
+    }
+  ],
+  "recipes": [
+    {
+      "description":"",
+      "imageUri":"asset://image_library/LemonChicken.jpg",
+      "name":"Lemon chicken",
+      "servings":2,
+      "ingredients":[
+        {
+          "amount":1.0,
+          "name":"Chicken breast",
+          "unit":"lb",
+          "order":0
+        },
+        {
+          "amount":0.0,
+          "name":"Salt",
+          "unit":"",
+          "order":1
+        },
+        {
+          "amount":0.0,
+          "name":"Pepper",
+          "unit":"",
+          "order":2
+        },
+        {
+          "amount":0.3333333333333333,
+          "name":"Flour ",
+          "unit":"cup",
+          "order":3
+        },
+        {
+          "amount":3.0,
+          "name":"Lemon juice",
+          "unit":"tbsp",
+          "order":4
+        },
+        {
+          "amount":0.0,
+          "name":"Olive oil",
+          "unit":"",
+          "order":5
+        },
+        {
+          "amount":1.5,
+          "name":"Minced garlic",
+          "unit":"tsp",
+          "order":6
+        },
+        {
+          "amount":0.5,
+          "name":"Chicken broth",
+          "unit":"cup",
+          "order":7
+        },
+        {
+          "amount":3.0,
+          "name":"Parmesan cheese",
+          "unit":"tbsp",
+          "order":8
+        },
+        {
+          "amount":1.0,
+          "name":"Egg",
+          "unit":"",
+          "order":9
+        },
+        {
+          "amount":4.0,
+          "name":"Unsalted butter",
+          "unit":"tbsp",
+          "order":10
+        },
+        {
+          "amount":1.5,
+          "name":"Fresh parsley",
+          "unit":"tbsp",
+          "order":11
+        }
+      ],
+      "directions":[
+        {
+          "content":"Season both sides of the chicken with salt and pepper",
+          "order":0
+        },
+        {
+          "content":"Dip in egg",
+          "order":1
+        },
+        {
+          "content":"Dredge chicken in flour and Parmesan cheese mix",
+          "order":2
+        },
+        {
+          "content":"Place Oliver oil in pressure cooker and put it in saute mode",
+          "order":3
+        },
+        {
+          "content":"Cook until brown",
+          "order":4
+        },
+        {
+          "content":"Remove from pot",
+          "order":5
+        },
+        {
+          "content":"Add butter, garlic and lemon juice to pot",
+          "order":6
+        },
+        {
+          "content":"Cook for 1 minute",
+          "order":7
+        },
+        {
+          "content":"Add broth and chicken to pot",
+          "order":8
+        },
+        {
+          "content":"Cook on manual mode for 7 minutes",
+          "order":9
+        },
+        {
+          "content":"Add lemon slices and parsley to serve",
+          "order":10
+        }
+      ],
+      "categories":[
+        "Dinner",
+        "Air fryer",
+        "Chicken"
+      ]
+    }
+  ]
+}

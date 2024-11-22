@@ -2,6 +2,9 @@ package com.pangaea.idothecooking.utils.extensions
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.view.View
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -29,4 +32,15 @@ fun Context.readJSONFromAssets(path: String): String {
         e.printStackTrace()
         return ""
     }
+}
+
+fun View.disable() {
+    background.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY)
+    isClickable = false
+    isEnabled = false
+}
+fun View.enable() {
+    background.colorFilter = null
+    isClickable = true
+    isEnabled = true
 }

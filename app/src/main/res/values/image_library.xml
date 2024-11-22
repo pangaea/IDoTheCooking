@@ -25,6 +25,7 @@
     <string name="ChickenParmigianaPizza">Chicken Parmigiana Pizza</string>
     <string name="ChickenSandwich">Chicken Sandwich</string>
     <string name="ChickenTenders">Chicken Tenders</string>
+    <string name="ChickenWings">Chicken Wings</string>
     <string name="ChickenWithMushrooms">Chicken With Mushrooms</string>
     <string name="ChilledPineapples">Chilled Pineapples</string>
     <string name="Chimichanga">Chimichanga</string>
@@ -38,6 +39,7 @@
     <string name="FiletMignon">Filet Mignon</string>
     <string name="FrenchFries">French Fries</string>
     <string name="FrenchOnion">French Onion</string>
+    <string name="FrenchToast">French Toast</string>
     <string name="FreshSalmon">Fresh Salmon</string>
     <string name="FriedBananaWontons">Fried Banana Wontons</string>
     <string name="FriedCalamari">Fried Calamari</string>
@@ -53,11 +55,10 @@
     <string name="GrilledCheese">Grilled Cheese</string>
     <string name="GrilledChicken">Grilled Chicken</string>
     <string name="HotDog">Hot Dog</string>
-    <string name="HotSourSo">Hot Sour So</string>up
+    <string name="HotSoup">Hot Soup</string>up
     <string name="ItalianSalad">Italian Salad</string>
     <string name="Kumquats">Kumquats</string>
     <string name="Lasagna">Lasagna</string>
-    <string name="LazyMansWings">Lazy Mans Wings</string>
     <string name="LemonChicken">Lemon Chicken</string>
     <string name="Manicotti">Manicotti</string>
     <string name="MashedPotatoes">Mashed Potatoes</string>
@@ -73,6 +74,7 @@
     <string name="PorkDumplings">Pork Dumplings</string>
     <string name="PorkWithGarlicSauce">Pork With Garlic Sauce</string>
     <string name="PuPuPlatter">Pu Pu Platter</string>
+    <string name="SausageCrescentRolls">Sausage Crescent Rolls</string>
     <string name="SausagePeppers">Sausage Peppers</string>
     <string name="ScallopsHunanStyle">Scallops Hunan Style</string>
     <string name="SesameBeef">Sesame Beef</string>
@@ -95,6 +97,7 @@
     <string name="SpringRoll">Spring Roll</string>
     <string name="StuffedMushrooms">Stuffed Mushrooms</string>
     <string name="StuffedSkins">Stuffed Skins</string>
+    <string name="SwedishMeatballs">Swedish Meatballs</string>
     <string name="SweetAndSourChicken">Sweet And Sour Chicken</string>
     <string name="TangerineBeef">Tangerine Beef</string>
     <string name="TangerineChicken">Tangerine Chicken</string>

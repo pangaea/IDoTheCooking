@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -22,6 +24,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.android.material.navigation.NavigationView
 import com.pangaea.idothecooking.databinding.ActivityMainBinding
+import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
@@ -29,15 +32,15 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.settings.SettingsActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
+import com.pangaea.idothecooking.utils.connect.LlmGateway
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
+import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.InputStream
-import java.io.InputStreamReader
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -50,6 +53,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val policy = ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -71,6 +77,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    fun getOpenAIApiKey(): String = BuildConfig.OPENAI_API_KEY
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -91,9 +99,6 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_import -> {
-//                val json: String = ReadJSONFromAssets(baseContext, "GrilledCheese.json")
-//                JsonAsyncImportTool(application, this).import(json) {}
-
                 val openDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
                     addCategory(Intent.CATEGORY_OPENABLE)
                     type = "text/*"
@@ -116,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val stream: InputStream? = application.contentResolver.openInputStream(contentUri)
                         if (stream != null) {
-                            JsonAsyncImportTool(application, this).import(stream.readAllBytes().toString(Charset.defaultCharset())){
+                            JsonAsyncImportTool(application, null, this).import(stream.readAllBytes().toString(Charset.defaultCharset())){
                                 CoroutineScope(Dispatchers.Main).launch {
                                     Toast.makeText(applicationContext, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
                                 }

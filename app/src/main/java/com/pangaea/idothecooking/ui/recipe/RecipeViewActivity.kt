@@ -32,6 +32,7 @@ import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewMode
 import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
+import com.pangaea.idothecooking.utils.formatting.RecipeRenderer
 
 class RecipeViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeViewBinding
@@ -70,83 +71,8 @@ class RecipeViewActivity : AppCompatActivity() {
     }
 
     private fun drawRecipe() {
-        val htmlRecipe = renderRecipe(R.string.html_recipe, R.string.html_recipe_ingredient,
-                                      R.string.html_recipe_direction)
+        val htmlRecipe = RecipeRenderer(this.applicationContext, recipeDetails, servingSize, categoryMap).drawRecipeHtml()
         binding.viewport.loadDataWithBaseURL(null, htmlRecipe, "text/html", "utf-8", null);
-    }
-
-    private fun renderRecipe(template: Int, ingredientTemplate: Int, directionTemplate: Int): String {
-        val ingredientBuilder = StringBuilder()
-        val htmlRecipeIngredient = getString(ingredientTemplate)
-        val ingredients = recipeDetails.ingredients.toMutableList()
-
-        var adjRatio: Double = 1.0
-        if (recipeDetails.recipe.servings > 0) {
-            // Avoid division by zero
-            adjRatio = (servingSize.toDouble() / recipeDetails.recipe.servings)
-        }
-        ingredients.sortWith { obj1, obj2 ->
-            Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-        }
-        ingredients.forEach { ingredient: Ingredient ->
-            do {
-                if (ingredient.amount != null && ingredient.amount!! > 0f) {
-                    var adjAmount = ingredient.amount
-                    if (adjRatio != 1.0) {
-                        adjAmount = ingredient.amount!! * adjRatio
-                    }
-                    val frac: Pair<String, Double>? = adjAmount?.vulgarFraction
-                    if (frac != null) {
-                        val amount = frac.first + " " + ingredient.unit
-                        ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", amount)
-                                                     .replace("{{name}}", ingredient.name))
-                        break;
-                    }
-                }
-
-                ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", "")
-                                             .replace("{{name}}", ingredient.name))
-            } while (false)
-        }
-
-        val directionBuilder = StringBuilder()
-        val htmlRecipeDirection = getString(directionTemplate)
-        val directions = recipeDetails.directions.toMutableList()
-        directions.sortWith { obj1, obj2 ->
-            Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
-        }
-        directions.forEachIndexed { index, direction: Direction ->
-            directionBuilder.append(htmlRecipeDirection.replace("{{content}}", direction.content)
-                                        .replace("{{step}}", (index+1).toString()))
-        }
-
-        var imageElem = ""
-        if (!recipeDetails.recipe.imageUri.isNullOrEmpty()) {
-            if (recipeDetails.recipe.imageUri!!.startsWith(ImageTool.assetProtocol)) {
-                val assetName = recipeDetails.recipe.imageUri!!.substring(ImageTool.assetProtocol.length)
-                imageElem = "<img length=\"100px\" width=\"100px\" src=\""+  "file:///android_asset/${assetName}" + "\">";
-            } else {
-                imageElem =
-                    "<img length=\"100px\" width=\"100px\" src=\"" + recipeDetails.recipe.imageUri.toString() + "\">";
-            }
-        }
-
-        val htmlRecipeCategories =
-            recipeDetails.categories.joinToString(", ") { o -> categoryMap[o.category_id]!! }
-
-        var htmlRecipe = getString(template)
-        htmlRecipe = htmlRecipe.replace("{{title}}", recipeDetails.recipe.name).replace("{{description}}", recipeDetails.recipe.description)
-            .replace("{{ingredients}}", ingredientBuilder.toString())
-            .replace("{{directions}}", directionBuilder.toString())
-            .replace("{{image}}", imageElem)
-            .replace("{{categories}}", htmlRecipeCategories)
-
-        if (recipeDetails.recipe.servings > 0) {
-            htmlRecipe = htmlRecipe.replace("{{servings}}", servingSize.toString())
-        } else {
-            htmlRecipe = htmlRecipe.replace("{{servings}}", "?")
-        }
-        return htmlRecipe
     }
 
     object RequestCode {
@@ -246,8 +172,7 @@ class RecipeViewActivity : AppCompatActivity() {
     }
 
     private fun sendSMS(phoneNumber: String) {
-        val textRecipe = renderRecipe(R.string.text_recipe, R.string.text_recipe_ingredient,
-                                      R.string.text_recipe_direction)
+        val textRecipe = RecipeRenderer(this.applicationContext, recipeDetails, servingSize, categoryMap).drawRecipeText()
         try {
             val smsManager = SmsManager.getDefault()
             val parts = smsManager.divideMessage(textRecipe)

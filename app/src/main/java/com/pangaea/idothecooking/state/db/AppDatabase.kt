@@ -102,7 +102,7 @@ abstract class AppDatabase : RoomDatabase() {
             suspend fun initDatabase() {
                 val json: String? = appContext?.readJSONFromAssets("init_basic.json")
                 if (json != null) {
-                    val p = JsonImportTool(mainApp, emptyMap<String, Int>().toMutableMap(),
+                    val p = JsonImportTool(mainApp, null, emptyMap<String, Int>().toMutableMap(),
                                    emptyMap<String, Int>().toMutableMap(),
                                    emptyMap<String, Int>().toMutableMap())
                     p.import(json)

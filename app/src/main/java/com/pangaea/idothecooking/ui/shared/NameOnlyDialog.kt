@@ -17,16 +17,28 @@ class NameOnlyDialog(val resInt: Int, val name: String?, val callback: (name: St
         if (name != null) {
             nameView.setText(name)
         }
-        return AlertDialog.Builder(requireContext())
-        //.setTitle(resources.getString(R.string.create_recipe_title))
+        val dlg: AlertDialog = AlertDialog.Builder(requireContext())
         .setTitle(resources.getString(resInt))
         .setView(layout)
-        .setPositiveButton(resources.getString(R.string.save)) { _, _ ->
-            //val name = layout.findViewById<TextInputEditText>(R.id.name)
-            callback(nameView.text.toString()) }
+        .setPositiveButton(resources.getString(R.string.save), null)
         .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
             dialog.cancel() }
             .create()
+
+        // Handle validation of form fields
+        dlg.setOnShowListener {
+            val mPositiveButton = dlg.getButton(AlertDialog.BUTTON_POSITIVE)
+            mPositiveButton.setOnClickListener {
+                if (nameView.text!!.isEmpty()) {
+                    nameView.setError(resources.getString(R.string.recipe_name_missing))
+                } else {
+                    callback(nameView.text.toString())
+                    dlg.cancel()
+                }
+            }
+        }
+        nameView.requestFocus()
+        return dlg;
     }
 
     override fun onResume() {

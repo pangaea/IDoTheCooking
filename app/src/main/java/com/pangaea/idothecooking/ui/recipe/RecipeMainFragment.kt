@@ -1,8 +1,16 @@
 package com.pangaea.idothecooking.ui.recipe
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +18,13 @@ import android.widget.NumberPicker
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeMainBinding
 import com.pangaea.idothecooking.state.db.entities.Recipe
@@ -23,6 +35,10 @@ import com.pangaea.idothecooking.ui.shared.ImageAssetsDialog
 import com.pangaea.idothecooking.ui.shared.SelectAssetsDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
+import java.io.File
+import java.io.File.separator
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 
 /**
@@ -77,7 +93,7 @@ class RecipeMainFragment : Fragment() {
             if (recipe.recipe.imageUri == null || recipe.recipe.imageUri!!.isEmpty()) {
                 binding.editImage.setImageDrawable(resources.getDrawable(R.mipmap.image_placeholder3))
             } else {
-                ImageTool(binding.editImage, requireActivity()).display(recipe.recipe.imageUri!!)
+                ImageTool(requireActivity()).display(binding.editImage, recipe.recipe.imageUri!!)
                 imageUri = recipe.recipe.imageUri!!
             }
 
@@ -112,10 +128,19 @@ class RecipeMainFragment : Fragment() {
                         R.id.item_gallery -> {
                             pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                         }
+                        R.id.item_camera -> {
+                            if (ContextCompat.checkSelfPermission(requireActivity().application,
+                                                                  Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                                requestPermissions(arrayOf(Manifest.permission.CAMERA),
+                                                   RequestCode.CAMERA)
+                            } else {
+                                openCamera()
+                            }
+                        }
                         R.id.item_library -> {
                             ImageAssetsDialog(imageUri) { o ->
                                 imageUri = "asset://image_library/${o}"
-                                ImageTool(binding.editImage, requireActivity()).display(imageUri)
+                                ImageTool(requireActivity()).display(binding.editImage, imageUri)
                                 fireCallback();
                             }.show(childFragmentManager, null)
                         }
@@ -155,7 +180,41 @@ class RecipeMainFragment : Fragment() {
 
     }
 
-    fun fireCallback() {
+    object RequestCode {
+        const val CAMERA = 0
+    }
+
+    private fun openCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, RequestCode.CAMERA)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == RequestCode.CAMERA && grantResults.isNotEmpty()) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera()
+            }
+        }
+    }
+
+    @SuppressLint("Range", "Recycle")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != AppCompatActivity.RESULT_OK) return
+        if (requestCode == RequestCode.CAMERA && data != null) {
+            val photo: Bitmap = data.extras?.get("data") as Bitmap
+            //binding.editImage.setImageBitmap(photo)
+            val imageTool = ImageTool(requireActivity())
+            imageUri = imageTool.saveImage(photo, "recipe_photos")
+            imageTool.display(binding.editImage, imageUri)
+            fireCallback();
+        }
+    }
+
+    private fun fireCallback() {
         val recipe = Recipe()
         recipe.name = binding.editName.text.toString()
         recipe.description = binding.editDesc.text.toString()

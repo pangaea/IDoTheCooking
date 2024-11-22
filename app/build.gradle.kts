@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,6 +18,14 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        // Load the values from apikey.properties file
+        val keystoreFile = project.rootProject.file("apikey.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+        val apiKey = properties.getProperty("OPENAI_API_KEY") ?: ""
+        buildConfigField("String", "OPENAI_API_KEY", apiKey)
+        ////////////////////////////////////
 
         testInstrumentationRunner = "androidx.test.ext.junit.runners.AndroidJUnit4"
         vectorDrawables {
@@ -140,8 +150,6 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     val room_version = "2.6.0"
     implementation("androidx.room:room-runtime:$room_version")
-    //annotationProcessor("androidx.room:room-compiler:$room_version")
-    //annotationProcessor("androidx.room:room-compiler:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     // For Kotlin use kapt instead of annotationProcessor
 
@@ -169,8 +177,11 @@ dependencies {
     implementation("com.robertlevonyan.view:MaterialExpansionPanel:2.1.3")
 }
 
-//dependencies {
-//    implementation("com.google.api-client:google-api-client:2.0.0")
-//    implementation("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
-//    implementation("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0")
-//}
+dependencies {
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+}

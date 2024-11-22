@@ -1,34 +1,37 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/home_header">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+<!--        <EditTextPreference-->
+<!--            app:key="signature"-->
+<!--            app:title="@string/signature_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+        <SeekBarPreference
+            android:key="recent_items_count2"
+            android:title="Recent items displayed count"
+            android:summary="Used for recipes and shopping lists"
+            android:defaultValue="3"
+            android:max="10"
+            app:showSeekBarValue="true"
+            app:min="3" />
+
+<!--        <ListPreference-->
+<!--            app:defaultValue="3"-->
+<!--            app:entries="@array/recent_items_count_entries"-->
+<!--            app:entryValues="@array/recent_items_count_values"-->
+<!--            app:key="recent_items_count"-->
+<!--            app:title="Recent items displayed count"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="@string/auto_save_header">
 
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+            app:key="auto_save_lists"
+            app:title="@string/auto_save_lists_title" />
 
     </PreferenceCategory>
 

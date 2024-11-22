@@ -44,6 +44,7 @@
     <style name="recipeHolder">
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
     </style>
 
     <style name="homeAddButton" parent="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
@@ -54,7 +55,7 @@
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_weight">0.5</item>
         <item name="android:layout_width">150dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="iconGravity">start</item>
     </style>
 
@@ -66,7 +67,7 @@
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_weight">0.5</item>
         <item name="android:layout_width">150dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="iconGravity">start</item>
     </style>
 

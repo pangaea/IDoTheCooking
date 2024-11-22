@@ -1,0 +1,80 @@
+{
+  "categories": [
+    {
+      "name": "Breakfast"
+    }
+  ],
+  "recipes": [
+    {
+      "description":"",
+      "imageUri":"asset://image_library/FrenchToast.jpg",
+      "name":"French Toast",
+      "servings":3,
+      "ingredients":[
+         {
+            "amount":3.0,
+            "name":"Eggs",
+            "unit":"",
+            "order":0
+         },
+         {
+            "amount":0.25,
+            "name":"Milk",
+            "unit":"cup",
+            "order":1
+         },
+         {
+            "amount":2.0,
+            "name":"Granulated sugar",
+            "unit":"tbsp",
+            "order":2
+         },
+         {
+            "amount":1.0,
+            "name":"Vanilla extract",
+            "unit":"tsp",
+            "order":3
+         },
+         {
+            "amount":0.5,
+            "name":"Ground cinnamon ",
+            "unit":"tsp",
+            "order":4
+         },
+         {
+            "amount":0.0,
+            "name":"Butter",
+            "unit":"",
+            "order":5
+         },
+         {
+            "amount":0.0,
+            "name":"Bread",
+            "unit":"",
+            "order":6
+         }
+      ],
+      "directions":[
+         {
+            "content":"Put eggs in large bowl and scramble",
+            "order":0
+         },
+         {
+            "content":"Add milk, sugar, vanilla and cinnamon and mix",
+            "order":1
+         },
+         {
+            "content":"Heat skillet until butter melts",
+            "order":2
+         },
+         {
+            "content":"Dip bread in the bowl mixture and cook kin the skillet",
+            "order":3
+         }
+      ],
+      "categories":[
+         "Breakfast"
+      ]
+    }
+  ]
+}

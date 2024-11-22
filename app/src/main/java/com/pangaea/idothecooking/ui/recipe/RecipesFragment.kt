@@ -1,7 +1,6 @@
 package com.pangaea.idothecooking.ui.recipe
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Category
@@ -26,8 +25,9 @@ import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
-import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
+import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
+import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
@@ -35,9 +35,6 @@ import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
-import java.io.InputStreamReader
-
 
 /**
  * A fragment representing a list of Recipes.
@@ -51,6 +48,7 @@ class RecipesFragment : Fragment() {
     private var sortBy: SortBy = SortBy.ModifiedBy
     private var filterCategories: List<Int> = ArrayList()
     private var _view: View? = null
+    private val gridView: Boolean = false
 
     private fun buildList() {
         viewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
@@ -58,7 +56,7 @@ class RecipesFragment : Fragment() {
         if (list is RecyclerView) {
             context?.let { ItemTouchHelper(SwipeDeleteHelper(it, list){ position: Int ->
                 val adapter = list.adapter as RecipeRecyclerViewAdapter
-                val recipe: Recipe = adapter.getItem(position)
+                val recipe: Recipe = adapter.getItem(position).recipe
                 viewModel.delete(recipe)
                 adapter.removeAt(position)
             }).attachToRecyclerView(list) }
@@ -82,7 +80,12 @@ class RecipesFragment : Fragment() {
 
                 with(list) {
                     //addItemDecoration(RecipeItemDecoration(this.context));
-                    layoutManager = LinearLayoutManager(context)
+                    //layoutManager = LinearLayoutManager(context)
+                    layoutManager = if (gridView) {
+                        GridLayoutManager(context, 2)
+                    } else {
+                        LinearLayoutManager(context)
+                    }
 
                     val listener = object : RecycleViewClickListener() {
                         override fun click(id: Int) {
@@ -93,11 +96,11 @@ class RecipesFragment : Fragment() {
                             startActivity(intent)
                         }
                     }
-                    adapter = RecipeRecyclerViewAdapter(filteredList.map{o -> o.recipe}.toMutableList(), listener, requireActivity())
+                    adapter = RecipeRecyclerViewAdapter(filteredList.toMutableList(), listener, requireActivity())
                 }
 
                 //list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-                list.layoutManager = LinearLayoutManager(context)
+                //list.layoutManager = LinearLayoutManager(context)
             }
         }
     }
@@ -111,19 +114,7 @@ class RecipesFragment : Fragment() {
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab?.setOnClickListener {
-            NameOnlyDialog(R.string.create_recipe_title, null) { name ->
-                val recipe = Recipe()
-                recipe.name = name
-                recipe.description = ""
-                val details = RecipeDetails(recipe, emptyList(), emptyList(), emptyList())
-                viewModel.insert(details) { id: Long ->
-                    val recipeIntent = Intent(activity, RecipeActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putInt("id", id.toInt())
-                    recipeIntent.putExtras(bundle)
-                    startActivity(recipeIntent)
-                }
-            }.show(childFragmentManager, null)
+            CreateRecipeDialog(CreateRecipeAdapter(this, viewModel)).show(childFragmentManager, null)
         }
         return view
     }
@@ -153,7 +144,7 @@ class RecipesFragment : Fragment() {
                     // Import template
                     val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
                     if (json != null) {
-                        JsonAsyncImportTool(requireActivity().application, this).import(json){
+                        JsonAsyncImportTool(requireActivity().application, null, this).import(json){
                             CoroutineScope(Dispatchers.Main).launch {
                                 Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
                             }
