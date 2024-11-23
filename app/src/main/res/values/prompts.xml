@@ -2,7 +2,7 @@
 <resources>
     <string name="prompt_suggest_recipes"><![CDATA[
         Suggest recipes with description: {0},
-        respond in JSON return name,
+        respond in JSON array, return name,
         ingredients and directions format ingredients by quantity, unit and name, no fractions
     ]]></string>
 </resources>
