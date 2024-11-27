@@ -30,16 +30,26 @@
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content">-->
 
-        <TextView
-            android:id="@+id/header"
-            android:text="Import From Library"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginEnd="1dp"
-            android:gravity="center_vertical"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/header"
+                android:text="@string/import_from_library"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginEnd="1dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/recipeGenerator"
+                android:text="@string/generate"
+                android:background="@drawable/roundedbutton"
+                style="@style/recipeGenButton"/>
+        </LinearLayout>
         <ScrollView
             android:layout_height="wrap_content"
             android:layout_width="match_parent">

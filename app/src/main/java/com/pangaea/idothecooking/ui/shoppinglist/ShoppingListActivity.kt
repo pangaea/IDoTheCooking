@@ -2,12 +2,11 @@ package com.pangaea.idothecooking.ui.shoppinglist
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
-import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
@@ -99,7 +98,6 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
                 }, { dialog, _ -> dialog.cancel() })
                     .show(supportFragmentManager, null)
             }
-
         }
 
         // Handle back navigation
@@ -110,7 +108,7 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
                 this.remove()
                 if (_itemSave?.isEnabled == true) {
                     val deleteAlertBuilder = AlertDialog.Builder(self)
-                        .setMessage(resources.getString(R.string.exit_with_save))
+                        .setMessage(Html.fromHtml(resources.getString(R.string.exit_with_save_auto_save)))
                         .setCancelable(true)
                         .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressedDispatcher.onBackPressed() }
                         .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->

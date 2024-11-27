@@ -22,7 +22,7 @@
             android:title="@string/menu_shopping_lists" />
         <item
             android:id="@+id/nav_recipe_generator"
-            android:icon="@mipmap/design_icon"
+            android:icon="@mipmap/generative"
             android:title="@string/recipe_generator" />
     </group>
 </menu>

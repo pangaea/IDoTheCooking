@@ -12,8 +12,10 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.findNavController
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeCallBackListener
@@ -54,12 +56,18 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
                     nameView.setError(resources.getString(R.string.recipe_name_missing))
                 } else {
                     var fileName: String? = null
-                    if(checkedId >= 0) {
+                    if (checkedId >= 0) {
                         fileName = fileNames?.get(checkedId)
                     }
                     callback.createRecipe(nameView.text.toString(), fileName)
                     dlg.cancel()
                 }
+            }
+
+            dlg.findViewById<MaterialButton>(R.id.recipeGenerator)?.setOnClickListener {
+                dlg.cancel()
+                activity?.findNavController(R.id.nav_host_fragment_content_main)
+                    ?.navigate(R.id.nav_recipe_generator)
             }
         }
         nameView.requestFocus()

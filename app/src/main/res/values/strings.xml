@@ -39,9 +39,11 @@
     <string name="import_error_recipe_exists">Recipe [{0}] already exists</string>
     <string name="import_error_recipe">Error saving recipe [{0}]</string>
     <string name="import_error_shopping_list">Error saving shopping list [{0}]</string>
+    <string name="import_from_library">Import From Library, or...</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
+    <string name="exit_with_save_auto_save"><![CDATA[You\'ve made changes. Save before exiting? <b>(Enable AutoSave in Settings to avoid manually saving changes.)</b>]]></string>
     <string name="delete_confirmation">Confirm delete of recipe: {0}</string>
 
     <string name="overview_tab">Overview</string>
@@ -152,9 +154,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="recipe_generator">Recipe Generator</string>
+    <string name="recipe_generate">Generate Recipe</string>
     <string name="generated_from_openai">Generated from OpenAi</string>
     <string name="new_ai_recipe">New AI Recipe</string>
     <string name="description_missing">Description required</string>
     <string name="description_hint">Describe the recipe you are looking for...</string>
     <string name="import_recipe">Import</string>
+    <string name="generate">Generate</string>
 </resources>
