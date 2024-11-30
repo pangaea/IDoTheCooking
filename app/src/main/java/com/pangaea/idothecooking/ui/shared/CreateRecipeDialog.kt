@@ -19,6 +19,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeCallBackListener
+import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import java.io.InputStream
 
@@ -70,7 +71,8 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
                     ?.navigate(R.id.nav_recipe_generator)
             }
         }
-        nameView.requestFocus()
+        //nameView.requestFocus()
+        nameView.focusAndShowKeyboard()
         return dlg;
     }
 

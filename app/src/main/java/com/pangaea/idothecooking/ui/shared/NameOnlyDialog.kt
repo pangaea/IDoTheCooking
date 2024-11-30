@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
+import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
 
 class NameOnlyDialog(val resInt: Int, val name: String?, val callback: (name: String) -> Unit) : DialogFragment() {
 
@@ -37,7 +38,8 @@ class NameOnlyDialog(val resInt: Int, val name: String?, val callback: (name: St
                 }
             }
         }
-        nameView.requestFocus()
+        //nameView.requestFocus()
+        nameView.focusAndShowKeyboard()
         return dlg;
     }
 

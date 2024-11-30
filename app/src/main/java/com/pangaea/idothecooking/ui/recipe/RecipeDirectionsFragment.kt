@@ -19,8 +19,7 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeDirectionsAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
-
-//private const val RECIPE_DIRECTIONS = "recipeDirections"
+import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
 
 /**
  * A simple [Fragment] subclass.
@@ -160,7 +159,8 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
                 alertBuilder.setTitle(resources.getString(R.string.direction_new_title))
                 alertBuilder.setPositiveButton(resources.getString(R.string.add), callback)
             }
-            details?.requestFocus()
+            //details?.requestFocus()
+            details?.focusAndShowKeyboard()
             alertBuilder.show()
         }
     }

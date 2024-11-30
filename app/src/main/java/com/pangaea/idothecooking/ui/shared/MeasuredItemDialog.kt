@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.MeasuredItem
+import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
 import com.pangaea.idothecooking.utils.extensions.fractionValues
 import com.pangaea.idothecooking.utils.extensions.fractions
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
@@ -99,7 +100,8 @@ class MeasuredItemDialog(val resInt: Int,
                 R.string.cancel,
                 listenerCancel
             )
-        nameView.requestFocus()
+        //nameView.requestFocus()
+        nameView.focusAndShowKeyboard()
         return ingredientView.create()
     }
 
