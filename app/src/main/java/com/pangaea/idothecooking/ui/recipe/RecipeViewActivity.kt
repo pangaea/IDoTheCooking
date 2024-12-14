@@ -10,6 +10,7 @@ import android.print.PrintManager
 import android.provider.ContactsContract
 import android.telephony.SmsManager
 import android.view.Menu
+import android.view.WindowManager
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,21 +18,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityRecipeViewBinding
-import com.pangaea.idothecooking.state.db.entities.Direction
-import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
-import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shared.NumberOnlyDialog
 import com.pangaea.idothecooking.ui.shared.PicklistDlg
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
-import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 import com.pangaea.idothecooking.utils.formatting.RecipeRenderer
 
 class RecipeViewActivity : AppCompatActivity() {
@@ -39,7 +36,7 @@ class RecipeViewActivity : AppCompatActivity() {
     private lateinit var viewModel: RecipeViewModel
     private var recipeId: Int = -1
     private lateinit var recipeDetails: RecipeDetails
-    private var servingSize: Int = 0;
+    private var servingSize: Int = 0
     private val categoryMap = emptyMap<Int, String>().toMutableMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +63,14 @@ class RecipeViewActivity : AppCompatActivity() {
             categoryViewModel.getAllCategories().observe(this) { categories ->
                 categoryMap.putAll(categories.associateBy({ it.id }, { it.name }).toMap())
                 drawRecipe()
+            }
+        }
+
+        binding.materialSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
         }
     }
