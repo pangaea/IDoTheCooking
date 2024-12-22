@@ -157,7 +157,7 @@
     <string name="generated_from_openai">Generated from OpenAi</string>
     <string name="new_ai_recipe">New AI Recipe</string>
     <string name="description_missing">Description required</string>
-    <string name="description_hint">Describe the recipe you are looking for...</string>
+    <string name="description_hint">Describe the recipe you are looking for…</string>
     <string name="import_recipe">Import</string>
     <string name="generate">Generate</string>
 </resources>
