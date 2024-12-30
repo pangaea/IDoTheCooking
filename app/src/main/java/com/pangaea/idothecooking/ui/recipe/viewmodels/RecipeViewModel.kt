@@ -29,6 +29,9 @@ class RecipeViewModel(val app: Application, private val recipeId: Long?) : ViewM
     fun getDetails(): LiveData<List<RecipeDetails>>? {
         return recipeId?.let { recipeRepository.getRecipeWithDetails(it) }
     }
+    fun getRecipeByName(name: String): LiveData<List<Recipe>> {
+        return recipeRepository.getRecipeByName(name)
+    }
 //    fun handleErrors(callback: () -> Long): Long {
 //        try {
 //            return callback()

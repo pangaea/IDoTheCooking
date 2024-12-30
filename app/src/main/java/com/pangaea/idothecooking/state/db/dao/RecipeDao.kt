@@ -29,6 +29,9 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes WHERE id IN (:recipeIds) order by modified_at COLLATE NOCASE desc")
     fun loadRecipesWithDetailsByIds(recipeIds: IntArray): LiveData<List<RecipeDetails>>
 
+    @Query("SELECT * FROM recipes WHERE name IN (:recipeNames)")
+    fun loadRecipesByNames(recipeNames: Array<String>): LiveData<List<Recipe>>
+
     @Insert
     suspend fun insert(recipe: Recipe): Long
 

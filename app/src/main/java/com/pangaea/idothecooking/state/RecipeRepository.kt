@@ -30,6 +30,10 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         return recipeDao.loadRecipesWithDetailsByIds(intArrayOf(id.toInt()))
     }
 
+    fun getRecipeByName(name: String): LiveData<List<Recipe>> {
+        return recipeDao.loadRecipesByNames(arrayOf(name))
+    }
+
     suspend fun insert(recipe: RecipeDetails): Long {
         insertWithTimestamp(recipe.recipe)
         return recipeDao.createAll(directionDao, ingredientDao, recipeCategoryLinkDao, recipe).toLong()

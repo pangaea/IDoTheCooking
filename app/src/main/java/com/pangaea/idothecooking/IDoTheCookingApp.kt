@@ -8,8 +8,4 @@ class IDoTheCookingApp : Application() {
     fun getDatabase(): AppDatabase {
         return AppDatabase.getDatabase(this)
     }
-
-//    fun getRecipeRepository(): RecipeRepository {
-//        return RecipeRepository(this)
-//    }
 }

@@ -1,7 +1,6 @@
 package com.pangaea.idothecooking
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -24,7 +23,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.android.material.navigation.NavigationView
 import com.pangaea.idothecooking.databinding.ActivityMainBinding
-import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
@@ -32,10 +30,8 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.settings.SettingsActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
-import com.pangaea.idothecooking.utils.connect.LlmGateway
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
-import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

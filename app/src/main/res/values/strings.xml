@@ -80,6 +80,7 @@
     <string name="create_recipe_msg">Create a new recipe</string>
     <string name="create_from_scratch">Create from scratch</string>
     <string name="create_from_scratch_desc">Empty recipe</string>
+    <string name="rename_recipe_before_save">A recipe of the same name already exists. Please enter a new name.</string>
 
     <string name="create_category_title">Category</string>
     <string name="create_category_msg">Create a new category</string>

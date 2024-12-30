@@ -1,7 +1,6 @@
 package com.pangaea.idothecooking.ui.llm
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.llm.adapters.RecipeGeneratorAdapter
-import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.utils.connect.LlmGateway
 import com.pangaea.idothecooking.utils.extensions.disable
@@ -57,6 +56,7 @@ class RecipeGeneratorFragment : Fragment() {
                     fab.disable()
                     descView.disable()
 
+                    val me: Fragment = this
                     GlobalScope.launch {
                         LlmGateway(requireContext()).suggestRecipe(descView.text.toString()) { generatedRecipes ->
                             requireActivity().runOnUiThread {
@@ -71,14 +71,7 @@ class RecipeGeneratorFragment : Fragment() {
                                     val listener = object : RecycleViewClickListener() {
                                         override fun click(id: Int) {
                                             ViewRecipeDialog(generatedRecipes[id]) { recipe ->
-                                                recipeViewModel.insert(recipe) { id ->
-                                                    val intent =
-                                                        Intent(activity, RecipeActivity::class.java)
-                                                    val b = Bundle()
-                                                    b.putInt("id", id.toInt())
-                                                    intent.putExtras(b)
-                                                    startActivity(intent)
-                                                }
+                                                CreateRecipeAdapter(me, recipeViewModel).attemptRecipeInsert(recipe)
                                             }.show(childFragmentManager, null)
                                         }
                                     }
