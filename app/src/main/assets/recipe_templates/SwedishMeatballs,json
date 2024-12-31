@@ -24,9 +24,9 @@
             "order":1
          },
          {
-            "amount":1.5,
-            "name":"cups grape jelly",
-            "unit":"cups",
+            "amount":18,
+            "name":"grape jelly",
+            "unit":"oz",
             "order":2
          },
          {

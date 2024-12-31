@@ -24,27 +24,26 @@ class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel:
 
     fun attemptRecipeInsert(recipe: RecipeDetails) {
         fragment.activity?.runOnUiThread {
-            viewModel.getRecipeByName(recipe.recipe.name)
-                .observeOnce(fragment) { recipes ->
-                    if (recipes.isEmpty()) {
-                        viewModel.insert(recipe) { id ->
-                            val intent = Intent(fragment.activity, RecipeActivity::class.java)
-                            val b = Bundle()
-                            b.putInt("id", id.toInt())
-                            intent.putExtras(b)
-                            fragment.requireActivity().startActivity(intent)
-                        }
-                    } else {
-                        // Name exists - prompt for a new one
-                        NameOnlyDialog(R.string.rename_recipe_before_save,
-                                       recipe.recipe.name) { name ->
-                            recipe.recipe.name = name
-                            attemptRecipeInsert(recipe)
-                        }.show(fragment.childFragmentManager, null)
+            viewModel.getRecipeByName(recipe.recipe.name).observeOnce(fragment) { recipes ->
+                if (recipes.isEmpty()) {
+                    viewModel.insert(recipe) { id ->
+                        val intent = Intent(fragment.activity, RecipeActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putInt("id", id.toInt())
+                        intent.putExtras(bundle)
+                        fragment.requireActivity().startActivity(intent)
                     }
+                } else {
+                    // Name exists - prompt for a new one
+                    NameOnlyDialog(R.string.rename_recipe_before_save, recipe.recipe.name) { name ->
+                        recipe.recipe.name = name
+                        attemptRecipeInsert(recipe)
+                    }.show(fragment.childFragmentManager, null)
                 }
+            }
         }
     }
+
     override fun createRecipe(name: String, fileName: String?) {
         if (fileName == null) {
             val recipe = Recipe()

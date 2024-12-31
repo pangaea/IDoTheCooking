@@ -20,7 +20,10 @@ class JsonAsyncImportTool(val app: Application, private var replaceName: String?
                              var recipeMap: MutableMap<String, Int>,
                              var shoppingListMap: MutableMap<String, Int>)
 
-    private fun loadData(importContext: ImportContext, callback: (importContext: ImportContext) -> Unit) {
+    private fun loadData(callback: (importContext: ImportContext) -> Unit) {
+        val importContext = ImportContext(emptyMap<String, Int>().toMutableMap(),
+                                          emptyMap<String, Int>().toMutableMap(),
+                                          emptyMap<String, Int>().toMutableMap())
         val categoryViewModel = CategoryViewModelFactory(app, null).create(CategoryViewModel::class.java)
         val recipeViewModel = RecipeViewModelFactory(app, null).create(RecipeViewModel::class.java)
         val shoppingListViewModel = ShoppingListViewModelFactory(app,null).create(ShoppingListViewModel::class.java)
@@ -39,12 +42,9 @@ class JsonAsyncImportTool(val app: Application, private var replaceName: String?
 
     @OptIn(DelicateCoroutinesApi::class)
     fun import(json: String, callback: Consumer<List<JsonImportTool.ParseLog>>) {
-        val importContext = ImportContext(emptyMap<String, Int>().toMutableMap(),
-                                          emptyMap<String, Int>().toMutableMap(),
-                                          emptyMap<String, Int>().toMutableMap())
         val messages: MutableList<JsonImportTool.ParseLog> = emptyList<JsonImportTool.ParseLog>().toMutableList()
         try {
-            loadData(importContext) { cxt ->
+            loadData() { cxt ->
                 GlobalScope.launch {
                     val errs = JsonImportTool(app, replaceName,
                                               cxt.categoryMap,
