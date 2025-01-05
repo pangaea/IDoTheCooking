@@ -15,12 +15,12 @@ import kotlinx.coroutines.launch
 import java.util.Optional
 import java.util.function.Consumer
 
-class JsonAsyncImportTool(val app: Application, private var replaceName: String?, private val lifecycleOwner: LifecycleOwner) {
+class JsonAsyncImportTool(val app: Application, private val lifecycleOwner: LifecycleOwner): JsonAsyncImportInterface {
     data class ImportContext(var categoryMap: MutableMap<String, Int>,
                              var recipeMap: MutableMap<String, Int>,
                              var shoppingListMap: MutableMap<String, Int>)
 
-    private fun loadData(callback: (importContext: ImportContext) -> Unit) {
+    fun loadData(callback: (callback: JsonAsyncImportInterface, importContext: ImportContext) -> Unit) {
         val importContext = ImportContext(emptyMap<String, Int>().toMutableMap(),
                                           emptyMap<String, Int>().toMutableMap(),
                                           emptyMap<String, Int>().toMutableMap())
@@ -31,34 +31,35 @@ class JsonAsyncImportTool(val app: Application, private var replaceName: String?
             importContext.categoryMap = categories.associateBy({ it.name }, { it.id }).toMutableMap()
             recipeViewModel.getAllRecipes().observeOnce(lifecycleOwner) { recipes ->
                 importContext.recipeMap = recipes.associateBy({ it.name }, { it.id }).toMutableMap()
-                shoppingListViewModel.getAllShoppingLists()
-                    .observeOnce(lifecycleOwner) { shoppingLists ->
-                        importContext.shoppingListMap = shoppingLists.associateBy({ it.name }, { it.id }).toMutableMap()
-                        callback(importContext)
-                    }
+                shoppingListViewModel.getAllShoppingLists().observeOnce(lifecycleOwner) { shoppingLists ->
+                    importContext.shoppingListMap = shoppingLists.associateBy({ it.name }, { it.id }).toMutableMap()
+                    callback(this, importContext)
+                }
             }
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun import(json: String, callback: Consumer<List<JsonImportTool.ParseLog>>) {
-        val messages: MutableList<JsonImportTool.ParseLog> = emptyList<JsonImportTool.ParseLog>().toMutableList()
-        try {
-            loadData() { cxt ->
-                GlobalScope.launch {
-                    val errs = JsonImportTool(app, replaceName,
-                                              cxt.categoryMap,
-                                              cxt.recipeMap,
-                                              cxt.shoppingListMap).import(json)
-                    Optional.ofNullable(callback)
-                        .ifPresent { o: Consumer<List<JsonImportTool.ParseLog>> ->
-                            o.accept(errs)
-                        }
+    private fun launchImportTool(json: String, replacementName: String?, ctx: ImportContext,
+                                 callback: Consumer<List<JsonImportTool.ParseLog>>) {
+        GlobalScope.launch {
+            val errs = JsonImportTool(app, replacementName,
+                                      ctx.categoryMap,
+                                      ctx.recipeMap,
+                                      ctx.shoppingListMap).import(json)
+            Optional.ofNullable(callback)
+                .ifPresent { o: Consumer<List<JsonImportTool.ParseLog>> ->
+                    o.accept(errs)
                 }
-            }
-        } catch(e: Exception) {
-            messages.add(JsonImportTool.ParseLog(JsonImportTool.MessageType.ERROR,
-                                                 e.message.let{e.message} ?: "Error loading data"))
         }
+    }
+
+    override fun import(json: String, replacementName: String?, ctx: ImportContext,
+                        callback: Consumer<List<JsonImportTool.ParseLog>>): Boolean {
+        if (!ctx.recipeMap.contains(replacementName)) {
+            launchImportTool(json, replacementName, ctx, callback)
+            return true
+        }
+        return false
     }
 }

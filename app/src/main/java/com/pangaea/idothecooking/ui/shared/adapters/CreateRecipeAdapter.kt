@@ -11,6 +11,7 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.RecipeActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
+import com.pangaea.idothecooking.utils.data.JsonAsyncImportInterface
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.data.JsonImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
@@ -44,6 +45,24 @@ class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel:
         }
     }
 
+    private fun attemptRecipeInsert(json: String, replacementName: String?, tool: JsonAsyncImportInterface,
+                                    ctx: JsonAsyncImportTool.ImportContext) {
+        fragment.activity?.runOnUiThread {
+            if (!tool.import(json, replacementName, ctx) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Toast.makeText(fragment.context,
+                                       fragment.getString(R.string.import_complete),
+                                       Toast.LENGTH_LONG).show()
+                    }
+                }) {
+                // Name exists - prompt for a new one
+                NameOnlyDialog(R.string.rename_recipe_before_save, replacementName) { name ->
+                    attemptRecipeInsert(json, name, tool, ctx)
+                }.show(fragment.childFragmentManager, null)
+            }
+        }
+    }
+
     override fun createRecipe(name: String, fileName: String?) {
         if (fileName == null) {
             val recipe = Recipe()
@@ -51,24 +70,11 @@ class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel:
             recipe.description = ""
             attemptRecipeInsert(RecipeDetails(recipe, emptyList(), emptyList(), emptyList()))
         } else {
-            // Import template
+            // Import from template
             val json: String? = fragment.context?.readJSONFromAssets("recipe_templates/${fileName}")
             if (json != null) {
-                JsonAsyncImportTool(fragment.requireActivity().application, name, fragment).import(json){
-                    CoroutineScope(Dispatchers.Main).launch {
-                        if (it.isEmpty()) {
-                            Toast.makeText(fragment.context,
-                                           fragment.getString(R.string.import_complete),
-                                           Toast.LENGTH_LONG).show()
-                        } else {
-                            val errs: String = it.map{
-                                it.message
-                            }.joinToString { it -> it }
-                            Toast.makeText(fragment.context,
-                                           errs,
-                                           Toast.LENGTH_LONG).show()
-                        }
-                    }
+                JsonAsyncImportTool(fragment.requireActivity().application, fragment).loadData() { tool, ctx ->
+                    attemptRecipeInsert(json, name, tool, ctx)
                 }
             }
         }

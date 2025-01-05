@@ -117,13 +117,19 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val stream: InputStream? = application.contentResolver.openInputStream(contentUri)
                         if (stream != null) {
-                            JsonAsyncImportTool(application, null, this).import(stream.readAllBytes().toString(Charset.defaultCharset())){
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    Toast.makeText(applicationContext, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
+                            JsonAsyncImportTool(application, this).loadData() { tool, ctx ->
+                                tool.import(stream.readAllBytes()
+                                                .toString(Charset.defaultCharset()), null, ctx) {
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        Toast.makeText(applicationContext,
+                                                       getString(R.string.import_complete),
+                                                       Toast.LENGTH_LONG).show()
+                                    }
                                 }
                             }
                         }
                     } catch (exception: FileNotFoundException) {
+                        Toast.makeText(applicationContext, exception.message, Toast.LENGTH_LONG).show()
                     }
                 }
             }

@@ -139,20 +139,20 @@ class RecipesFragment : Fragment() {
                 }
                 return true
             }
-            R.id.item_library -> {
-                RecipeTemplateAssetsDialog(null) { fileName ->
-                    // Import template
-                    val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
-                    if (json != null) {
-                        JsonAsyncImportTool(requireActivity().application, null, this).import(json){
-                            CoroutineScope(Dispatchers.Main).launch {
-                                Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                }.show(childFragmentManager, null)
-                return true
-            }
+//            R.id.item_library -> {
+//                RecipeTemplateAssetsDialog(null) { fileName ->
+//                    // Import template
+//                    val json: String? = context?.let { it.readJSONFromAssets("recipe_templates/${fileName}") }
+//                    if (json != null) {
+//                        JsonAsyncImportTool(requireActivity().application, null, this).import(json){
+//                            CoroutineScope(Dispatchers.Main).launch {
+//                                Toast.makeText(context, getString(R.string.import_complete), Toast.LENGTH_LONG).show()
+//                            }
+//                        }
+//                    }
+//                }.show(childFragmentManager, null)
+//                return true
+//            }
             else -> super.onOptionsItemSelected(item)
         }
     }
