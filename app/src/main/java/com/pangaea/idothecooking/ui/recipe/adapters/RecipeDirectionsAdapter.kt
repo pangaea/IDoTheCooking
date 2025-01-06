@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.ui.recipe.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.text.Editable
@@ -27,6 +28,7 @@ class RecipeDirectionsAdapter(
         return RecipeDirectionViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecipeDirectionViewHolder, position: Int) {
         holder.textView.setText(mItems!![position].content)
         holder.itemView.setOnClickListener { mDragStartListener.onItemClicked(position) }
