@@ -72,7 +72,7 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
             }
         }
         //nameView.requestFocus()
-        nameView.focusAndShowKeyboard()
+        //nameView.focusAndShowKeyboard()
         return dlg;
     }
 
