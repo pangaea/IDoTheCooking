@@ -24,6 +24,7 @@
 <style>
  .recipe {
     font: 16px Arial, sans-serif;
+    padding: 20px;
  }
  .general_info {
     padding-bottom: 20px;
@@ -37,8 +38,8 @@ table.ingredients_table tr > td {
 }
 table.ingredients_table tr > td:first-child div {
     border-radius: 50%;
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     padding: 4px;
     z-index:10;
     background: #29aea1;
