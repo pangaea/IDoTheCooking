@@ -15,13 +15,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.findNavController
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeCallBackListener
-import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import java.io.InputStream
+
 
 open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : DialogFragment() {
     lateinit var layout: View
@@ -45,6 +44,11 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
         val dlg: AlertDialog = AlertDialog.Builder(requireContext())
         .setTitle(resources.getString(R.string.create_recipe_title))
         .setView(layout)
+        .setNeutralButton("Generate using AI") { dialog, _ ->
+            dialog.cancel()
+            activity?.findNavController(R.id.nav_host_fragment_content_main)
+                ?.navigate(R.id.nav_recipe_generator)
+        }
         .setPositiveButton(resources.getString(R.string.save), null)
         .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
             dialog.cancel() }.create()
@@ -63,12 +67,6 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
                     callback.createRecipe(nameView.text.toString(), fileName)
                     dlg.cancel()
                 }
-            }
-
-            dlg.findViewById<MaterialButton>(R.id.recipeGenerator)?.setOnClickListener {
-                dlg.cancel()
-                activity?.findNavController(R.id.nav_host_fragment_content_main)
-                    ?.navigate(R.id.nav_recipe_generator)
             }
         }
         //nameView.requestFocus()

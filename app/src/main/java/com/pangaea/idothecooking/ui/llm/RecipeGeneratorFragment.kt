@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.llm.adapters.RecipeGeneratorAdapter
@@ -44,7 +45,7 @@ class RecipeGeneratorFragment : Fragment() {
         recipeViewModel = RecipeViewModelFactory(requireActivity().application,
                                                  null).create(RecipeViewModel::class.java)
         val descView = view.findViewById<TextInputEditText>(R.id.recipeDesc)
-        val fab = view.findViewById<Button>(R.id.generate_recipes)
+        val fab = view.findViewById<MaterialButton>(R.id.generate_recipes)
         val progressBar = view.findViewById<ProgressBar>(R.id.loading_spinner)
         fab?.setOnClickListener {
             if (descView.text!!.isEmpty()) {

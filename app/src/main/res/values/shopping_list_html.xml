@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="html_shopping_list_item">
+<![CDATA[
+<tr>
+    <td><div></div></td>
+    <td><b>{{amount}}</b> {{name}}</td>
+</tr>
+]]>
+</string>
+
+    <string name="html_shopping_list">
+<![CDATA[
+<style>
+ .shopping_list {
+    font: 16px Arial, sans-serif;
+ }
+ .general_info {
+    padding-bottom: 20px;
+ }
+ .general_info img {
+    float: left;
+    padding-right: 10px;
+ }
+table.items_table tr > td {
+    vertical-align: top;
+}
+table.items_table tr > td:first-child div {
+    border-radius: 50%;
+    width: 4px;
+    height: 4px;
+    padding: 4px;
+    z-index:10;
+    background: #29aea1;
+    border: 2px solid #666;
+    color: #666666;
+    text-align: center;
+}
+h3 {
+    clear: both;
+}
+</style>
+<div class="shopping_list">
+<div class="general_info">
+    <h2>{{title}}</h2>
+</div>
+<table class="items_table">
+{{items}}
+</table>
+</div>
+]]>
+</string>
+</resources>

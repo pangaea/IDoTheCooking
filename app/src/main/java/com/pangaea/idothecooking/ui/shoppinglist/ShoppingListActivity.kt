@@ -2,13 +2,15 @@ package com.pangaea.idothecooking.ui.shoppinglist
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintManager
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.webkit.WebView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,6 +25,7 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.MeasuredItemDialog
+import com.pangaea.idothecooking.ui.shared.ShareAndPrintActivity
 import com.pangaea.idothecooking.ui.shared.PicklistDlg
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
@@ -33,9 +36,10 @@ import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
 import com.pangaea.idothecooking.utils.extensions.setAsEnabled
+import com.pangaea.idothecooking.utils.formatting.ShoppingListRenderer
 import java.util.function.Consumer
 
-class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
+class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
     private var shoppingListId: Int = -1
     private lateinit var viewModel: ShoppingListViewModel
     private lateinit var shoppingListDetails: ShoppingListDetails
@@ -146,6 +150,24 @@ class ShoppingListActivity : AppCompatActivity(), OnStartDragListener {
         _itemSave?.setAsDisabled()
         itemSave.setOnMenuItemClickListener { menuItem ->
             saveShoppingList() { _itemSave?.setAsDisabled() }
+            false
+        }
+
+        // Share recipe via SMS
+        val itemShare = menu.findItem(R.id.item_share)
+        itemShare.setOnMenuItemClickListener { menuItem ->
+            val textShoppingList = ShoppingListRenderer(this.applicationContext, shoppingListDetails).drawShoppingListText()
+            sendMessage(shoppingListDetails.shoppingList.name, textShoppingList)
+            false
+        }
+
+        // Print recipe
+        val itemPrint = menu.findItem(R.id.item_print)
+        itemPrint.setOnMenuItemClickListener { menuItem ->
+            val htmlShoppingList = ShoppingListRenderer(this.applicationContext, shoppingListDetails).drawShoppingListHtml()
+            val webView = WebView(this.applicationContext)
+            webView.loadDataWithBaseURL(null, htmlShoppingList, "text/html", "utf-8", null);
+            createWebPrintJob(shoppingListDetails.shoppingList.name, webView)
             false
         }
 

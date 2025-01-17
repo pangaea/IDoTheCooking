@@ -1,21 +1,10 @@
 package com.pangaea.idothecooking.ui.recipe
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.print.PrintAttributes
-import android.print.PrintManager
-import android.provider.ContactsContract
-import android.telephony.SmsManager
 import android.view.Menu
 import android.view.WindowManager
-import android.webkit.WebView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityRecipeViewBinding
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
@@ -24,6 +13,7 @@ import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.NumberOnlyDialog
+import com.pangaea.idothecooking.ui.shared.ShareAndPrintActivity
 import com.pangaea.idothecooking.ui.shared.PicklistDlg
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
@@ -31,7 +21,7 @@ import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.formatting.RecipeRenderer
 
-class RecipeViewActivity : AppCompatActivity() {
+class RecipeViewActivity : ShareAndPrintActivity() {
     private lateinit var binding: ActivityRecipeViewBinding
     private lateinit var viewModel: RecipeViewModel
     private var recipeId: Int = -1
@@ -80,123 +70,6 @@ class RecipeViewActivity : AppCompatActivity() {
         binding.viewport.loadDataWithBaseURL(null, htmlRecipe, "text/html", "utf-8", null);
     }
 
-    object RequestCode {
-        const val REQUEST_CONTACT = 0
-        const val REQUEST_READ_CONTACTS_PERMISSIONS = 1
-        const val REQUEST_SEND_SMS_PERMISSIONS = 2
-    }
-
-    private fun hasContactsPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) ==
-                PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun hasSMSPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) ==
-                PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestContactsPermission() {
-        if (!hasContactsPermission()) {
-            ActivityCompat.requestPermissions(this,
-                                              arrayOf<String>(Manifest.permission.READ_CONTACTS),
-                                              RequestCode.REQUEST_READ_CONTACTS_PERMISSIONS)
-        }
-    }
-
-    private fun requestSMSPermission() {
-        if (!hasSMSPermission()) {
-            ActivityCompat.requestPermissions(this,
-                                              arrayOf<String>(Manifest.permission.SEND_SMS),
-                                              RequestCode.REQUEST_SEND_SMS_PERMISSIONS)
-        }
-    }
-
-    private var selectedPhoneNumber: String? = null
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
-                                            grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == RequestCode.REQUEST_READ_CONTACTS_PERMISSIONS && grantResults.isNotEmpty()) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openContacts()
-            }
-        } else if (requestCode == RequestCode.REQUEST_SEND_SMS_PERMISSIONS && grantResults.isNotEmpty()) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                selectedPhoneNumber?.let { sendSMS(it) }
-            }
-        }
-    }
-
-    @SuppressLint("Range", "Recycle")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != RESULT_OK) return
-        if (requestCode == RequestCode.REQUEST_CONTACT && data != null) {
-            val contactData = data.data
-            if (contactData != null) {
-                val cursor = contentResolver.query(contactData, null, null, null, null)
-                if (cursor != null) {
-                    try {
-                        if (cursor.moveToFirst()) {
-                            val id =
-                                cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID))
-                            val hasPhone =
-                                cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))
-                            if (hasPhone.equals("1", ignoreCase = true)) {
-                                val phones = contentResolver.query(
-                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id,
-                                    null, null)
-                                phones!!.moveToFirst()
-                                val phoneNumbers: MutableList<String> = mutableListOf()
-                                while (!phones.isAfterLast) {
-                                    phoneNumbers.add(phones.getString(phones.getColumnIndex("data1")))
-                                    phones.moveToNext()
-                                }
-                                if (phoneNumbers.isNotEmpty()) {
-                                    PicklistDlg(getString(R.string.select_phone_number),
-                                                phoneNumbers.map(){o -> Pair(o, o)}) { selectedNum: Pair<String, String> ->
-                                        selectedPhoneNumber = selectedNum.second
-                                        if (hasSMSPermission()) {
-                                            sendSMS(selectedNum.second)
-                                        } else {
-                                            selectedPhoneNumber = selectedNum.second
-                                            requestSMSPermission()
-                                        }
-                                    }.show(this.supportFragmentManager, null)
-                                }
-                            }
-                        }
-                    } finally {
-                        cursor.close()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun sendSMS(phoneNumber: String) {
-        val textRecipe = RecipeRenderer(this.applicationContext, recipeDetails, servingSize, categoryMap).drawRecipeText()
-        try {
-            val smsManager = SmsManager.getDefault()
-            val parts = smsManager.divideMessage(textRecipe)
-            smsManager.sendMultipartTextMessage(phoneNumber, null, parts,
-                                                null, null)
-            val successMsg = getString(R.string.recipe_sent_success).replace("{{0}}", recipeDetails.recipe.name)
-            Toast.makeText(applicationContext, successMsg, Toast.LENGTH_LONG).show()
-        } catch (e: Exception) {
-            val failedMsg = getString(R.string.recipe_sent_failed).replace("{{0}}", recipeDetails.recipe.name)
-            Toast.makeText(applicationContext, failedMsg, Toast.LENGTH_LONG).show()
-            e.printStackTrace()
-        }
-    }
-
-    private fun openContacts() {
-        val pickContact = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
-        startActivityForResult(pickContact, RequestCode.REQUEST_CONTACT);
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.recipe_view_menu, menu)
@@ -222,18 +95,15 @@ class RecipeViewActivity : AppCompatActivity() {
         // Share recipe via SMS
         val itemShare = menu.findItem(R.id.item_share)
         itemShare.setOnMenuItemClickListener { menuItem ->
-            if (hasContactsPermission()) {
-                openContacts()
-            } else {
-                requestContactsPermission()
-            }
+            val textRecipe = RecipeRenderer(this.applicationContext, recipeDetails, servingSize, categoryMap).drawRecipeText()
+            sendMessage(recipeDetails.recipe.name, textRecipe)
             false
         }
 
         // Print recipe
         val itemPrint = menu.findItem(R.id.item_print)
         itemPrint.setOnMenuItemClickListener { menuItem ->
-            createWebPrintJob(binding.viewport)
+            createWebPrintJob(recipeDetails.recipe.name, binding.viewport)
             false
         }
 
@@ -276,15 +146,5 @@ class RecipeViewActivity : AppCompatActivity() {
         }
 
         return true
-    }
-
-    private fun createWebPrintJob(webView: WebView) {
-        val printManager = getSystemService(PRINT_SERVICE) as PrintManager
-        val jobName = recipeDetails.recipe.name
-        val printAdapter = webView.createPrintDocumentAdapter(jobName)
-        printManager.print(
-            jobName, printAdapter,
-            PrintAttributes.Builder().build()
-        )
     }
 }

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:clickable="false"
     android:focusable="false"
     android:foreground="?selectableItemBackground"
     android:orientation="vertical">
+
     <com.google.android.material.textfield.TextInputLayout
         app:hintAnimationEnabled="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="@string/name">
         <com.google.android.material.textfield.TextInputEditText
@@ -24,42 +24,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
-
-<!--    <com.robertlevonyan.views.expandable.Expandable-->
-<!--        android:id="@+id/expandable"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-
+    <TextView
+        android:id="@+id/header_title"
+        android:text="@string/import_from_library"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="1dp"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <ScrollView android:id="@+id/recipe_list"
+        android:layout_height="200dp"
+        android:layout_width="match_parent">
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/header"
-                android:text="@string/import_from_library"
-                android:textSize="14sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="26dp"
-                android:layout_marginEnd="1dp"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/recipeGenerator"
-                android:text="@string/generate"
-                android:background="@drawable/roundedbutton"
-                style="@style/recipeGenButton"/>
-        </LinearLayout>
-        <ScrollView
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-            <LinearLayout
-                android:id="@+id/radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="4dp"/>
-        </ScrollView>
-
-<!--    </com.robertlevonyan.views.expandable.Expandable>-->
-</LinearLayout >
+            android:orientation="vertical"
+            android:padding="4dp"/>
+    </ScrollView>
+</LinearLayout>

@@ -39,7 +39,7 @@
     <string name="import_error_recipe_exists">Recipe [{0}] already exists</string>
     <string name="import_error_recipe">Error saving recipe [{0}]</string>
     <string name="import_error_shopping_list">Error saving shopping list [{0}]</string>
-    <string name="import_from_library">Import From Library, or...</string>
+    <string name="import_from_library">Select From Library…</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
@@ -88,6 +88,7 @@
     <string name="create_shopping_list_title">Create New Shopping List</string>
     <string name="shopping_list_edit_title">Edit Shopping List Item</string>
     <string name="shopping_list_new_title">New Shopping List Item</string>
+    <string name="shopping_list_import">Import from recipe</string>
 
     <string name="update_category_title">Category</string>
     <string name="update_category_msg">Update a category</string>

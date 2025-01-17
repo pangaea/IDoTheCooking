@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="text_shopping_list_item"><![CDATA[- {{amount}} {{name}}\n]]></string>
+
+    <string name="text_shopping_list"><![CDATA[
+        {{title}}\n\n{{items}}
+    ]]></string>
+</resources>
