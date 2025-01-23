@@ -126,6 +126,7 @@ open class ShareAndPrintActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun sendSMS(phoneNumber: String) {
         try {
             val smsManager = SmsManager.getDefault()

@@ -11,8 +11,8 @@ import androidx.fragment.app.DialogFragment
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.MeasuredItem
 import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
-import com.pangaea.idothecooking.utils.extensions.fractionValues
 import com.pangaea.idothecooking.utils.extensions.fractions
+import com.pangaea.idothecooking.utils.extensions.setVulgarFraction
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 import com.robertlevonyan.views.expandable.Expandable
 
@@ -37,7 +37,7 @@ class MeasuredItemDialog(val resInt: Int,
         amountWholeView.maxValue = 100
 
         val reversedFractions = fractions.reversedArray().toMutableList()
-        reversedFractions.removeLast()
+        //reversedFractions.removeLast()
         reversedFractions[0] = ".0"
         amountFractionView.minValue = 0
         amountFractionView.maxValue = reversedFractions.size - 1
@@ -83,13 +83,7 @@ class MeasuredItemDialog(val resInt: Int,
             .setPositiveButton(
                 buttonText
             ) { dialog, id ->
-                var amount: Double = amountWholeView?.value?.toDouble() ?: 0.00
-//                var amount: Double = amountWholeView?.text.toString().toDouble()
-                val reversedFractionValues = fractionValues.reversedArray()
-                if (amountFractionView != null && reversedFractionValues.get(amountFractionView.value) < 1.00) {
-                    amount = amount + reversedFractionValues.get(amountFractionView.value)
-                }
-
+                val amount: Double = setVulgarFraction(amountWholeView?.value!!, amountFractionView.value)
                 val obj = MeasuredItem()
                 obj.name = nameView.text.toString()
                 obj.amount = amount
