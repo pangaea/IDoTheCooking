@@ -44,7 +44,7 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
         val dlg: AlertDialog = AlertDialog.Builder(requireContext())
         .setTitle(resources.getString(R.string.create_recipe_title))
         .setView(layout)
-        .setNeutralButton("Generate using AI") { dialog, _ ->
+        .setNeutralButton(resources.getString(R.string.generate_using_ai)) { dialog, _ ->
             dialog.cancel()
             activity?.findNavController(R.id.nav_host_fragment_content_main)
                 ?.navigate(R.id.nav_recipe_generator)
@@ -60,12 +60,18 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
                 if (nameView.text!!.isEmpty()) {
                     nameView.setError(resources.getString(R.string.recipe_name_missing))
                 } else {
-                    var fileName: String? = null
-                    if (checkedId >= 0) {
-                        fileName = fileNames?.get(checkedId)
+                    callback.isRecipeNameUnique(nameView.text.toString()) { recipe ->
+                        if (recipe == null) {
+                            var fileName: String? = null
+                            if (checkedId >= 0) {
+                                fileName = fileNames?.get(checkedId)
+                            }
+                            callback.createRecipe(nameView.text.toString(), fileName)
+                            dlg.cancel()
+                        } else {
+                            nameView.setError(resources.getString(R.string.recipe_name_must_be_unique))
+                        }
                     }
-                    callback.createRecipe(nameView.text.toString(), fileName)
-                    dlg.cancel()
                 }
             }
         }
@@ -122,8 +128,9 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
                     libraryImage.setImageDrawable(Drawable.createFromStream(ims, null))
 
                     val recipeName: TextView = row.findViewById(R.id.recipe_name)
-                    recipeName.text = objNode.get("name").textValue()
-                    displayNames?.add(objNode.get("name").textValue())
+                    val name = objNode.get("name").textValue()
+                    recipeName.text = name
+                    displayNames?.add(name)
 
                     val recipeDesc: TextView = row.findViewById(R.id.recipe_desc)
                     recipeDesc.text = objNode.get("description").textValue()

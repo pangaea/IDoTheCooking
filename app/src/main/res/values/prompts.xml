@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="prompt_suggest_recipes"><![CDATA[
-        Suggest recipes with description: {0},
+        Suggest recipes with description: {description},
         respond in JSON array, return name,
         ingredients and directions format ingredients by quantity, unit and name, no fractions
+    ]]></string>
+    <string name="prompt_suggest_recipe_improvements"><![CDATA[
+        Suggest options for recipe:
+        {recipe_name}
+        , currently using ingredients:
+        {ingredient_list}
+        , to
+        {requested_improvements}
+        , respond in JSON array as either ingredient or cooking_technique with description
     ]]></string>
 </resources>

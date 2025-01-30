@@ -63,6 +63,12 @@ class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel:
         }
     }
 
+    override fun isRecipeNameUnique(name: String, callback: (recipe: Recipe?) -> Unit) {
+        viewModel.getRecipeByName(name).observeOnce(fragment) { recipes ->
+            callback(if (recipes.isEmpty()) null else recipes[0])
+        }
+    }
+
     override fun createRecipe(name: String, fileName: String?) {
         if (fileName == null) {
             val recipe = Recipe()

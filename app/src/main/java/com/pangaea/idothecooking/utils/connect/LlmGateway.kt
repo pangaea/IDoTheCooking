@@ -38,7 +38,7 @@ class LlmGateway(val context: Context) {
                 jsonBody.put("model", "gpt-4o-mini")
                 val jsonMsg = JSONObject()
                 jsonMsg.put("role", "user")
-                jsonMsg.put("content", promptSuggestRecipe.replace("{0}", desc))
+                jsonMsg.put("content", promptSuggestRecipe.replace("{description}", desc))
                 val jsonMsgs = JSONArray()
                 jsonMsgs.put(jsonMsg)
                 //messages: [{ role: "user", content: "Say this is a test" }],

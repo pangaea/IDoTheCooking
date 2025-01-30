@@ -34,7 +34,7 @@ class RecipeViewActivity : ShareAndPrintActivity() {
 
         binding = ActivityRecipeViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.setBackgroundResource(R.mipmap.tablecloth3)
+        //binding.root.setBackgroundResource(R.mipmap.tablecloth3)
 
         val bundle = intent?.extras
         if (bundle != null) {
