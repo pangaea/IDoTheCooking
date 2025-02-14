@@ -35,10 +35,9 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         binding = FragmentRecipeIngredientsBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_recipe_ingredients, container, false)
         _view = view
@@ -79,12 +78,13 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
+                    // Hack: Since these objects are all created new on save, I can use the id as a status
+                    ingredient.id = 0
                     adapter.addNewItem(ingredient)
                     onItemChanged()
                 }, { dialog, _ -> dialog.cancel() })
                     .show(childFragmentManager, null)
             }
-
         }
         return view
     }
@@ -137,6 +137,8 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
+                    // Hack: Since these objects are all created new on save, I can use the id as a status
+                    ingredient.id = ingredient.id.times(-1)
                     //(activity as RecipeActivity).dataDirty = true
                     adapter.notifyDataSetChanged()
                     onItemChanged()

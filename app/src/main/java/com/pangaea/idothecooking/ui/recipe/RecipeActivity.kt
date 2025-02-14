@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -58,7 +59,13 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             recipeDetails = recipes[0]
             title = resources.getString(R.string.title_activity_recipe_name)
                 .replace("{0}", recipeDetails.recipe.name)
-            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 3, lifecycle, recipeDetails)
+//            val fragments =
+//                mutableListOf(
+//                    RecipeMainFragment.newInstance(recipeDetails),
+//                    RecipeIngredientsFragment.newInstance(recipeDetails),
+//                    RecipeDirectionsFragment.newInstance(recipeDetails)
+//                )
+            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 4, lifecycle, recipeDetails)
             val viewPager: ViewPager2 = binding.viewPager
             binding.viewPager.isUserInputEnabled = false
             viewPager.adapter = sectionsPagerAdapter
@@ -70,6 +77,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
                         0 -> resources.getString(R.string.overview_tab)
                         1 -> resources.getString(R.string.ingredients_tab)
                         2 -> resources.getString(R.string.instructions_tab)
+                        3 -> "Suggestions from AI"
                         else -> resources.getString(R.string.overview_tab)
                     }
             }.attach()
@@ -115,6 +123,13 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             viewModel.update(recipeDetails){
                 //dataDirty = false
                 _itemSave?.setAsDisabled()
+                Toast.makeText(applicationContext,
+                               getString(R.string.save_success),
+                               Toast.LENGTH_LONG).show()
+                onBackPressedDispatcher.onBackPressed()
+                //recipeDetails.ingredients.forEach(){o -> o.id = 1}
+                //val pagerAdapter = binding.viewPager.adapter as RecipePagerAdapter
+                //pagerAdapter.reloadTab(1, RecipeIngredientsFragment.newInstance(recipeDetails))
             }
             false
         }

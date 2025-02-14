@@ -24,5 +24,9 @@
             android:id="@+id/nav_recipe_generator"
             android:icon="@mipmap/generative"
             android:title="@string/recipe_generator" />
+        <item
+            android:id="@+id/nav_recipe_helper"
+            android:icon="@mipmap/generative"
+            android:title="Recipe Helper" />
     </group>
 </menu>

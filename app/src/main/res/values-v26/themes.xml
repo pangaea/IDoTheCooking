@@ -16,6 +16,19 @@
     <style name="IngredientNameStyle">
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">800</item>
+        <item name="android:background">#8BC34A</item>
         <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="IngredientNameStyleNew">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">800</item>
+        <item name="android:textColor">#F44336</item>
+    </style>
+
+    <style name="IngredientNameStyleChanged">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">800</item>
+        <item name="android:textColor">#2196F3</item>
     </style>
 </resources>

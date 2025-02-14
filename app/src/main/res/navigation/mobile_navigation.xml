@@ -34,4 +34,10 @@
         android:name="com.pangaea.idothecooking.ui.llm.RecipeGeneratorFragment"
         android:label="@string/recipe_generator"
         tools:layout="@layout/fragment_recipe_generator" />
+
+    <fragment
+        android:id="@+id/nav_recipe_helper"
+        android:name="com.pangaea.idothecooking.ui.recipe.helper.RecipeHelperFragment"
+        android:label="Recipe Helper"
+        tools:layout="@layout/fragment_recipe_helper" />
 </navigation>

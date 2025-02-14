@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 class LlmGateway(val context: Context) {
     private val openAiChatCompletionUrl = "https://api.openai.com/v1/chat/completions"
     private val mediaTypeJson: MediaType = "application/json".toMediaType()
-    private val mockRequest = false
+    private val mockRequest = true
 
     fun suggestRecipe(desc: String, callback: (recipes: List<RecipeDetails>) -> Unit) {
 

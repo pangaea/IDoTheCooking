@@ -71,6 +71,7 @@ abstract class DraggableItemsAdapter<T, H: RecyclerView.ViewHolder>(
     fun handleDragEvent(holder: RecyclerView.ViewHolder, handle: ImageView) {
         // Start a drag whenever the handle view it touched
         handle.setOnTouchListener { _, event ->
+            Log.d(ContentValues.TAG, event.actionMasked.toString())
             if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                 mDragStartListener.onStartDrag(holder)
             }

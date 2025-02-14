@@ -13,6 +13,7 @@ import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemsAdapter
+import com.pangaea.idothecooking.utils.extensions.addBackgroundRipple
 import java.util.Timer
 import kotlin.concurrent.timerTask
 
@@ -30,7 +31,9 @@ class RecipeDirectionsAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecipeDirectionViewHolder, position: Int) {
-        holder.textView.setText(mItems!![position].content)
+        val selectedItem = mItems!![position]
+        holder.id = selectedItem.id
+        holder.textView.setText(selectedItem.content)
         holder.itemView.setOnClickListener { mDragStartListener.onItemClicked(position) }
 
         // Attach drag event to handle image

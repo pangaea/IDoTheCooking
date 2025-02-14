@@ -13,12 +13,14 @@ class RecipePagerAdapter(
     fragmentManager: FragmentManager,
     private val totalTabs: Int,
     lifecycle: Lifecycle,
-    val recipe: RecipeDetails
+    var recipe: RecipeDetails
+    //var fragments: MutableList<Fragment>
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int = totalTabs
 
     override fun createFragment(position: Int): Fragment {
+//        return fragments[position]
         return when (position) {
             0 -> RecipeMainFragment.newInstance(recipe)
             1 -> RecipeIngredientsFragment.newInstance(recipe)
@@ -27,4 +29,8 @@ class RecipePagerAdapter(
         }
     }
 
+//    fun reloadTab(index: Int, fragment: Fragment) {
+//        fragments[index] = fragment;
+//        notifyItemChanged(index)
+//    }
 }
