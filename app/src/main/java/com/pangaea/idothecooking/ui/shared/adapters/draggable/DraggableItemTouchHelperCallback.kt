@@ -1,10 +1,12 @@
 package com.pangaea.idothecooking.ui.shared.adapters.draggable
 
+import android.app.Activity
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class DraggableItemTouchHelperCallback<T, H: RecyclerView.ViewHolder>(private val mAdapter: DraggableItemsAdapter<T, H>) :
+class DraggableItemTouchHelperCallback<T, H: RecyclerView.ViewHolder>(
+    private val mAdapter: DraggableItemsAdapter<T, H>) :
     ItemTouchHelper.Callback() {
     override fun isLongPressDragEnabled(): Boolean {
         return false
@@ -62,20 +64,28 @@ class DraggableItemTouchHelperCallback<T, H: RecyclerView.ViewHolder>(private va
         }
     }
 
+    private var dragging = false
+
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         // We only want the active item to change
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+            if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                dragging = true
+            }
             if (viewHolder is DraggableItemTouchHelperViewHolder) {
                 // Let the view holder know that this item is being moved or dragged
                 val itemViewHolder = viewHolder as DraggableItemTouchHelperViewHolder
                 itemViewHolder.onItemSelected()
             }
         } else {
-            //mAdapter.notifyDataSetChanged()
             if (viewHolder != null) {
                 mAdapter.notifyItemChanged(viewHolder.bindingAdapterPosition)
             } else {
-                mAdapter.notifyDataSetChanged()
+                if (dragging) {
+                    // Need to update entire list after dragging
+                    dragging = false
+                    mAdapter.notifyDataSetChanged()
+                }
             }
         }
         super.onSelectedChanged(viewHolder, actionState)
