@@ -8,6 +8,7 @@ import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.RecipeDirectionsFragment
 import com.pangaea.idothecooking.ui.recipe.RecipeIngredientsFragment
 import com.pangaea.idothecooking.ui.recipe.RecipeMainFragment
+import com.pangaea.idothecooking.ui.recipe.helper.SearchFragment
 
 class RecipePagerAdapter(
     fragmentManager: FragmentManager,
@@ -25,12 +26,8 @@ class RecipePagerAdapter(
             0 -> RecipeMainFragment.newInstance(recipe)
             1 -> RecipeIngredientsFragment.newInstance(recipe)
             2 -> RecipeDirectionsFragment.newInstance(recipe)
+            3 -> SearchFragment.newInstance(recipe)
             else -> RecipeMainFragment.newInstance(recipe)
         }
     }
-
-//    fun reloadTab(index: Int, fragment: Fragment) {
-//        fragments[index] = fragment;
-//        notifyItemChanged(index)
-//    }
 }

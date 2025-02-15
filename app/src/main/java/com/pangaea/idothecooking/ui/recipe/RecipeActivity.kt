@@ -59,13 +59,7 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
             recipeDetails = recipes[0]
             title = resources.getString(R.string.title_activity_recipe_name)
                 .replace("{0}", recipeDetails.recipe.name)
-//            val fragments =
-//                mutableListOf(
-//                    RecipeMainFragment.newInstance(recipeDetails),
-//                    RecipeIngredientsFragment.newInstance(recipeDetails),
-//                    RecipeDirectionsFragment.newInstance(recipeDetails)
-//                )
-            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 4, lifecycle, recipeDetails)
+            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 3, lifecycle, recipeDetails)
             val viewPager: ViewPager2 = binding.viewPager
             binding.viewPager.isUserInputEnabled = false
             viewPager.adapter = sectionsPagerAdapter
