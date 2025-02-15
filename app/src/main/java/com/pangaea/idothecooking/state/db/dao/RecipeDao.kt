@@ -77,6 +77,7 @@ interface RecipeDao {
             val item: Direction = items[i]
             item.recipe_id = idNew
             item.order = i
+            item.id = 0
             directionDao.insert(item)
             i++
         }
@@ -90,6 +91,7 @@ interface RecipeDao {
             val item: Ingredient = items[i]
             item.recipe_id = idNew
             item.order = i
+            item.id = 0
             ingredientDao.insert(item)
             i++
         }
@@ -102,6 +104,7 @@ interface RecipeDao {
         while (i < size) {
             val item: RecipeCategoryLink = items[i]
             item.recipe_id = idNew
+            item.id = 0
             recipeCategoryLinkDao.insert(item)
             i++
         }

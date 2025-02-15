@@ -12,7 +12,7 @@ import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 
 class IngredientFormatter {
     companion object {
-        fun formatDisplay(context: Context, ingredient: MeasuredItem): SpannableStringBuilder {
+        fun formatDisplay(context: Context, ingredient: MeasuredItem, id: Int): SpannableStringBuilder {
             val builder = SpannableStringBuilder()
             if (ingredient.amount != null && ingredient.amount!! > 0f) {
                 val frac: Pair<String, Double>? = ingredient.amount?.vulgarFraction
@@ -39,12 +39,20 @@ class IngredientFormatter {
             if (!builder.isEmpty()) {
                 text = " $text"
             }
+
+//            val appearance = if(id == 0)
+//                                TextAppearanceSpan(context, R.style.IngredientNameStyleNew)
+//                             else if(id < 0)
+//                                TextAppearanceSpan(context, R.style.IngredientNameStyleChanged)
+//                             else
+//                                TextAppearanceSpan(context, R.style.IngredientNameStyle)
+
+
             val s = SpannableString(text)
             s.setSpan(
                 TextAppearanceSpan(context, R.style.IngredientNameStyle),
                 0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-
             builder.append(s)
             return builder
         }

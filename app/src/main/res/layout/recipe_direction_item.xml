@@ -10,7 +10,10 @@
         android:id="@+id/bullet"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="18dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="14dp"
         android:layout_gravity="center_horizontal|top"
         android:scaleType="center"
         android:src="@android:drawable/presence_invisible" />
@@ -18,7 +21,6 @@
     <TextView
         android:id="@+id/text"
         android:layout_weight="1"
-        android:layout_marginStart="4dp"
         android:layout_width="0dp"
         android:padding="14dp"
         android:hint="@string/direction_content_hint"

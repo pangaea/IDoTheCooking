@@ -25,7 +25,7 @@ class ShoppingListItemsAdapter(
     override fun onBindViewHolder(holder: ShoppingListItemViewHolder, position: Int) {
         val selectedItem = mItems!![position]
         holder.isChecked.isChecked = selectedItem.checked
-        holder.display.text = context?.let { IngredientFormatter.formatDisplay(it, selectedItem) }
+        holder.display.text = context?.let { IngredientFormatter.formatDisplay(it, selectedItem, selectedItem.id) }
         holder.itemView.setOnClickListener { mDragStartListener.onItemClicked(position) }
         holder.isChecked.setOnClickListener {
             selectedItem.checked = holder.isChecked.isChecked

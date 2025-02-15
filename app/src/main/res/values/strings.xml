@@ -45,6 +45,7 @@
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
     <string name="exit_with_save_auto_save"><![CDATA[You\'ve made changes. Save before exiting? <b>(Enable AutoSave in Settings to avoid manually saving changes.)</b>]]></string>
     <string name="delete_confirmation">Confirm delete of recipe: {0}</string>
+    <string name="save_success">Update successful</string>
 
     <string name="overview_tab">Overview</string>
     <string name="ingredients_tab">Ingredients</string>
@@ -155,13 +156,14 @@
     <string name="image_menu_clear">Clear</string>
     <string name="lock_screen">Lock Screen</string>
 
-    <string name="recipe_generator">Recipe Generator</string>
-    <string name="recipe_generate">Generate Recipe</string>
+    <string name="recipe_generator">Recipe Creator</string>
+    <string name="recipe_generate">Create Recipe</string>
     <string name="generated_from_openai">Generated from OpenAi</string>
     <string name="new_ai_recipe">New AI Recipe</string>
     <string name="description_missing">Description required</string>
     <string name="description_hint">Describe the recipe you are looking for…</string>
     <string name="import_recipe">Import</string>
     <string name="generate">Generate</string>
-    <string name="generate_using_ai">Generate using AI</string>
+    <string name="generate_using_ai">Create using AI</string>
+    <string name="enhance_using_ai">Enhance using AI</string>
 </resources>
