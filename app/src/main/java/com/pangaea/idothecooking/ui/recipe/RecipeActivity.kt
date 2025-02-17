@@ -81,15 +81,15 @@ class RecipeActivity : AppCompatActivity() {
                 this.remove()
                 if (_itemSave?.isEnabled == true) {
                     selectedRecipeModel.selectedRecipe.observeOnce(self) { recipeDetails ->
-                        val deleteAlertBuilder = AlertDialog.Builder(self)
+                        val saveChangesAlertBuilder = AlertDialog.Builder(self)
                             .setMessage(resources.getString(R.string.exit_with_save))
                             .setCancelable(true)
                             .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressedDispatcher.onBackPressed() }
                             .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                                 viewModel.update(recipeDetails) { onBackPressedDispatcher.onBackPressed() }
                             }
-                        val deleteAlert = deleteAlertBuilder.create()
-                        deleteAlert.show()
+                        val saveChangesAlert = saveChangesAlertBuilder.create()
+                        saveChangesAlert.show()
                     }
                 } else {
                     onBackPressedDispatcher.onBackPressed()
