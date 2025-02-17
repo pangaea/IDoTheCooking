@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
@@ -13,7 +12,6 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportInterface
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
-import com.pangaea.idothecooking.utils.data.JsonImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import kotlinx.coroutines.CoroutineScope

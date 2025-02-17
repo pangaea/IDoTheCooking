@@ -3,14 +3,12 @@ package com.pangaea.idothecooking.ui.recipe
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +18,11 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeMainBinding
@@ -31,14 +30,11 @@ import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
+import com.pangaea.idothecooking.ui.recipe.viewmodels.SelectedRecipeModel
 import com.pangaea.idothecooking.ui.shared.ImageAssetsDialog
-import com.pangaea.idothecooking.ui.shared.SelectAssetsDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
-import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
-import java.io.File
-import java.io.File.separator
-import java.io.FileOutputStream
-import java.io.OutputStream
+import com.pangaea.idothecooking.utils.ThrottledUpdater
+import com.pangaea.idothecooking.utils.extensions.observeOnce
 
 
 /**
@@ -47,8 +43,9 @@ import java.io.OutputStream
 class RecipeMainFragment : Fragment() {
 
     private var _binding: FragmentRecipeMainBinding? = null
-    private var callBackListener: RecipeCallBackListener? = null
     private var imageUri = ""
+    private lateinit var recipeOrig: Recipe
+    private val selectedRecipeModel: SelectedRecipeModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -85,9 +82,11 @@ class RecipeMainFragment : Fragment() {
 
         view.setBackgroundResource(R.mipmap.tablecloth3)
 
-        if (activity is RecipeCallBackListener) callBackListener = activity as RecipeCallBackListener?
-        val recipe: RecipeDetails? = callBackListener?.getRecipeDetails()
-        recipe?.let {
+        // Retrieve recipe object from model
+        selectedRecipeModel.selectedRecipe.observeOnce(requireActivity()) { recipe ->
+            // Perform an action with the latest item data.
+            Log.d(ContentValues.TAG, "onRecipeUpdateEvent !!!!!!!!!!!!!")
+            recipeOrig = recipe.recipe
             binding.editName.setText(recipe.recipe.name)
             binding.editDesc.setText(recipe.recipe.description)
             if (recipe.recipe.imageUri == null || recipe.recipe.imageUri!!.isEmpty()) {
@@ -110,15 +109,76 @@ class RecipeMainFragment : Fragment() {
                 }
             }.toTypedArray()
             amountView.value = recipe.recipe.servings
+
+            binding.editName.doAfterTextChanged() {
+                fireCallback()
+            }
+            binding.editDesc.doAfterTextChanged() {
+                fireCallback();
+            }
+
+            binding.editImage.setOnClickListener(){
+                val popupMenu = activity?.let { it1 -> PopupMenu(it1, binding.editImage) }
+                if (popupMenu != null) {
+                    popupMenu.menuInflater.inflate(R.menu.edit_image_menu, popupMenu.menu)
+                    popupMenu.setOnMenuItemClickListener { menuItem ->
+                        when (menuItem.itemId) {
+                            R.id.item_gallery -> {
+                                pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            }
+                            R.id.item_camera -> {
+                                if (ContextCompat.checkSelfPermission(requireActivity().application,
+                                                                      Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                                    requestPermissions(arrayOf(Manifest.permission.CAMERA),
+                                                       RequestCode.CAMERA)
+                                } else {
+                                    openCamera()
+                                }
+                            }
+                            R.id.item_library -> {
+                                ImageAssetsDialog(imageUri) { o ->
+                                    imageUri = "asset://image_library/${o}"
+                                    ImageTool(requireActivity()).display(binding.editImage, imageUri)
+                                    fireCallback();
+                                }.show(childFragmentManager, null)
+                            }
+                            R.id.item_clear -> {
+                                imageUri = ""
+                                binding.editImage.setImageDrawable(getResources().getDrawable(R.mipmap.image_placeholder3))
+                                this.fireCallback()
+                            }
+                        }
+                        true
+                    }
+                    // Showing the popup menu
+                    popupMenu.show()
+                }
+            }
+            binding.editServings.setOnValueChangedListener() {picker: NumberPicker,
+                                                              oldVal: Int,
+                                                              newVal: Int ->
+                fireCallback();
+            }
+
+
+            val viewModel = CategoryViewModelFactory(requireActivity().application, null).create(CategoryViewModel::class.java)
+            viewModel.getAllCategories().observe(viewLifecycleOwner) { categories ->
+                recipe?.let {
+                    val linkedCategoryIds = recipe.categories.map { o -> o.category_id }
+                    val textView = binding.categoriesView
+                    textView.text = categories.filter{o -> linkedCategoryIds.contains(o.id)}
+                        .map{o -> o.name}.joinToString(", ")
+                    textView.setOnClickListener() {
+                        RecipeCategoryDialog(categories, recipe.categories) { selectedCategories ->
+                            textView.text = selectedCategories.joinToString(", ") { o -> o.name }
+                            //callBackListener?.onRecipeCategories(selectedCategories);
+                            selectedRecipeModel.updateRecipeCategories(selectedCategories)
+                        }.show(childFragmentManager, null)
+                    }
+                }
+            }
         }
 
-        //attachDirtyEvents(view, R.id.editName, R.id.editDesc)
-        binding.editName.doAfterTextChanged() {
-            fireCallback()
-        }
-        binding.editDesc.doAfterTextChanged() {
-            fireCallback();
-        }
         binding.editImage.setOnClickListener(){
             val popupMenu = activity?.let { it1 -> PopupMenu(it1, binding.editImage) }
             if (popupMenu != null) {
@@ -161,23 +221,6 @@ class RecipeMainFragment : Fragment() {
                                                           newVal: Int ->
             fireCallback();
         }
-
-        val viewModel = CategoryViewModelFactory(requireActivity().application, null).create(CategoryViewModel::class.java)
-        viewModel.getAllCategories().observe(viewLifecycleOwner) { categories ->
-            recipe?.let {
-                val linkedCategoryIds = recipe.categories.map { o -> o.category_id }
-                val textView = binding.categoriesView
-                textView.text = categories.filter{o -> linkedCategoryIds.contains(o.id)}
-                    .map{o -> o.name}.joinToString(", ")
-                textView.setOnClickListener() {
-                    RecipeCategoryDialog(categories, recipe.categories) { selectedCategories ->
-                        textView.text = selectedCategories.joinToString(", ") { o -> o.name }
-                        callBackListener?.onRecipeCategories(selectedCategories);
-                    }.show(childFragmentManager, null)
-                }
-            }
-        }
-
     }
 
     object RequestCode {
@@ -214,15 +257,23 @@ class RecipeMainFragment : Fragment() {
         }
     }
 
+    private val infoUpdater = ThrottledUpdater()
+
     private fun fireCallback() {
-        val recipe = Recipe()
-        recipe.name = binding.editName.text.toString()
-        recipe.description = binding.editDesc.text.toString()
-        // TODO: Remove this when I figure out how to get the URI directly from the TextView
-        //recipe.imageUri = binding.editImage.toString()
-        recipe.imageUri = imageUri
-        recipe.servings = binding.editServings.value
-        callBackListener?.onRecipeInfoUpdate(recipe);
+        infoUpdater.delayedUpdate() {
+            //val recipe = Recipe()
+            recipeOrig.name = binding.editName.text.toString()
+            recipeOrig.description = binding.editDesc.text.toString()
+            // TODO: Remove this when I figure out how to get the URI directly from the TextView
+            //recipe.imageUri = binding.editImage.toString()
+            recipeOrig.imageUri = imageUri
+            recipeOrig.servings = binding.editServings.value
+            //callBackListener?.onRecipeInfoUpdate(recipe);
+            requireActivity().runOnUiThread {
+                Log.d(ContentValues.TAG,">>>>>>>>>>>>>>>>> onRecipeInfoUpdate <<<<<<<<<<<<<<<<<<<<")
+                selectedRecipeModel.updateRecipe(recipeOrig)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -239,7 +290,7 @@ class RecipeMainFragment : Fragment() {
          * @return A new instance of fragment RecipeDirectionsFragment.
          */
         @JvmStatic
-        fun newInstance(recipe: RecipeDetails) =
+        fun newInstance() =
             RecipeMainFragment().apply {
                 arguments = Bundle().apply {
                     //putString(RECIPE_NAME, recipe.recipe.name)

@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +19,11 @@ import com.pangaea.idothecooking.databinding.FragmentRecipeDirectionsBinding
 import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipeDirectionsAdapter
+import com.pangaea.idothecooking.ui.recipe.viewmodels.SelectedRecipeModel
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouchHelperCallback
 import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
+import com.pangaea.idothecooking.utils.extensions.observeOnce
 
 /**
  * A simple [Fragment] subclass.
@@ -29,8 +33,8 @@ import com.pangaea.idothecooking.utils.extensions.focusAndShowKeyboard
 class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
     private lateinit var binding: FragmentRecipeDirectionsBinding
     private var mItemTouchHelper: ItemTouchHelper? = null
-    private var callBackListener: RecipeCallBackListener? = null
     private lateinit var _view: View
+    private val selectedRecipeModel: SelectedRecipeModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +63,9 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
             mItemTouchHelper!!.attachToRecyclerView(list)
         }
 
-        if (activity is RecipeCallBackListener) callBackListener = activity as RecipeCallBackListener?
-        val recipe: RecipeDetails? = callBackListener?.getRecipeDetails()
-        recipe?.let {
-            val directions = it.directions
+        // Retrieve recipe object from model
+        selectedRecipeModel.selectedRecipe.observeOnce(viewLifecycleOwner) { recipe ->
+            val directions = recipe.directions
             val adapter = list.adapter as RecipeDirectionsAdapter
             val data = directions.toMutableList()
             data.sortWith { obj1, obj2 ->
@@ -97,7 +100,7 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
          * @return A new instance of fragment RecipeDirectionsFragment.
          */
         @JvmStatic
-        fun newInstance(recipe: RecipeDetails) =
+        fun newInstance() =
             RecipeDirectionsFragment().apply {
                 arguments = Bundle().apply {
                     //putStringArrayList(RECIPE_DIRECTIONS, ArrayList(recipe.directions.map() { it.content}))
@@ -122,7 +125,7 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         }
 
         if (data != null) {
-            callBackListener?.onRecipeDirectionUpdate(data)
+            selectedRecipeModel.updateRecipeDirections(data)
         }
     }
 
@@ -134,7 +137,6 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
             val direction: Direction? = adapter.mItems?.get(index)
             direction?.content = details?.text.toString()
             direction?.id = direction?.id?.times(-1)!!
-            //(activity as RecipeActivity).dataDirty = true
             adapter.notifyDataSetChanged()
             onItemChanged()
         }

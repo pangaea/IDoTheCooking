@@ -2,8 +2,6 @@ package com.pangaea.idothecooking.ui.shoppinglist
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.print.PrintAttributes
-import android.print.PrintManager
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem

@@ -1,45 +1,40 @@
 package com.pangaea.idothecooking.ui.recipe
 
-import android.content.ContentValues.TAG
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityRecipeBinding
-import com.pangaea.idothecooking.state.RecipeRepository
-import com.pangaea.idothecooking.state.db.AppDatabase
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.Recipe
-import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.RecipePagerAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
-import com.pangaea.idothecooking.utils.ThrottledUpdater
+import com.pangaea.idothecooking.ui.recipe.viewmodels.SelectedRecipeModel
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
 import com.pangaea.idothecooking.utils.extensions.setAsEnabled
 
-class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
+class RecipeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeBinding
     private var recipeId: Int = -1
     private lateinit var sectionsPagerAdapter: RecipePagerAdapter
     private lateinit var viewModel: RecipeViewModel
-    private lateinit var recipeDetails: RecipeDetails
     private var _itemSave: MenuItem? = null
+    private val selectedRecipeModel: SelectedRecipeModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +51,11 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
 
         viewModel = RecipeViewModelFactory(application, recipeId.toLong()).create(RecipeViewModel::class.java)
         viewModel.getDetails()?.observeOnce(this) { recipes ->
-            recipeDetails = recipes[0]
+            val recipeDetails = recipes[0]
+            selectedRecipeModel.setRecipeDetails(recipeDetails)
             title = resources.getString(R.string.title_activity_recipe_name)
                 .replace("{0}", recipeDetails.recipe.name)
-            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 3, lifecycle, recipeDetails)
+            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 3, lifecycle)
             val viewPager: ViewPager2 = binding.viewPager
             binding.viewPager.isUserInputEnabled = false
             viewPager.adapter = sectionsPagerAdapter
@@ -84,21 +80,27 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
                 isEnabled = false
                 this.remove()
                 if (_itemSave?.isEnabled == true) {
-                    val deleteAlertBuilder = AlertDialog.Builder(self)
-                        .setMessage(resources.getString(R.string.exit_with_save))
-                        .setCancelable(true)
-                        .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressedDispatcher.onBackPressed() }
-                        .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                            viewModel.update(recipeDetails) { onBackPressedDispatcher.onBackPressed() }
-                        }
-                    val deleteAlert = deleteAlertBuilder.create()
-                    deleteAlert.show()
+                    selectedRecipeModel.selectedRecipe.observeOnce(self) { recipeDetails ->
+                        val deleteAlertBuilder = AlertDialog.Builder(self)
+                            .setMessage(resources.getString(R.string.exit_with_save))
+                            .setCancelable(true)
+                            .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressedDispatcher.onBackPressed() }
+                            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                                viewModel.update(recipeDetails) { onBackPressedDispatcher.onBackPressed() }
+                            }
+                        val deleteAlert = deleteAlertBuilder.create()
+                        deleteAlert.show()
+                    }
                 } else {
                     onBackPressedDispatcher.onBackPressed()
                 }
             }
         }
         onBackPressedDispatcher.addCallback(this, callbackBack)
+
+        selectedRecipeModel.selectedRecipe.observe(this) { recipeDetails ->
+            _itemSave?.setAsEnabled()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -113,67 +115,18 @@ class RecipeActivity : AppCompatActivity(), RecipeCallBackListener {
         val itemSave = menu.findItem(R.id.item_save)
         _itemSave = itemSave
         _itemSave?.setAsDisabled()
-        itemSave.setOnMenuItemClickListener { menuItem ->
-            viewModel.update(recipeDetails){
-                //dataDirty = false
-                _itemSave?.setAsDisabled()
-                Toast.makeText(applicationContext,
-                               getString(R.string.save_success),
-                               Toast.LENGTH_LONG).show()
-                onBackPressedDispatcher.onBackPressed()
-                //recipeDetails.ingredients.forEach(){o -> o.id = 1}
-                //val pagerAdapter = binding.viewPager.adapter as RecipePagerAdapter
-                //pagerAdapter.reloadTab(1, RecipeIngredientsFragment.newInstance(recipeDetails))
+        itemSave.setOnMenuItemClickListener {
+            selectedRecipeModel.selectedRecipe.observeOnce(this) { recipeDetails ->
+                viewModel.update(recipeDetails) {
+                    _itemSave?.setAsDisabled()
+//                    Toast.makeText(applicationContext,
+//                                   getString(R.string.save_success),
+//                                   Toast.LENGTH_LONG).show()
+                    onBackPressedDispatcher.onBackPressed()
+                }
             }
             false
         }
         return true
-    }
-
-    override fun getRecipeDetails(): RecipeDetails {
-        return recipeDetails;
-    }
-
-    //var dataDirty: Boolean = false
-    private val infoUpdater = ThrottledUpdater()
-    private val ingredientUpdater = ThrottledUpdater()
-    private val directionsUpdater = ThrottledUpdater()
-
-    override fun onRecipeInfoUpdate(recipe: Recipe) {
-        infoUpdater.delayedUpdate(){
-            Log.d(TAG, "onRecipeInfoUpdate")
-            // TODO: Find a better way to do this
-            recipeDetails.recipe.name = recipe.name
-            recipeDetails.recipe.description = recipe.description
-            recipeDetails.recipe.imageUri = recipe.imageUri
-            recipeDetails.recipe.servings = recipe.servings
-        }
-        _itemSave?.setAsEnabled()
-    }
-
-    override fun onRecipeDirectionUpdate(directions: List<Direction>) {
-        directionsUpdater.delayedUpdate(){
-            Log.d(TAG, "onRecipeDirectionUpdate")
-            recipeDetails.directions = directions
-        }
-        _itemSave?.setAsEnabled()
-    }
-
-    override fun onRecipeIngredientUpdate(ingredients: List<Ingredient>) {
-        ingredientUpdater.delayedUpdate(){
-            Log.d(TAG, "onRecipeIngredientUpdate")
-            recipeDetails.ingredients = ingredients
-        }
-        _itemSave?.setAsEnabled()
-    }
-
-    override fun onRecipeCategories(categories: List<Category>) {
-        infoUpdater.delayedUpdate(){
-            Log.d(TAG, "onRecipeCategories")
-            recipeDetails.categories = categories.map { o ->
-                RecipeCategoryLink(0, recipeId, o.id)
-            }
-        }
-        _itemSave?.setAsEnabled()
     }
 }

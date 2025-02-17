@@ -17,7 +17,7 @@ class SearchFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(recipe: RecipeDetails) =
+        fun newInstance() =
             SearchFragment().apply {
                 arguments = Bundle().apply {
                     //putStringArrayList(RECIPE_INGREDIENTS, ArrayList(recipe.ingredients.map() { it.name}))
