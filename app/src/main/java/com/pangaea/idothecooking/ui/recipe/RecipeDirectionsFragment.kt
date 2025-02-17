@@ -35,6 +35,7 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
     private var mItemTouchHelper: ItemTouchHelper? = null
     private lateinit var _view: View
     private val selectedRecipeModel: SelectedRecipeModel by activityViewModels()
+    private var selfUpdate = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,16 +65,20 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         }
 
         // Retrieve recipe object from model
-        selectedRecipeModel.selectedRecipe.observeOnce(viewLifecycleOwner) { recipe ->
-            val directions = recipe.directions
-            val adapter = list.adapter as RecipeDirectionsAdapter
-            val data = directions.toMutableList()
-            data.sortWith { obj1, obj2 ->
-                Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+        selectedRecipeModel.selectedRecipe.observe(viewLifecycleOwner) { recipe ->
+            if (!selfUpdate) {
+                val directions = recipe.directions
+                val adapter = list.adapter as RecipeDirectionsAdapter
+                val data = directions.toMutableList()
+                data.sortWith { obj1, obj2 ->
+                    Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
+                }
+                adapter.setItems(data)
+                adapter.notifyDataSetChanged()
+                adapter.setAutoSelect(true)
+            } else {
+                selfUpdate = false
             }
-            adapter.setItems(data)
-            adapter.notifyDataSetChanged()
-            adapter.setAutoSelect(true)
         }
 
         val btn = view.findViewById<FloatingActionButton>(R.id.button_new_item)
@@ -125,6 +130,7 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         }
 
         if (data != null) {
+            selfUpdate = true
             selectedRecipeModel.updateRecipeDirections(data)
         }
     }

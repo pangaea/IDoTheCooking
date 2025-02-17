@@ -38,7 +38,7 @@ class SelectedRecipeModel : ViewModel() {
 
     fun updateRecipeCategories(items: List<Category>) {
         val curRecipe = mutableSelectedRecipe.value
-        mutableSelectedRecipe.value?.categories = items.map { o ->
+        curRecipe?.categories = items.map { o ->
             RecipeCategoryLink(0, curRecipe?.recipe?.id!!, o.id)
         }
         mutableSelectedRecipe.value = curRecipe!!

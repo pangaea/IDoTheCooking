@@ -71,6 +71,13 @@ class RecipeActivity : AppCompatActivity() {
                         else -> resources.getString(R.string.overview_tab)
                     }
             }.attach()
+
+            // Watch for changes
+            selectedRecipeModel.selectedRecipe.observe(this) { recipeDetails ->
+                // Note: This is acting as a notification of any changes to the recipe
+                //       so the save button can be enabled.
+                _itemSave?.setAsEnabled()
+            }
         }
 
         // Handle back navigation
@@ -97,10 +104,6 @@ class RecipeActivity : AppCompatActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, callbackBack)
-
-        selectedRecipeModel.selectedRecipe.observe(this) { recipeDetails ->
-            _itemSave?.setAsEnabled()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -118,15 +121,21 @@ class RecipeActivity : AppCompatActivity() {
         itemSave.setOnMenuItemClickListener {
             selectedRecipeModel.selectedRecipe.observeOnce(this) { recipeDetails ->
                 viewModel.update(recipeDetails) {
+                    Toast.makeText(applicationContext,
+                                   getString(R.string.save_success),
+                                   Toast.LENGTH_LONG).show()
+
+                    // Reset item statuses
+                    recipeDetails.ingredients.forEach(){o -> o.id = 1}
+                    recipeDetails.directions.forEach(){o -> o.id = 1}
+                    selectedRecipeModel.setRecipeDetails(recipeDetails)
                     _itemSave?.setAsDisabled()
-//                    Toast.makeText(applicationContext,
-//                                   getString(R.string.save_success),
-//                                   Toast.LENGTH_LONG).show()
-                    onBackPressedDispatcher.onBackPressed()
+                    //onBackPressedDispatcher.onBackPressed()
                 }
             }
             false
         }
+
         return true
     }
 }
