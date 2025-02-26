@@ -19,6 +19,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="save">Save</string>
+    <string name="save_as">Save As</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
     <string name="yes">Yes</string>
@@ -36,10 +37,13 @@
     <string name="export_data">Export All Data</string>
     <string name="import_data">Import From File</string>
     <string name="import_complete">Import Complete</string>
+    <string name="import_recipe_complete">Import [{0}] Complete</string>
     <string name="import_error_recipe_exists">Recipe [{0}] already exists</string>
     <string name="import_error_recipe">Error saving recipe [{0}]</string>
     <string name="import_error_shopping_list">Error saving shopping list [{0}]</string>
     <string name="import_from_library">Select From Library…</string>
+
+    <string name="save_as_prompt">Please choose a new name</string>
 
     <string name="exit_without_save">You\'ve made changes.  Exit without saving?</string>
     <string name="exit_with_save">You\'ve made changes. Save before exiting?</string>
@@ -50,6 +54,7 @@
     <string name="overview_tab">Overview</string>
     <string name="ingredients_tab">Ingredients</string>
     <string name="instructions_tab">Instructions</string>
+    <string name="suggestions_tab">Suggestions</string>
 
     <string name="home_recipes_title">Recipes</string>
     <string name="home_recently_updated">Recently updated:</string>
@@ -157,7 +162,7 @@
     <string name="lock_screen">Lock Screen</string>
 
     <string name="recipe_generator">Recipe Creator</string>
-    <string name="recipe_generate">Create Recipe</string>
+    <string name="recipe_generate">Get Recipes</string>
     <string name="generated_from_openai">Generated from OpenAi</string>
     <string name="new_ai_recipe">New AI Recipe</string>
     <string name="description_missing">Description required</string>
@@ -166,4 +171,8 @@
     <string name="generate">Generate</string>
     <string name="generate_using_ai">Create using AI</string>
     <string name="enhance_using_ai">Enhance using AI</string>
+
+    <string name="helper_desc_hint">Explain what kind of suggestions you are looking for</string>
+    <string name="helper_button_text">Get Suggestions</string>
+    <string name="helper_prompt_title">Add this suggestion to your recipe?</string>
 </resources>

@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +14,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.llm.adapters.RecipeGeneratorAdapter
+import com.pangaea.idothecooking.ui.recipe.adapters.HelperAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
@@ -70,15 +70,26 @@ class RecipeGeneratorFragment : Fragment() {
                                 with(list) {
                                     layoutManager = LinearLayoutManager(context)
                                     val listener = object : RecycleViewClickListener() {
+                                        @SuppressLint("NotifyDataSetChanged")
                                         override fun click(id: Int) {
-                                            ViewRecipeDialog(generatedRecipes[id]) { recipe ->
-                                                CreateRecipeAdapter(me, recipeViewModel).attemptRecipeInsert(recipe)
+                                            val adpt: RecipeGeneratorAdapter = (adapter as RecipeGeneratorAdapter)
+                                            val generatedRecipe = adpt.getItem(id)
+
+                                            ViewRecipeDialog(generatedRecipe) { recipe ->
+                                                CreateRecipeAdapter(me.requireActivity(), me.requireContext(),
+                                                                    me, me.childFragmentManager,
+                                                                    recipeViewModel){ _ ->
+                                                    adpt.removeAt(id)
+                                                    adpt.notifyDataSetChanged()
+                                                    Toast.makeText(context, requireActivity()
+                                                                       .getString(R.string.import_recipe_complete)
+                                                                       .replace("{0}", recipe.recipe.name),
+                                                                   Toast.LENGTH_LONG).show()
+                                                }.attemptRecipeInsert(recipe)
                                             }.show(childFragmentManager, null)
                                         }
                                     }
-                                    adapter = RecipeGeneratorAdapter(generatedRecipes,
-                                                                     listener,
-                                                                     requireActivity())
+                                    adapter = RecipeGeneratorAdapter(generatedRecipes.toMutableList(), listener)
                                 }
                             }
                         }

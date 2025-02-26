@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.ui.recipe
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +10,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,6 +26,8 @@ import com.pangaea.idothecooking.ui.recipe.adapters.RecipePagerAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.SelectedRecipeModel
+import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
+import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
 import com.pangaea.idothecooking.utils.extensions.setAsEnabled
@@ -55,7 +60,7 @@ class RecipeActivity : AppCompatActivity() {
             selectedRecipeModel.setRecipeDetails(recipeDetails)
             title = resources.getString(R.string.title_activity_recipe_name)
                 .replace("{0}", recipeDetails.recipe.name)
-            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 3, lifecycle)
+            sectionsPagerAdapter = RecipePagerAdapter(supportFragmentManager, 4, lifecycle)
             val viewPager: ViewPager2 = binding.viewPager
             binding.viewPager.isUserInputEnabled = false
             viewPager.adapter = sectionsPagerAdapter
@@ -67,16 +72,21 @@ class RecipeActivity : AppCompatActivity() {
                         0 -> resources.getString(R.string.overview_tab)
                         1 -> resources.getString(R.string.ingredients_tab)
                         2 -> resources.getString(R.string.instructions_tab)
-                        3 -> "Suggestions from AI"
+                        3 -> resources.getString(R.string.suggestions_tab)
                         else -> resources.getString(R.string.overview_tab)
                     }
             }.attach()
 
             // Watch for changes
+            var bLock: Boolean = true // Ignore the first event
             selectedRecipeModel.selectedRecipe.observe(this) { recipeDetails ->
                 // Note: This is acting as a notification of any changes to the recipe
                 //       so the save button can be enabled.
-                _itemSave?.setAsEnabled()
+                if (!bLock) {
+                    _itemSave?.setAsEnabled()
+                } else {
+                    bLock = false
+                }
             }
         }
 
@@ -86,24 +96,36 @@ class RecipeActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 isEnabled = false
                 this.remove()
-                if (_itemSave?.isEnabled == true) {
-                    selectedRecipeModel.selectedRecipe.observeOnce(self) { recipeDetails ->
-                        val saveChangesAlertBuilder = AlertDialog.Builder(self)
-                            .setMessage(resources.getString(R.string.exit_with_save))
-                            .setCancelable(true)
-                            .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressedDispatcher.onBackPressed() }
-                            .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                                viewModel.update(recipeDetails) { onBackPressedDispatcher.onBackPressed() }
-                            }
-                        val saveChangesAlert = saveChangesAlertBuilder.create()
-                        saveChangesAlert.show()
-                    }
-                } else {
-                    onBackPressedDispatcher.onBackPressed()
-                }
+                tryNavigateToViewActivity()
             }
         }
         onBackPressedDispatcher.addCallback(this, callbackBack)
+    }
+
+    fun tryNavigateToViewActivity() {
+        if (_itemSave?.isEnabled == true) {
+            selectedRecipeModel.selectedRecipe.observeOnce(this) { recipeDetails ->
+                val saveChangesAlertBuilder = AlertDialog.Builder(this)
+                    .setMessage(resources.getString(R.string.exit_with_save))
+                    .setCancelable(true)
+                    .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> navigateToViewActivity(recipeId) }
+                    .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                        viewModel.update(recipeDetails) { navigateToViewActivity(recipeId) }
+                    }
+                val saveChangesAlert = saveChangesAlertBuilder.create()
+                saveChangesAlert.show()
+            }
+        } else {
+            navigateToViewActivity(recipeId)
+        }
+    }
+
+    fun navigateToViewActivity(id: Int) {
+        val intent = Intent(this, RecipeViewActivity::class.java)
+        val bundle = Bundle()
+        bundle.putInt("id", id)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -111,7 +133,8 @@ class RecipeActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.recipe_menu, menu)
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            onBackPressedDispatcher.onBackPressed()
+            //onBackPressedDispatcher.onBackPressed()
+            tryNavigateToViewActivity()
             false
         }
 
@@ -132,6 +155,33 @@ class RecipeActivity : AppCompatActivity() {
                     _itemSave?.setAsDisabled()
                     //onBackPressedDispatcher.onBackPressed()
                 }
+            }
+            false
+        }
+
+        val itemSaveAs = menu.findItem(R.id.item_save_as)
+        itemSaveAs.setOnMenuItemClickListener {
+            selectedRecipeModel.selectedRecipe.observeOnce(this) { recipeDetails ->
+                NameOnlyDialog(R.string.save_as_prompt, recipeDetails.recipe.name) { name ->
+                    recipeDetails.recipe.id = 0
+                    recipeDetails.recipe.name = name
+                    CreateRecipeAdapter(this, this.baseContext,
+                                        this, this.supportFragmentManager,
+                                        viewModel) { id ->
+                        // Reset item statuses and id
+//                        recipeDetails.recipe.id = id.toInt()
+//                        recipeDetails.ingredients.forEach(){o -> o.id = 1}
+//                        recipeDetails.directions.forEach(){o -> o.id = 1}
+//                        selectedRecipeModel.setRecipeDetails(recipeDetails)
+//                        _itemSave?.setAsDisabled()
+                        val intent = Intent(this, RecipeActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putInt("id", id.toInt())
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                        finish()
+                    }.attemptRecipeInsert(recipeDetails)
+                }.show(supportFragmentManager, null)
             }
             false
         }

@@ -10,6 +10,7 @@ import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
+import com.pangaea.idothecooking.ui.recipe.adapters.HelperSuggestion
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import com.robertlevonyan.views.expandable.BuildConfig
 import okhttp3.MediaType
@@ -22,56 +23,17 @@ import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-
 class LlmGateway(val context: Context) {
     private val openAiChatCompletionUrl = "https://api.openai.com/v1/chat/completions"
     private val mediaTypeJson: MediaType = "application/json".toMediaType()
-    private val mockRequest = true
+    private val mockRequest = false
 
     fun suggestRecipe(desc: String, callback: (recipes: List<RecipeDetails>) -> Unit) {
 
-        val promptSuggestRecipe = context.getString(R.string.prompt_suggest_recipes)
-
         if (!mockRequest) {
-            val jsonBody = JSONObject()
-            try {
-                jsonBody.put("model", "gpt-4o-mini")
-                val jsonMsg = JSONObject()
-                jsonMsg.put("role", "user")
-                jsonMsg.put("content", promptSuggestRecipe.replace("{description}", desc))
-                val jsonMsgs = JSONArray()
-                jsonMsgs.put(jsonMsg)
-                //messages: [{ role: "user", content: "Say this is a test" }],
-                jsonBody.put("messages", jsonMsgs)
-                //jsonBody.put("prompt",  query)
-                jsonBody.put("max_tokens", 4000)
-                jsonBody.put("temperature", 0)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            val mainApp = context as MainActivity
-            val openAiApiKey = mainApp.getOpenAIApiKey()
-
-            val body: RequestBody = RequestBody.create(mediaTypeJson, jsonBody.toString())
-            val request: Request = Request.Builder()
-                .url(openAiChatCompletionUrl)
-                .header("Authorization", "Bearer $openAiApiKey")
-                .post(body).build()
-            val client = OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS) // Set connection timeout to 30 seconds
-                .readTimeout(60, TimeUnit.SECONDS)    // Set read timeout to 30 seconds
-                .writeTimeout(30, TimeUnit.SECONDS)   // Set write timeout to 30 seconds
-                .build()
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                val json = response.body!!.string()
-                val jsonRoot = JsonParser.parseString(json).asJsonObject;
-                val choices = jsonRoot.get("choices").asJsonArray
-                val choice = choices[0].asJsonObject
-                val msg = choice.get("message").asJsonObject
-                val data = msg.get("content").asString
-                callback(parseRecipeListJson(data))
+            val promptSuggestRecipe = context.getString(R.string.prompt_suggest_recipes)
+            llmRequest(promptSuggestRecipe.replace("{description}", desc)) {
+                callback(parseRecipeListJson(it))
             }
         } else {
             // Mock data - for dev
@@ -79,6 +41,75 @@ class LlmGateway(val context: Context) {
             val data: String = context.readJSONFromAssets("sample_openai_recipe_list.data")
             callback(parseRecipeListJson(data))
         }
+    }
+
+    fun suggestEnhancements(desc: String, recipe: RecipeDetails, callback: (recipes: List<HelperSuggestion>) -> Unit) {
+        if (!mockRequest) {
+            val promptSuggestEnhancements = context.getString(R.string.prompt_suggest_recipe_improvements)
+            llmRequest(promptSuggestEnhancements.replace("{recipe_name}", recipe.recipe.name)
+                           .replace("{ingredient_list}", recipe.ingredients.map{it.name}.joinToString(","))) {
+                callback(parseSuggestionListJson(it))
+            }
+        } else {
+            // Mock data - for dev
+            Thread.sleep(5_000)
+            val data: String = context.readJSONFromAssets("sample_openai_suggestions.data")
+            callback(parseSuggestionListJson(data))
+        }
+    }
+
+    private fun llmRequest(content: String, callback: (payload: String) -> Unit) {
+        val jsonBody = JSONObject()
+        try {
+            jsonBody.put("model", "gpt-4o-mini")
+            val jsonMsg = JSONObject()
+            jsonMsg.put("role", "user")
+            jsonMsg.put("content", content)
+            val jsonMsgs = JSONArray()
+            jsonMsgs.put(jsonMsg)
+            //messages: [{ role: "user", content: "Say this is a test" }],
+            jsonBody.put("messages", jsonMsgs)
+            //jsonBody.put("prompt",  query)
+            jsonBody.put("max_tokens", 4000)
+            jsonBody.put("temperature", 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val openAiApiKey = com.pangaea.idothecooking.BuildConfig.OPENAI_API_KEY
+        val body: RequestBody = RequestBody.create(mediaTypeJson, jsonBody.toString())
+        val request: Request = Request.Builder()
+            .url(openAiChatCompletionUrl)
+            .header("Authorization", "Bearer $openAiApiKey")
+            .post(body).build()
+        val client = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS) // Set connection timeout to 30 seconds
+            .readTimeout(60, TimeUnit.SECONDS)    // Set read timeout to 30 seconds
+            .writeTimeout(30, TimeUnit.SECONDS)   // Set write timeout to 30 seconds
+            .build()
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val json = response.body!!.string()
+            val jsonRoot = JsonParser.parseString(json).asJsonObject;
+            val choices = jsonRoot.get("choices").asJsonArray
+            val choice = choices[0].asJsonObject
+            val msg = choice.get("message").asJsonObject
+            callback(msg.get("content").asString)
+        }
+    }
+
+    /////////////////////////////////////////////////////////
+    // Recipes
+    ////////////////////////////////////////////////////////
+
+    private fun parseRecipeListJson(data: String): List<RecipeDetails> {
+        val recipeJson = extractJsonString(data)
+        val mapper = ObjectMapper()
+        val node: JsonNode = mapper.readTree(recipeJson)
+        val recipes: MutableList<RecipeDetails> = emptyList<RecipeDetails>().toMutableList()
+        val recipesNode: JsonNode? = node.get("recipes")
+        extractRecipes(recipesNode ?: node, recipes)
+        return recipes
     }
 
     private fun extractRecipes(node: JsonNode, recipes: MutableList<RecipeDetails>) {
@@ -91,27 +122,17 @@ class LlmGateway(val context: Context) {
         }
     }
 
-    private fun parseRecipeListJson(data: String): List<RecipeDetails> {
-        val recipeJson = extractJsonString(data)
-        val mapper = ObjectMapper()
-        val node: JsonNode = mapper.readTree(recipeJson)
-        val recipes: MutableList<RecipeDetails> = emptyList<RecipeDetails>().toMutableList()
-        val recipesNode: JsonNode? = node.get("recipes")
-        extractRecipes(recipesNode ?: node, recipes)
-        return recipes
-    }
-
-    private fun parseRecipeJson(data: String): RecipeDetails {
-        val recipeJson = extractJsonString(data)
-        val mapper = ObjectMapper()
-        val node: JsonNode = mapper.readTree(recipeJson)
-        val recipeNode: JsonNode? = node.get("recipe")
-        return if (recipeNode != null) {
-            extractRecipeFromJson(recipeNode)
-        } else {
-            extractRecipeFromJson(node)
-        }
-    }
+//    private fun parseRecipeJson(data: String): RecipeDetails {
+//        val recipeJson = extractJsonString(data)
+//        val mapper = ObjectMapper()
+//        val node: JsonNode = mapper.readTree(recipeJson)
+//        val recipeNode: JsonNode? = node.get("recipe")
+//        return if (recipeNode != null) {
+//            extractRecipeFromJson(recipeNode)
+//        } else {
+//            extractRecipeFromJson(node)
+//        }
+//    }
 
     private fun extractRecipeFromJson(recipeNode: JsonNode?): RecipeDetails {
         val recipe = Recipe()
@@ -145,6 +166,33 @@ class LlmGateway(val context: Context) {
         //println(recipeJson)
         return RecipeDetails(recipe, ingredients, directions, emptyList());
     }
+
+    /////////////////////////////////////////////////////////
+    // Suggestions
+    ////////////////////////////////////////////////////////
+
+    private fun parseSuggestionListJson(data: String): List<HelperSuggestion> {
+        val recipeJson = extractJsonString(data)
+        val mapper = ObjectMapper()
+        val node: JsonNode = mapper.readTree(recipeJson)
+
+        val suggestions: MutableList<HelperSuggestion> = emptyList<HelperSuggestion>().toMutableList()
+        if (node.isArray) {
+            node.forEachIndexed { index, objNode ->
+                val ingredient = objNode.get("ingredient")?.asText()
+                val cooking_technique = objNode.get("cooking_technique")?.asText()
+                val description = objNode.get("description").asText()
+                suggestions.add(HelperSuggestion(ingredient, cooking_technique, description))
+            }
+            return suggestions
+        } else {
+            throw Exception("Invalid helper response")
+        }
+    }
+
+    /////////////////////////////////////////////////////////
+    // Common
+    ////////////////////////////////////////////////////////
 
     private fun extractJsonString(text: String): String? {
         val startToken = "```json"

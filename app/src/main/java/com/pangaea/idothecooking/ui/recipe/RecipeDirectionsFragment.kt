@@ -108,7 +108,6 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
         fun newInstance() =
             RecipeDirectionsFragment().apply {
                 arguments = Bundle().apply {
-                    //putStringArrayList(RECIPE_DIRECTIONS, ArrayList(recipe.directions.map() { it.content}))
                 }
             }
     }
@@ -142,7 +141,10 @@ class RecipeDirectionsFragment : Fragment(), OnStartDragListener {
             val details = (dialog as AlertDialog).findViewById<View>(R.id.details) as EditText?
             val direction: Direction? = adapter.mItems?.get(index)
             direction?.content = details?.text.toString()
-            direction?.id = direction?.id?.times(-1)!!
+            if (direction?.id!! > 0) {
+                // Hack: Since these objects are all created new on save, I can use the id as a status
+                direction.id = direction.id.times(-1)
+            }
             adapter.notifyDataSetChanged()
             onItemChanged()
         }

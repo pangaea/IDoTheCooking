@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.ui.shoppinglist
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Html
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pangaea.idothecooking.IDoTheCookingApp
+import com.pangaea.idothecooking.MainActivity
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityShoppingListBinding
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
@@ -139,7 +141,12 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
         menuInflater.inflate(R.menu.shopping_list_menu, menu)
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            onBackPressedDispatcher.onBackPressed()
+            //onBackPressedDispatcher.onBackPressed()
+            val bundle = Bundle()
+            bundle.putString("start", "shoppingLists")
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
             false
         }
 

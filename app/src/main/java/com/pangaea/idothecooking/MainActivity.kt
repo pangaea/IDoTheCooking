@@ -71,9 +71,20 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-    }
 
-    fun getOpenAIApiKey(): String = BuildConfig.OPENAI_API_KEY
+        // Navigate to fragment
+        val bundle = intent?.extras
+        if (bundle != null) {
+            when (bundle.getString("start", null)) {
+                "recipes" -> {
+                    navController.navigate(R.id.nav_recipes)
+                }
+                "shoppingLists" -> {
+                    navController.navigate(R.id.nav_shopping_lists)
+                }
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

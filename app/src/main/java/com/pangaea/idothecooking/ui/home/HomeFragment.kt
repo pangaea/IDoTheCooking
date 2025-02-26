@@ -135,7 +135,9 @@ class HomeFragment : Fragment() {
         }
 
         binding.createNewRecipe.setOnClickListener(){
-            CreateRecipeDialog(CreateRecipeAdapter(this, recipeViewModel)).show(childFragmentManager, null)
+            CreateRecipeDialog(CreateRecipeAdapter(this.requireActivity(), this.requireContext(),
+                                                   this.viewLifecycleOwner, this.childFragmentManager,
+                                                   recipeViewModel, null)).show(childFragmentManager, null)
         }
 
         binding.createNewList.setOnClickListener(){

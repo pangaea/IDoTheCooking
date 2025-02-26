@@ -6,11 +6,16 @@
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/save"
         android:id="@+id/item_save"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
         android:title="@string/cancel"
         android:id="@+id/item_cancel"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <item
+        android:orderInCategory="100"
+        android:title="@string/save_as"
+        android:id="@+id/item_save_as"
+        app:showAsAction="never" />
 </menu>

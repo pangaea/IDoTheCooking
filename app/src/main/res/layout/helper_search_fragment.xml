@@ -2,13 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.recipe.helper.RecipeHelperFragment"
+    tools:context=".ui.recipe.HelperSearchFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.llm.RecipeGeneratorFragment"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -19,7 +18,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="@string/description_hint">
+            android:hint="@string/helper_desc_hint">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recipeDesc"
                 android:inputType="textMultiLine|textCapSentences"
@@ -34,7 +33,7 @@
             android:id="@+id/generate_recipes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/recipe_generate"
+            android:text="@string/helper_button_text"
             android:src="@mipmap/generative"
             style="@style/recipeGenButton"
             android:background="@drawable/roundedbutton"

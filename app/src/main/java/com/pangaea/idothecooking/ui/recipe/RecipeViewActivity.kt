@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.navArgs
+import com.pangaea.idothecooking.MainActivity
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityRecipeViewBinding
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
@@ -77,7 +81,12 @@ class RecipeViewActivity : ShareAndPrintActivity() {
         // Close
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            onBackPressed()
+            //onBackPressed()
+            val bundle = Bundle()
+            bundle.putString("start", "recipes")
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
             false
         }
 

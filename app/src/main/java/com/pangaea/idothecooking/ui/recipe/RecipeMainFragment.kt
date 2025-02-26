@@ -88,6 +88,10 @@ class RecipeMainFragment : Fragment() {
             Log.d(ContentValues.TAG, "onRecipeUpdateEvent !!!!!!!!!!!!!")
             recipeOrig = recipe.recipe
             binding.editName.setText(recipe.recipe.name)
+//            selectedRecipeModel.selectedRecipe.observe(requireActivity()) { recipeUpdate ->
+//                // Listen for name change only due to saveAs
+//                binding.editName.setText(recipeUpdate.recipe.name)
+//            }
             binding.editDesc.setText(recipe.recipe.description)
             if (recipe.recipe.imageUri == null || recipe.recipe.imageUri!!.isEmpty()) {
                 binding.editImage.setImageDrawable(resources.getDrawable(R.mipmap.image_placeholder3))
@@ -163,7 +167,7 @@ class RecipeMainFragment : Fragment() {
 
             val viewModel = CategoryViewModelFactory(requireActivity().application, null).create(CategoryViewModel::class.java)
             viewModel.getAllCategories().observe(viewLifecycleOwner) { categories ->
-                recipe?.let {
+                recipe.let {
                     val linkedCategoryIds = recipe.categories.map { o -> o.category_id }
                     val textView = binding.categoriesView
                     textView.text = categories.filter{o -> linkedCategoryIds.contains(o.id)}
@@ -270,7 +274,6 @@ class RecipeMainFragment : Fragment() {
             recipeOrig.servings = binding.editServings.value
             //callBackListener?.onRecipeInfoUpdate(recipe);
             requireActivity().runOnUiThread {
-                Log.d(ContentValues.TAG,">>>>>>>>>>>>>>>>> onRecipeInfoUpdate <<<<<<<<<<<<<<<<<<<<")
                 selectedRecipeModel.updateRecipe(recipeOrig)
             }
         }

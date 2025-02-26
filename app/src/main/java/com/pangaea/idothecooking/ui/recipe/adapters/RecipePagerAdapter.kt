@@ -4,11 +4,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.RecipeDirectionsFragment
 import com.pangaea.idothecooking.ui.recipe.RecipeIngredientsFragment
 import com.pangaea.idothecooking.ui.recipe.RecipeMainFragment
-import com.pangaea.idothecooking.ui.recipe.helper.SearchFragment
+import com.pangaea.idothecooking.ui.recipe.HelperSearchFragment
 
 class RecipePagerAdapter(
     fragmentManager: FragmentManager,
@@ -23,7 +22,7 @@ class RecipePagerAdapter(
             0 -> RecipeMainFragment.newInstance()
             1 -> RecipeIngredientsFragment.newInstance()
             2 -> RecipeDirectionsFragment.newInstance()
-            3 -> SearchFragment.newInstance()
+            3 -> HelperSearchFragment.newInstance()
             else -> RecipeMainFragment.newInstance()
         }
     }

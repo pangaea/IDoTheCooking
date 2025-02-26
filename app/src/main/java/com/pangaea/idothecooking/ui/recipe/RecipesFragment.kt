@@ -114,7 +114,9 @@ class RecipesFragment : Fragment() {
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab?.setOnClickListener {
-            CreateRecipeDialog(CreateRecipeAdapter(this, viewModel)).show(childFragmentManager, null)
+            CreateRecipeDialog(CreateRecipeAdapter(this.requireActivity(), this.requireContext(),
+                                                   this.viewLifecycleOwner, this.childFragmentManager,
+                                                   viewModel, null)).show(childFragmentManager, null)
         }
         return view
     }

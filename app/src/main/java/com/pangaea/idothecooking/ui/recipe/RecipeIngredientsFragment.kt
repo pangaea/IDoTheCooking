@@ -87,8 +87,6 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
-                    // Hack: Since these objects are all created new on save, I can use the id as a status
-                    ingredient.id = 0
                     adapter.addNewItem(ingredient)
                     onItemChanged()
                 }, { dialog, _ -> dialog.cancel() })
@@ -110,7 +108,6 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
         fun newInstance() =
             RecipeIngredientsFragment().apply {
                 arguments = Bundle().apply {
-                    //putStringArrayList(RECIPE_INGREDIENTS, ArrayList(recipe.ingredients.map() { it.name}))
                 }
             }
     }
@@ -148,9 +145,10 @@ class RecipeIngredientsFragment : Fragment(), OnStartDragListener {
                     ingredient.amount = obj.amount
                     ingredient.unit = obj.unit
                     ingredient.name = obj.name
-                    // Hack: Since these objects are all created new on save, I can use the id as a status
-                    ingredient.id = ingredient.id.times(-1)
-                    //(activity as RecipeActivity).dataDirty = true
+                    if (ingredient.id > 0) {
+                        // Hack: Since these objects are all created new on save, I can use the id as a status
+                        ingredient.id = ingredient.id.times(-1)
+                    }
                     adapter.notifyDataSetChanged()
                     onItemChanged()
                 }, { dialog, _ -> dialog.cancel() })

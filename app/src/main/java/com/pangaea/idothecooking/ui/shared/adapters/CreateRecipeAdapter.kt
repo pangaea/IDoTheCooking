@@ -1,9 +1,13 @@
 package com.pangaea.idothecooking.ui.shared.adapters
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
@@ -18,26 +22,36 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel: RecipeViewModel)
+class CreateRecipeAdapter(private val activity: Activity,
+                          private val context: Context,
+                          private val lifecycleOwner: LifecycleOwner,
+                          private val fragmentManager: FragmentManager,
+                          private var viewModel: RecipeViewModel,
+                          private val callback: ((id: Long) -> Unit)?)
     : CreateRecipeCallBackListener {
 
     fun attemptRecipeInsert(recipe: RecipeDetails) {
-        fragment.activity?.runOnUiThread {
-            viewModel.getRecipeByName(recipe.recipe.name).observeOnce(fragment) { recipes ->
+        activity.runOnUiThread {
+            viewModel.getRecipeByName(recipe.recipe.name).observeOnce(lifecycleOwner) { recipes ->
                 if (recipes.isEmpty()) {
+                    // By default - navigate to edit activity
                     viewModel.insert(recipe) { id ->
-                        val intent = Intent(fragment.activity, RecipeActivity::class.java)
-                        val bundle = Bundle()
-                        bundle.putInt("id", id.toInt())
-                        intent.putExtras(bundle)
-                        fragment.requireActivity().startActivity(intent)
+                        if (callback != null) {
+                            callback.invoke(id)
+                        } else {
+                            val intent = Intent(activity, RecipeActivity::class.java)
+                            val bundle = Bundle()
+                            bundle.putInt("id", id.toInt())
+                            intent.putExtras(bundle)
+                            activity.startActivity(intent)
+                        }
                     }
                 } else {
                     // Name exists - prompt for a new one
                     NameOnlyDialog(R.string.rename_recipe_before_save, recipe.recipe.name) { name ->
                         recipe.recipe.name = name
                         attemptRecipeInsert(recipe)
-                    }.show(fragment.childFragmentManager, null)
+                    }.show(fragmentManager, null)
                 }
             }
         }
@@ -45,24 +59,24 @@ class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel:
 
     private fun attemptRecipeInsert(json: String, replacementName: String?, tool: JsonAsyncImportInterface,
                                     ctx: JsonAsyncImportTool.ImportContext) {
-        fragment.activity?.runOnUiThread {
+        activity.runOnUiThread {
             if (!tool.import(json, replacementName, ctx) {
                     CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(fragment.context,
-                                       fragment.getString(R.string.import_complete),
+                        Toast.makeText(context,
+                                       activity.getString(R.string.import_complete),
                                        Toast.LENGTH_LONG).show()
                     }
                 }) {
                 // Name exists - prompt for a new one
                 NameOnlyDialog(R.string.rename_recipe_before_save, replacementName) { name ->
                     attemptRecipeInsert(json, name, tool, ctx)
-                }.show(fragment.childFragmentManager, null)
+                }.show(fragmentManager, null)
             }
         }
     }
 
     override fun isRecipeNameUnique(name: String, callback: (recipe: Recipe?) -> Unit) {
-        viewModel.getRecipeByName(name).observeOnce(fragment) { recipes ->
+        viewModel.getRecipeByName(name).observeOnce(lifecycleOwner) { recipes ->
             callback(if (recipes.isEmpty()) null else recipes[0])
         }
     }
@@ -75,11 +89,9 @@ class CreateRecipeAdapter(private val fragment: Fragment, private var viewModel:
             attemptRecipeInsert(RecipeDetails(recipe, emptyList(), emptyList(), emptyList()))
         } else {
             // Import from template
-            val json: String? = fragment.context?.readJSONFromAssets("recipe_templates/${fileName}")
-            if (json != null) {
-                JsonAsyncImportTool(fragment.requireActivity().application, fragment).loadData() { tool, ctx ->
-                    attemptRecipeInsert(json, name, tool, ctx)
-                }
+            val json: String = context.readJSONFromAssets("recipe_templates/${fileName}")
+            JsonAsyncImportTool(activity.application, lifecycleOwner).loadData() { tool, ctx ->
+                attemptRecipeInsert(json, name, tool, ctx)
             }
         }
     }
