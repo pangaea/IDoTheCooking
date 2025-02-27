@@ -36,6 +36,7 @@ import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
 import com.pangaea.idothecooking.utils.extensions.setAsEnabled
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 import com.pangaea.idothecooking.utils.formatting.ShoppingListRenderer
 import java.util.function.Consumer
 
@@ -142,11 +143,7 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
             //onBackPressedDispatcher.onBackPressed()
-            val bundle = Bundle()
-            bundle.putString("start", "shoppingLists")
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtras(bundle)
-            startActivity(intent)
+            startActivityWithBundle(MainActivity::class.java, "start", "shoppingLists")
             false
         }
 

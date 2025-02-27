@@ -31,6 +31,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.setAsDisabled
 import com.pangaea.idothecooking.utils.extensions.setAsEnabled
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 
 class RecipeActivity : AppCompatActivity() {
 
@@ -91,7 +92,7 @@ class RecipeActivity : AppCompatActivity() {
         }
 
         // Handle back navigation
-        val self = this
+        //val self = this
         val callbackBack = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 isEnabled = false
@@ -120,12 +121,8 @@ class RecipeActivity : AppCompatActivity() {
         }
     }
 
-    fun navigateToViewActivity(id: Int) {
-        val intent = Intent(this, RecipeViewActivity::class.java)
-        val bundle = Bundle()
-        bundle.putInt("id", id)
-        intent.putExtras(bundle)
-        startActivity(intent)
+    private fun navigateToViewActivity(id: Int) {
+        startActivityWithBundle(RecipeViewActivity::class.java, "id", id)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -174,11 +171,7 @@ class RecipeActivity : AppCompatActivity() {
 //                        recipeDetails.directions.forEach(){o -> o.id = 1}
 //                        selectedRecipeModel.setRecipeDetails(recipeDetails)
 //                        _itemSave?.setAsDisabled()
-                        val intent = Intent(this, RecipeActivity::class.java)
-                        val bundle = Bundle()
-                        bundle.putInt("id", id.toInt())
-                        intent.putExtras(bundle)
-                        startActivity(intent)
+                        startActivityWithBundle(RecipeActivity::class.java, "id", id.toInt())
                         finish()
                     }.attemptRecipeInsert(recipeDetails)
                 }.show(supportFragmentManager, null)

@@ -32,6 +32,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -89,11 +90,7 @@ class RecipesFragment : Fragment() {
 
                     val listener = object : RecycleViewClickListener() {
                         override fun click(id: Int) {
-                            val intent = Intent(activity, RecipeViewActivity::class.java)
-                            val b = Bundle()
-                            b.putInt("id", id)
-                            intent.putExtras(b)
-                            startActivity(intent)
+                            startActivityWithBundle(RecipeViewActivity::class.java, "id", id)
                         }
                     }
                     adapter = RecipeRecyclerViewAdapter(filteredList.toMutableList(), listener, requireActivity())

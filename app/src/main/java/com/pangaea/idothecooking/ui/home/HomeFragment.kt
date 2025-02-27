@@ -32,6 +32,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 
 class HomeFragment : Fragment() {
 
@@ -83,11 +84,7 @@ class HomeFragment : Fragment() {
                     description.text = recipe.description
                 }
                 recipeLayout.rootView.setOnClickListener{
-                    val intent = Intent(activity, RecipeViewActivity::class.java)
-                    val b = Bundle()
-                    b.putInt("id", recipe.id)
-                    intent.putExtras(b)
-                    startActivity(intent)
+                    startActivityWithBundle(RecipeViewActivity::class.java, "id", recipe.id)
                 }
                 linearLayout.addView(recipeLayout)
                 if (index >= (itemsCount-1)) break;
@@ -110,11 +107,8 @@ class HomeFragment : Fragment() {
                 description.text = shoppingListDetails.shoppingListItems.map { it.name }.joinToString(", ")
 
                 shoppingListLayout.rootView.setOnClickListener{
-                    val intent = Intent(activity, ShoppingListActivity::class.java)
-                    val b = Bundle()
-                    b.putInt("id", shoppingListDetails.shoppingList.id)
-                    intent.putExtras(b)
-                    startActivity(intent)
+                    startActivityWithBundle(ShoppingListActivity::class.java, "id",
+                                            shoppingListDetails.shoppingList.id)
                 }
 
                 var isComplete = true
@@ -147,11 +141,7 @@ class HomeFragment : Fragment() {
                 shoppingList.description = ""
                 val details = ShoppingListDetails(shoppingList, emptyList())
                 shoppingListViewModel.insert(details) { id: Long ->
-                    val shoppingListIntent = Intent(activity, ShoppingListActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putInt("id", id.toInt())
-                    shoppingListIntent.putExtras(bundle)
-                    startActivity(shoppingListIntent)
+                    startActivityWithBundle(ShoppingListActivity::class.java, "id", id.toInt())
                 }
             }.show(childFragmentManager, null)
         }

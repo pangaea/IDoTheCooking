@@ -21,6 +21,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
 import com.pangaea.idothecooking.ui.shoppinglist.adapters.ShoppingListRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 
 /**
  * A fragment representing a list of Items.
@@ -29,14 +30,6 @@ class ShoppingListsFragment : Fragment() {
 
     private var columnCount = 1
     private lateinit var viewModel: ShoppingListViewModel
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        arguments?.let {
-//            columnCount = it.getInt(ARG_COLUMN_COUNT)
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,11 +55,7 @@ class ShoppingListsFragment : Fragment() {
 
                     val listener = object : RecycleViewClickListener() {
                         override fun click(id: Int) {
-                            val shoppingListIntent = Intent(activity, ShoppingListActivity::class.java)
-                            val bundle = Bundle()
-                            bundle.putInt("id", id.toInt())
-                            shoppingListIntent.putExtras(bundle)
-                            startActivity(shoppingListIntent)
+                            startActivityWithBundle(ShoppingListActivity::class.java, "id", id)
                         }
                     }
                     adapter = ShoppingListRecyclerViewAdapter(it.toMutableList(), listener)

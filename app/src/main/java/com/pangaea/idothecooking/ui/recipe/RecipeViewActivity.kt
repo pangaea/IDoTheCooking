@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.navArgs
@@ -23,6 +24,7 @@ import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewMode
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 import com.pangaea.idothecooking.utils.formatting.RecipeRenderer
 
 class RecipeViewActivity : ShareAndPrintActivity() {
@@ -67,6 +69,18 @@ class RecipeViewActivity : ShareAndPrintActivity() {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
         }
+
+        val callbackBack = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                this.remove()
+                navigateToRecipeList()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callbackBack)
+    }
+
+    fun navigateToRecipeList() {
+        startActivityWithBundle(MainActivity::class.java, "start", "recipes")
     }
 
     private fun drawRecipe() {
@@ -82,22 +96,14 @@ class RecipeViewActivity : ShareAndPrintActivity() {
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
             //onBackPressed()
-            val bundle = Bundle()
-            bundle.putString("start", "recipes")
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtras(bundle)
-            startActivity(intent)
+            navigateToRecipeList()
             false
         }
 
         // Edit recipe
         val itemEdit = menu.findItem(R.id.item_edit)
         itemEdit.setOnMenuItemClickListener { menuItem ->
-            val intent = Intent(this, RecipeActivity::class.java)
-            val b = Bundle()
-            b.putInt("id", recipeId)
-            intent.putExtras(b)
-            startActivity(intent)
+            startActivityWithBundle(RecipeActivity::class.java, "id", recipeId)
             false
         }
 
