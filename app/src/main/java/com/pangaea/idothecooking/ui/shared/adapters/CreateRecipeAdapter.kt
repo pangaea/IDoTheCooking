@@ -18,6 +18,7 @@ import com.pangaea.idothecooking.utils.data.JsonAsyncImportInterface
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,11 +40,7 @@ class CreateRecipeAdapter(private val activity: Activity,
                         if (callback != null) {
                             callback.invoke(id)
                         } else {
-                            val intent = Intent(activity, RecipeActivity::class.java)
-                            val bundle = Bundle()
-                            bundle.putInt("id", id.toInt())
-                            intent.putExtras(bundle)
-                            activity.startActivity(intent)
+                            activity.startActivityWithBundle(RecipeActivity::class.java, "id", id.toInt())
                         }
                     }
                 } else {
