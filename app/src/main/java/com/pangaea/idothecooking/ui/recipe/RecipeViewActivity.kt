@@ -77,6 +77,16 @@ class RecipeViewActivity : ShareAndPrintActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, callbackBack)
+
+        binding.enhanceButton.setOnClickListener {
+            //startActivityWithBundle(RecipeActivity::class.java, "id", recipeId)
+            val aiBundle = Bundle()
+            aiBundle.putInt("id", recipeId)
+            aiBundle.putString("tab", "suggestions")
+            val intent = Intent(this, RecipeActivity::class.java)
+            intent.putExtras(aiBundle)
+            startActivity(intent)
+        }
     }
 
     fun navigateToRecipeList() {

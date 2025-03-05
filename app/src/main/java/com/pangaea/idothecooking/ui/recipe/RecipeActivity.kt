@@ -49,8 +49,10 @@ class RecipeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val bundle = intent?.extras
+        var tab: String = ""
         if (bundle != null) {
             recipeId = bundle.getInt("id", -1)
+            tab = bundle.getString("tab", "")
         }
 
         setSupportActionBar(binding.toolbar)
@@ -87,6 +89,9 @@ class RecipeActivity : AppCompatActivity() {
                     _itemSave?.setAsEnabled()
                 } else {
                     bLock = false
+                    if (tab == "suggestions") {
+                        tabs.getTabAt(3)?.select()
+                    }
                 }
             }
         }
