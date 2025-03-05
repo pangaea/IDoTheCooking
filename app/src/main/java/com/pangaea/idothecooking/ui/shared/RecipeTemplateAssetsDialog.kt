@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.pangaea.idothecooking.R
-import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
 import java.io.InputStream
 
 class RecipeTemplateAssetsDialog(private val selection: String?, callback: (imageUri: String) -> Unit)
@@ -23,7 +23,7 @@ class RecipeTemplateAssetsDialog(private val selection: String?, callback: (imag
         //libraryCheckbox.text = fileName
         setRadioButton(libraryCheckbox)
 
-        val json: String? = context?.readJSONFromAssets("recipe_templates/${fileName}")
+        val json: String? = context?.readContentFromAssets("recipe_templates/${fileName}")
         val mapper = ObjectMapper()
         val node: JsonNode = mapper.readTree(json)
         val recipesNode: JsonNode? = node.get("recipes")

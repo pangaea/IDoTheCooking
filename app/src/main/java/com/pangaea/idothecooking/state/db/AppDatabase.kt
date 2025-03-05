@@ -1,6 +1,5 @@
 package com.pangaea.idothecooking.state.db
 
-import android.app.Application
 import android.content.Context
 import android.os.AsyncTask
 import androidx.room.Database
@@ -8,16 +7,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pangaea.idothecooking.IDoTheCookingApp
-import com.pangaea.idothecooking.state.RecipeRepository
 import com.pangaea.idothecooking.state.db.dao.RecipeDao
 import com.pangaea.idothecooking.state.db.dao.RecipeDirectionDao
 import com.pangaea.idothecooking.state.db.dao.RecipeIngredientDao
 import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.Recipe
-import com.pangaea.idothecooking.state.db.entities.RecipeDetails
-import com.pangaea.idothecooking.state.CategoryRepository
-import com.pangaea.idothecooking.state.ShoppingListRepository
 import com.pangaea.idothecooking.state.db.dao.CategoryDao
 import com.pangaea.idothecooking.state.db.dao.RecipeCategoryLinkDao
 import com.pangaea.idothecooking.state.db.dao.ShoppingListDao
@@ -25,15 +20,12 @@ import com.pangaea.idothecooking.state.db.dao.ShoppingListItemDao
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 import com.pangaea.idothecooking.state.db.entities.ShoppingList
-import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.utils.data.JsonImportTool
-import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.future.future
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 @Database(version = 1, entities = [Recipe::class, Ingredient::class, Direction::class,
     Category::class, RecipeCategoryLink::class, ShoppingList::class, ShoppingListItem::class], exportSchema = false)
@@ -100,7 +92,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
             suspend fun initDatabase() {
-                val json: String? = appContext?.readJSONFromAssets("init_basic.json")
+                val json: String? = appContext?.readContentFromAssets("init_basic.json")
                 if (json != null) {
                     val p = JsonImportTool(mainApp, null, emptyMap<String, Int>().toMutableMap(),
                                    emptyMap<String, Int>().toMutableMap(),

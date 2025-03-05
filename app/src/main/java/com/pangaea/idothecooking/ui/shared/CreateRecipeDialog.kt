@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.android.material.textfield.TextInputEditText
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeCallBackListener
-import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
 import java.io.InputStream
 
 
@@ -115,7 +115,7 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
         setRadioButton(libraryCheckbox)
 
         if (index >= 0 && fileName.isNotEmpty()) {
-            val json: String? = context?.readJSONFromAssets("recipe_templates/${fileName}")
+            val json: String? = context?.readContentFromAssets("recipe_templates/${fileName}")
             val mapper = ObjectMapper()
             val node: JsonNode = mapper.readTree(json)
             val recipesNode: JsonNode? = node.get("recipes")

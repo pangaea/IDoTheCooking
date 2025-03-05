@@ -4,15 +4,13 @@ import android.content.Context
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.JsonParser
-import com.pangaea.idothecooking.MainActivity
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.HelperSuggestion
-import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
-import com.robertlevonyan.views.expandable.BuildConfig
+import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -38,7 +36,7 @@ class LlmGateway(val context: Context) {
         } else {
             // Mock data - for dev
             Thread.sleep(5_000)
-            val data: String = context.readJSONFromAssets("sample_openai_recipe_list.data")
+            val data: String = context.readContentFromAssets("sample_openai_recipe_list.data")
             callback(parseRecipeListJson(data))
         }
     }
@@ -53,7 +51,7 @@ class LlmGateway(val context: Context) {
         } else {
             // Mock data - for dev
             Thread.sleep(5_000)
-            val data: String = context.readJSONFromAssets("sample_openai_suggestions.data")
+            val data: String = context.readContentFromAssets("sample_openai_suggestions.data")
             callback(parseSuggestionListJson(data))
         }
     }

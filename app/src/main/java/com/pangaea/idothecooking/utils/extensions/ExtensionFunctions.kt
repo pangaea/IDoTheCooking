@@ -22,7 +22,7 @@ fun Context.resIdByName(resIdName: String?, resType: String): Int {
     throw Resources.NotFoundException()
 }
 
-fun Context.readJSONFromAssets(path: String): String {
+fun Context.readContentFromAssets(path: String): String {
     try {
         val file = assets.open("$path")
         val bufferedReader = BufferedReader(InputStreamReader(file))

@@ -1,7 +1,6 @@
 package com.pangaea.idothecooking.ui.recipe
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -9,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -26,16 +24,10 @@ import com.pangaea.idothecooking.ui.recipe.adapters.RecipeRecyclerViewAdapter
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
-import com.pangaea.idothecooking.ui.shared.RecipeTemplateAssetsDialog
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
 import com.pangaea.idothecooking.ui.shared.adapters.swipeable.SwipeDeleteHelper
-import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
-import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
 import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * A fragment representing a list of Recipes.

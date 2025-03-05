@@ -2,10 +2,7 @@ package com.pangaea.idothecooking.ui.shared.adapters
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.pangaea.idothecooking.R
@@ -17,7 +14,7 @@ import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportInterface
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
-import com.pangaea.idothecooking.utils.extensions.readJSONFromAssets
+import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
 import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,7 +83,7 @@ class CreateRecipeAdapter(private val activity: Activity,
             attemptRecipeInsert(RecipeDetails(recipe, emptyList(), emptyList(), emptyList()))
         } else {
             // Import from template
-            val json: String = context.readJSONFromAssets("recipe_templates/${fileName}")
+            val json: String = context.readContentFromAssets("recipe_templates/${fileName}")
             JsonAsyncImportTool(activity.application, lifecycleOwner).loadData() { tool, ctx ->
                 attemptRecipeInsert(json, name, tool, ctx)
             }

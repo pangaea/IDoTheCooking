@@ -28,6 +28,7 @@ import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.settings.SettingsActivity
+import com.pangaea.idothecooking.ui.shared.AboutDialog
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
@@ -110,6 +111,10 @@ class MainActivity : AppCompatActivity() {
                     type = "text/*"
                 }
                 startActivityForResult(openDocumentIntent, OPEN_DOCUMENT_REQUEST_CODE)
+                true
+            }
+            R.id.action_about -> {
+                AboutDialog().show(supportFragmentManager, null)
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -21,6 +21,7 @@
 
 <string name="html_recipe">
 <![CDATA[
+<html><head>
 <style>
  .recipe {
     font: 16px Arial, sans-serif;
@@ -90,6 +91,7 @@ h3 {
     clear: both;
 }
 </style>
+</head><body>
 <div class="recipe">
 <div class="general_info">
     {{image}}
@@ -107,6 +109,7 @@ h3 {
 {{directions}}
 </table>
 </div>
+</body></html>
 ]]>
 </string>
 </resources>

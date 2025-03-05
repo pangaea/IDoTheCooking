@@ -12,6 +12,7 @@
 
     <string name="html_shopping_list">
 <![CDATA[
+<html><head>
 <style>
  .shopping_list {
     font: 16px Arial, sans-serif;
@@ -42,6 +43,7 @@ h3 {
     clear: both;
 }
 </style>
+</head><body>
 <div class="shopping_list">
 <div class="general_info">
     <h2>{{title}}</h2>
@@ -50,6 +52,7 @@ h3 {
 {{items}}
 </table>
 </div>
+</body><html>
 ]]>
 </string>
 </resources>
