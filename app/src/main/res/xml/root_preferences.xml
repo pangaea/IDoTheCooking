@@ -35,4 +35,11 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="General Settings">
+        <SwitchPreferenceCompat
+            app:key="auto_launch_about"
+            app:defaultValue="true"
+            app:title="@string/open_about_at_startup" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

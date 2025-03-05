@@ -2,6 +2,7 @@ package com.pangaea.idothecooking
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
@@ -17,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -84,6 +86,16 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.nav_shopping_lists)
                 }
             }
+        }
+
+        // Display about modal at startup
+        val app = (application as IDoTheCookingApp)
+        if (app.startupMode) {
+            val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+            if (sharedPreferences.getBoolean("auto_launch_about", true)) {
+                AboutDialog().show(supportFragmentManager, null)
+            }
+            app.startupMode = false
         }
     }
 

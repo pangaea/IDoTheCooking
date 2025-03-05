@@ -32,6 +32,7 @@
     <string name="print">Print</string>
     <string name="share">Share</string>
     <string name="edit">Edit</string>
+    <string name="about">About</string>
     <string name="adj_srv_size">Adjust Serving Size</string>
     <string name="filter">Filter</string>
     <string name="export_data">Export All Data</string>
@@ -42,6 +43,8 @@
     <string name="import_error_recipe">Error saving recipe [{0}]</string>
     <string name="import_error_shopping_list">Error saving shopping list [{0}]</string>
     <string name="import_from_library">Select From Library…</string>
+    <string name="do_not_show_about_at_startup">Don\'t show at startup</string>
+    <string name="open_about_at_startup">Open About Dialog at Startup</string>
 
     <string name="save_as_prompt">Please choose a new name</string>
 
