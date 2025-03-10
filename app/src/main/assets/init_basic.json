@@ -21,26 +21,36 @@
       "imageUri": "asset://image_library/HotDog.jpg",
       "ingredients":[
         {
+          "amount":2.0,
+          "name":"Mustard",
+          "unit":"tbsp",
+          "order":0
+        },
+        {
           "amount":1.0,
           "name":"Hot dog",
           "unit":"",
-          "order":0
+          "order":1
         },
         {
           "amount":1.0,
           "name":"Hot dog bun",
           "unit":"",
-          "order":1
+          "order":2
         }
       ],
       "directions":[
         {
-          "content":"Boil water",
+          "content":"Boil water.",
           "order":0
         },
         {
-          "content":"Put hot dogs in boiling water",
+          "content":"Cook hot dogs in boiling water for 10 minutes.",
           "order":1
+        },
+        {
+          "content":"Put hot dog and mustard on the bun.",
+          "order":2
         }
       ],
       "categories": [
@@ -51,11 +61,11 @@
     {
       "description":"Made with two different kinds of cheese",
       "name":"Grilled Cheese",
-      "servings":2,
+      "servings":1,
       "imageUri": "asset://image_library/GrilledCheese.jpg",
       "ingredients":[
         {
-          "amount":2.5,
+          "amount":2.0,
           "name":"Butter",
           "unit":"tbsp",
           "order":0
@@ -69,7 +79,7 @@
         {
           "amount":4.0,
           "name":"American cheese",
-          "unit":"",
+          "unit":"Slices",
           "order":2
         }
       ],

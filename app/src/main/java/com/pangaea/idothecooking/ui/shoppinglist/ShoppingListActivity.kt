@@ -22,6 +22,7 @@ import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityShoppingListBinding
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
+import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.MeasuredItemDialog
@@ -111,19 +112,7 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
             override fun handleOnBackPressed() {
                 isEnabled = false
                 this.remove()
-                if (_itemSave?.isEnabled == true) {
-                    val deleteAlertBuilder = AlertDialog.Builder(self)
-                        .setMessage(Html.fromHtml(resources.getString(R.string.exit_with_save_auto_save)))
-                        .setCancelable(true)
-                        .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> onBackPressedDispatcher.onBackPressed() }
-                        .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                            saveShoppingList() { onBackPressedDispatcher.onBackPressed() }
-                        }
-                    val deleteAlert = deleteAlertBuilder.create()
-                    deleteAlert.show()
-                } else {
-                    onBackPressedDispatcher.onBackPressed()
-                }
+                tryNavigateToViewActivity()
             }
         }
         onBackPressedDispatcher.addCallback(this, callbackBack)
@@ -137,13 +126,32 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
         }
     }
 
+    fun tryNavigateToViewActivity() {
+        if (_itemSave?.isEnabled == true) {
+            val deleteAlertBuilder = AlertDialog.Builder(this)
+                .setMessage(Html.fromHtml(resources.getString(R.string.exit_with_save_auto_save)))
+                .setCancelable(true)
+                .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> navigateToChecklistFragment() }
+                .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                    saveShoppingList() { navigateToChecklistFragment() }
+                }
+            val deleteAlert = deleteAlertBuilder.create()
+            deleteAlert.show()
+        } else {
+            navigateToChecklistFragment()
+        }
+    }
+
+    private fun navigateToChecklistFragment() {
+        startActivityWithBundle(MainActivity::class.java, "start", "shoppingLists")
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.shopping_list_menu, menu)
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            //onBackPressedDispatcher.onBackPressed()
-            startActivityWithBundle(MainActivity::class.java, "start", "shoppingLists")
+            tryNavigateToViewActivity()
             false
         }
 

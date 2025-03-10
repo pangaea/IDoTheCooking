@@ -135,7 +135,6 @@ class RecipeActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.recipe_menu, menu)
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            //onBackPressedDispatcher.onBackPressed()
             tryNavigateToViewActivity()
             false
         }
@@ -155,7 +154,6 @@ class RecipeActivity : AppCompatActivity() {
                     recipeDetails.directions.forEach(){o -> o.id = 1}
                     selectedRecipeModel.setRecipeDetails(recipeDetails)
                     _itemSave?.setAsDisabled()
-                    //onBackPressedDispatcher.onBackPressed()
                 }
             }
             false

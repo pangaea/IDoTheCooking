@@ -39,12 +39,10 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/createNewRecipe"
                             android:text="@string/home_create_new"
-                            android:background="@drawable/roundedbutton"
                             style="@style/homeAddButton"/>
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/viewRecipes"
                             android:text="@string/home_view_all"
-                            android:background="@drawable/roundedbutton"
                             style="@style/homeListButton"/>
                     </LinearLayout>
                     <TextView
@@ -96,12 +94,10 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/createNewList"
                             android:text="@string/home_create_new"
-                            android:background="@drawable/roundedbutton"
                             style="@style/homeAddButton"/>
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/viewShoppingLists"
                             android:text="@string/home_view_all"
-                            android:background="@drawable/roundedbutton"
                             style="@style/homeListButton"/>
                     </LinearLayout>
                     <TextView
