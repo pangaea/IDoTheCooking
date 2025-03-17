@@ -45,7 +45,8 @@ class LlmGateway(val context: Context) {
         if (!mockRequest) {
             val promptSuggestEnhancements = context.getString(R.string.prompt_suggest_recipe_improvements)
             llmRequest(promptSuggestEnhancements.replace("{recipe_name}", recipe.recipe.name)
-                           .replace("{ingredient_list}", recipe.ingredients.map{it.name}.joinToString(","))) {
+                           .replace("{ingredient_list}", recipe.ingredients.map{it.name}.joinToString(","))
+                           .replace("{requested_improvements}", desc)) {
                 callback(parseSuggestionListJson(it))
             }
         } else {
