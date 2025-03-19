@@ -66,9 +66,7 @@ class LlmGateway(val context: Context) {
             jsonMsg.put("content", content)
             val jsonMsgs = JSONArray()
             jsonMsgs.put(jsonMsg)
-            //messages: [{ role: "user", content: "Say this is a test" }],
             jsonBody.put("messages", jsonMsgs)
-            //jsonBody.put("prompt",  query)
             jsonBody.put("max_tokens", 4000)
             jsonBody.put("temperature", 0)
         } catch (e: Exception) {
