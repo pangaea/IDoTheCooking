@@ -16,12 +16,14 @@ interface ShoppingListDao {
     @Query("SELECT * FROM shopping_lists ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllShoppingLists(): LiveData<List<ShoppingList>>
 
+    @Transaction
     @Query("SELECT * FROM shopping_lists ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllShoppingListsWithDetails(): LiveData<List<ShoppingListDetails>>
 
     @Query("SELECT * FROM shopping_lists WHERE id IN (:shoppingListIds)")
     fun loadShoppingListsByIds(shoppingListIds: IntArray): LiveData<List<ShoppingList>>
 
+    @Transaction
     @Query("SELECT * FROM shopping_lists WHERE id IN (:shoppingListIds) order by modified_at COLLATE NOCASE desc")
     fun loadShoppingListWithDetailsByIds(shoppingListIds: IntArray): LiveData<List<ShoppingListDetails>>
 

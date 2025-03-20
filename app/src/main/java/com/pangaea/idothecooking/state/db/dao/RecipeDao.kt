@@ -12,20 +12,20 @@ import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
-import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
-import com.pangaea.idothecooking.state.db.entities.converters.TimestampConverter
 
 @Dao
 interface RecipeDao {
     @Query("SELECT * FROM recipes ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllRecipes(): LiveData<List<Recipe>>
 
+    @Transaction
     @Query("SELECT * FROM recipes ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllRecipesWithDetails(): LiveData<List<RecipeDetails>>
 
     @Query("SELECT * FROM recipes WHERE id IN (:recipeIds)")
     fun loadRecipesByIds(recipeIds: IntArray): LiveData<List<Recipe>>
 
+    @Transaction
     @Query("SELECT * FROM recipes WHERE id IN (:recipeIds) order by modified_at COLLATE NOCASE desc")
     fun loadRecipesWithDetailsByIds(recipeIds: IntArray): LiveData<List<RecipeDetails>>
 
