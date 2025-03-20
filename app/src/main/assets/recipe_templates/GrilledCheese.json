@@ -9,47 +9,47 @@
   ],
   "recipes": [
     {
-      "description": "Made with two different kinds of cheese",
-      "name": "Grilled Cheese",
-      "servings": 1,
+      "description":"Made with two different kinds of cheese",
+      "name":"Grilled Cheese",
+      "servings":1,
       "imageUri": "asset://image_library/GrilledCheese.jpg",
-      "ingredients": [
+      "ingredients":[
         {
-          "amount": 2.0,
-          "name": "Potato bread",
-          "unit": "",
+          "amount":2.0,
+          "name":"Butter",
+          "unit":"tbsp",
           "order":0
         },
         {
-          "amount": 3.0,
-          "name": "American cheese",
-          "unit": "",
+          "amount":2.0,
+          "name":"Potato bread",
+          "unit":"",
           "order":1
         },
         {
-          "amount": 2.5,
-          "name": "Butter",
-          "unit": "tbsp",
+          "amount":4.0,
+          "name":"American cheese",
+          "unit":"Slices",
           "order":2
         }
       ],
-      "directions": [
+      "directions":[
         {
-          "content": "Put both american and cheddar cheese in bread",
+          "content":"Put both american and cheddar cheese in bread",
           "order":0
         },
         {
-          "content": "Heat butter in a pan",
+          "content":"Heat butter in a pan",
           "order":1
         },
         {
-          "content": "Cook sandwich in pan until cheese is melted and the bread is nice a brown",
+          "content":"Cook sandwich in pan until cheese is melted and the bread is nice a brown",
           "order":2
         }
       ],
       "categories": [
-        "Lunch",
-        "Dinner"
+        "Dinner",
+        "Lunch"
       ]
     }
   ]
