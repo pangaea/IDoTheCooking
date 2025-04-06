@@ -45,6 +45,8 @@
     <string name="import_from_library">Select From Library…</string>
     <string name="do_not_show_about_at_startup">Don\'t show at startup</string>
     <string name="open_about_at_startup">Open About Dialog at Startup</string>
+    <string name="show_sample_library">Show Sample Library</string>
+    <string name="general_setting">General Settings</string>
 
     <string name="save_as_prompt">Please choose a new name</string>
 

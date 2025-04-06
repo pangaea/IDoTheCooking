@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.ui.shared
 
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
@@ -9,10 +10,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.android.material.textfield.TextInputEditText
@@ -77,6 +80,15 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
         }
         //nameView.requestFocus()
         //nameView.focusAndShowKeyboard()
+
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.requireContext())
+        if (sharedPreferences.getBoolean("show_sample_library", false)) {
+            val libraryTitle = layout.findViewById<TextView>(R.id.library_title)
+            libraryTitle.visibility = TextView.VISIBLE;
+            val recipeList = layout.findViewById<ScrollView>(R.id.recipe_list)
+            recipeList.visibility = TextView.VISIBLE;
+        }
+
         return dlg;
     }
 
@@ -138,7 +150,7 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
             }
         } else {
             val libraryImage: ImageView = row.findViewById(R.id.library_image)
-            libraryImage.setImageResource(R.mipmap.recipe_icon)
+            libraryImage.setImageResource(R.mipmap.main_recipe_icon)
             val recipeName: TextView = row.findViewById(R.id.recipe_name);
             recipeName.text = resources.getText(R.string.create_from_scratch)
             val recipeDesc: TextView = row.findViewById(R.id.recipe_desc)

@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
     <TextView
-        android:id="@+id/header_title"
+        android:id="@+id/library_title"
         android:text="@string/import_from_library"
         android:textSize="14sp"
         android:layout_marginTop="8dp"

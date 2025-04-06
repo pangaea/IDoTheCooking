@@ -35,11 +35,15 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="General Settings">
+    <PreferenceCategory app:title="@string/general_setting">
         <SwitchPreferenceCompat
             app:key="auto_launch_about"
             app:defaultValue="true"
             app:title="@string/open_about_at_startup" />
+        <SwitchPreferenceCompat
+            app:key="show_sample_library"
+            app:defaultValue="false"
+            app:title="@string/show_sample_library" />
     </PreferenceCategory>
 
 </PreferenceScreen>

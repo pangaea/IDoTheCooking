@@ -9,6 +9,16 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            val properties: Properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+            storeFile = file(properties.getProperty("storeFile"))
+            keyAlias = properties.getProperty("keyAlias")
+            storePassword = properties.getProperty("storePassword")
+            keyPassword = properties.getProperty("keyPassword")
+        }
+    }
     namespace = "com.pangaea.idothecooking"
     compileSdk = 34
 
@@ -40,6 +50,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
 
         applicationVariants.all {
