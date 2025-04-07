@@ -68,40 +68,55 @@ class HelperSearchFragment : Fragment() {
                     selectedRecipeModel.selectedRecipe.observeOnce { recipe ->
                         GlobalScope.launch {
                             LlmGateway(requireContext()).suggestEnhancements(descView.text.toString(),
-                                                                             recipe) { suggestions ->
+                                                                             recipe) { success, suggestions ->
                                 requireActivity().runOnUiThread {
                                     // UNMASK - View
                                     progressBar.visibility = View.GONE
                                     genButton.enable()
                                     descView.enable()
 
-                                    val list = view.findViewById<RecyclerView>(R.id.list)
-                                    with(list) {
-                                        layoutManager = LinearLayoutManager(context)
-                                        val listener = object : RecycleViewClickListener() {
-                                            @SuppressLint("NotifyDataSetChanged")
-                                            override fun click(id: Int) {
-                                                val adpt: HelperAdapter = (adapter as HelperAdapter)
-                                                val suggestion = adpt.getItem(id)
-                                                val saveChangesAlertBuilder = AlertDialog.Builder(requireActivity())
-                                                    .setMessage(SuggestionFormatter.formatDisplay(context, suggestion))
-                                                    .setTitle(R.string.helper_prompt_title)
-                                                    .setCancelable(true)
-                                                    .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
-                                                    .setPositiveButton(context.getString(R.string.add)) { _, _ ->
-                                                        handleSuggestionImport(suggestion)
-                                                        adpt.removeAt(id)
-                                                        adpt.notifyDataSetChanged()
-                                                        Toast.makeText(context, requireActivity()
-                                                            .getString(R.string.import_complete),
-                                                                       Toast.LENGTH_LONG).show()
-                                                    }
-                                                val saveChangesAlert = saveChangesAlertBuilder.create()
-                                                saveChangesAlert.show()
+                                    if (!success) {
+                                        Toast.makeText(context, requireActivity()
+                                            .getString(R.string.llm_failure), Toast.LENGTH_LONG).show()
+                                    } else {
+
+                                        val list = view.findViewById<RecyclerView>(R.id.list)
+                                        with(list) {
+                                            layoutManager = LinearLayoutManager(context)
+                                            val listener = object : RecycleViewClickListener() {
+                                                @SuppressLint("NotifyDataSetChanged")
+                                                override fun click(id: Int) {
+                                                    val adpt: HelperAdapter =
+                                                        (adapter as HelperAdapter)
+                                                    val suggestion = adpt.getItem(id)
+                                                    val saveChangesAlertBuilder =
+                                                        AlertDialog.Builder(requireActivity())
+                                                            .setMessage(SuggestionFormatter.formatDisplay(
+                                                                context,
+                                                                suggestion))
+                                                            .setTitle(R.string.helper_prompt_title)
+                                                            .setCancelable(true)
+                                                            .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
+                                                            .setPositiveButton(context.getString(R.string.add)) { _, _ ->
+                                                                handleSuggestionImport(suggestion)
+                                                                adpt.removeAt(id)
+                                                                adpt.notifyDataSetChanged()
+                                                                Toast.makeText(context,
+                                                                               requireActivity()
+                                                                                   .getString(R.string.import_complete),
+                                                                               Toast.LENGTH_LONG)
+                                                                    .show()
+                                                            }
+                                                    val saveChangesAlert =
+                                                        saveChangesAlertBuilder.create()
+                                                    saveChangesAlert.show()
+                                                }
                                             }
+                                            adapter =
+                                                HelperAdapter(context,
+                                                              suggestions.toMutableList(),
+                                                              listener)
                                         }
-                                        adapter =
-                                            HelperAdapter(context, suggestions.toMutableList(), listener)
                                     }
                                 }
                             }

@@ -59,37 +59,48 @@ class RecipeGeneratorFragment : Fragment() {
 
                     val me: Fragment = this
                     GlobalScope.launch {
-                        LlmGateway(requireContext()).suggestRecipe(descView.text.toString()) { generatedRecipes ->
+                        LlmGateway(requireContext())
+                            .suggestRecipe(descView.text.toString()) { success, generatedRecipes ->
                             requireActivity().runOnUiThread {
                                 // UNMASK - View
                                 progressBar.visibility = View.GONE
                                 fab.enable()
                                 descView.enable()
 
-                                val list = view.findViewById<RecyclerView>(R.id.list)
-                                with(list) {
-                                    layoutManager = LinearLayoutManager(context)
-                                    val listener = object : RecycleViewClickListener() {
-                                        @SuppressLint("NotifyDataSetChanged")
-                                        override fun click(id: Int) {
-                                            val adpt: RecipeGeneratorAdapter = (adapter as RecipeGeneratorAdapter)
-                                            val generatedRecipe = adpt.getItem(id)
+                                if (!success) {
+                                    Toast.makeText(context, requireActivity()
+                                        .getString(R.string.llm_failure), Toast.LENGTH_LONG).show()
+                                } else {
+                                    val list = view.findViewById<RecyclerView>(R.id.list)
+                                    with(list) {
+                                        layoutManager = LinearLayoutManager(context)
+                                        val listener = object : RecycleViewClickListener() {
+                                            @SuppressLint("NotifyDataSetChanged")
+                                            override fun click(id: Int) {
+                                                val adpt: RecipeGeneratorAdapter =
+                                                    (adapter as RecipeGeneratorAdapter)
+                                                val generatedRecipe = adpt.getItem(id)
 
-                                            ViewRecipeDialog(generatedRecipe) { recipe ->
-                                                CreateRecipeAdapter(me.requireActivity(), me.requireContext(),
-                                                                    me, me.childFragmentManager,
-                                                                    recipeViewModel){ _ ->
-                                                    adpt.removeAt(id)
-                                                    adpt.notifyDataSetChanged()
-                                                    Toast.makeText(context, requireActivity()
-                                                                       .getString(R.string.import_recipe_complete)
-                                                                       .replace("{0}", recipe.recipe.name),
-                                                                   Toast.LENGTH_LONG).show()
-                                                }.attemptRecipeInsert(recipe)
-                                            }.show(childFragmentManager, null)
+                                                ViewRecipeDialog(generatedRecipe) { recipe ->
+                                                    CreateRecipeAdapter(me.requireActivity(),
+                                                                        me.requireContext(),
+                                                                        me,
+                                                                        me.childFragmentManager,
+                                                                        recipeViewModel) { _ ->
+                                                        adpt.removeAt(id)
+                                                        adpt.notifyDataSetChanged()
+                                                        Toast.makeText(context, requireActivity()
+                                                            .getString(R.string.import_recipe_complete)
+                                                            .replace("{0}", recipe.recipe.name),
+                                                                       Toast.LENGTH_LONG).show()
+                                                    }.attemptRecipeInsert(recipe)
+                                                }.show(childFragmentManager, null)
+                                            }
                                         }
+                                        adapter =
+                                            RecipeGeneratorAdapter(generatedRecipes.toMutableList(),
+                                                                   listener)
                                     }
-                                    adapter = RecipeGeneratorAdapter(generatedRecipes.toMutableList(), listener)
                                 }
                             }
                         }

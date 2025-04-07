@@ -180,4 +180,5 @@
     <string name="helper_desc_hint">Explain what kind of suggestions you are looking for</string>
     <string name="helper_button_text">Get Suggestions</string>
     <string name="helper_prompt_title">Add this suggestion to your recipe?</string>
+    <string name="llm_failure">The AI portal is down, please try again later.</string>
 </resources>

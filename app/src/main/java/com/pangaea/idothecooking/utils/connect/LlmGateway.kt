@@ -26,38 +26,41 @@ class LlmGateway(val context: Context) {
     private val mediaTypeJson: MediaType = "application/json".toMediaType()
     private val mockRequest = false
 
-    fun suggestRecipe(desc: String, callback: (recipes: List<RecipeDetails>) -> Unit) {
+    @Throws(IOException::class)
+    fun suggestRecipe(desc: String, callback: (success: Boolean, recipes: List<RecipeDetails>) -> Unit) {
 
         if (!mockRequest) {
             val promptSuggestRecipe = context.getString(R.string.prompt_suggest_recipes)
-            llmRequest(promptSuggestRecipe.replace("{description}", desc)) {
-                callback(parseRecipeListJson(it))
+            llmRequest(promptSuggestRecipe.replace("{description}", desc)) { success, json ->
+                callback(success, json?.let { parseRecipeListJson(it) } ?: emptyList())
             }
         } else {
             // Mock data - for dev
             Thread.sleep(5_000)
             val data: String = context.readContentFromAssets("sample_openai_recipe_list.data")
-            callback(parseRecipeListJson(data))
+            callback(true, parseRecipeListJson(data))
         }
     }
 
-    fun suggestEnhancements(desc: String, recipe: RecipeDetails, callback: (recipes: List<HelperSuggestion>) -> Unit) {
+    @Throws(IOException::class)
+    fun suggestEnhancements(desc: String, recipe: RecipeDetails, callback: (success: Boolean, recipes: List<HelperSuggestion>) -> Unit) {
         if (!mockRequest) {
             val promptSuggestEnhancements = context.getString(R.string.prompt_suggest_recipe_improvements)
             llmRequest(promptSuggestEnhancements.replace("{recipe_name}", recipe.recipe.name)
                            .replace("{ingredient_list}", recipe.ingredients.map{it.name}.joinToString(","))
-                           .replace("{requested_improvements}", desc)) {
-                callback(parseSuggestionListJson(it))
+                           .replace("{requested_improvements}", desc)) { success, json ->
+                callback(success, json?.let { parseSuggestionListJson(it) } ?: emptyList())
             }
         } else {
             // Mock data - for dev
             Thread.sleep(5_000)
             val data: String = context.readContentFromAssets("sample_openai_suggestions.data")
-            callback(parseSuggestionListJson(data))
+            callback(true, parseSuggestionListJson(data))
         }
     }
 
-    private fun llmRequest(content: String, callback: (payload: String) -> Unit) {
+    @Throws(IOException::class)
+    private fun llmRequest(content: String, callback: (success: Boolean, payload: String?) -> Unit) {
         val jsonBody = JSONObject()
         try {
             jsonBody.put("model", "gpt-4o-mini")
@@ -85,13 +88,17 @@ class LlmGateway(val context: Context) {
             .writeTimeout(30, TimeUnit.SECONDS)   // Set write timeout to 30 seconds
             .build()
         client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val json = response.body!!.string()
-            val jsonRoot = JsonParser.parseString(json).asJsonObject;
-            val choices = jsonRoot.get("choices").asJsonArray
-            val choice = choices[0].asJsonObject
-            val msg = choice.get("message").asJsonObject
-            callback(msg.get("content").asString)
+            if (!response.isSuccessful) {
+                //throw IOException("Unexpected code $response")
+                callback(false, null)
+            } else {
+                val json = response.body!!.string()
+                val jsonRoot = JsonParser.parseString(json).asJsonObject;
+                val choices = jsonRoot.get("choices").asJsonArray
+                val choice = choices[0].asJsonObject
+                val msg = choice.get("message").asJsonObject
+                callback(true, msg.get("content").asString)
+            }
         }
     }
 
