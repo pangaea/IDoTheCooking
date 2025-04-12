@@ -24,10 +24,10 @@ android {
 
     defaultConfig {
         applicationId = "com.pangaea.idothecooking"
-        minSdk = 24
+        minSdk = 21
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 4
+        versionName = "4.0"
 
         // Load the values from apikey.properties file
         val keystoreFile = project.rootProject.file("apikey.properties")
