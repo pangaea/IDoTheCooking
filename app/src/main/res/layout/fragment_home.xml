@@ -83,6 +83,7 @@
                                 android:layout_gravity="bottom|end"
                                 android:layout_marginEnd="@dimen/fab_margin"
                                 android:layout_marginBottom="16dp"
+                                app:fabCustomSize="42dp"
                                 app:srcCompat="@android:drawable/ic_input_add" />
                         </androidx.coordinatorlayout.widget.CoordinatorLayout>
                     </LinearLayout>
@@ -167,6 +168,7 @@
                                 android:layout_gravity="bottom|end"
                                 android:layout_marginEnd="@dimen/fab_margin"
                                 android:layout_marginBottom="16dp"
+                                app:fabCustomSize="42dp"
                                 app:srcCompat="@android:drawable/ic_input_add" />
                         </androidx.coordinatorlayout.widget.CoordinatorLayout>
                     </LinearLayout>
