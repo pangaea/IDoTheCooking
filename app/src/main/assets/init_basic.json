@@ -11,95 +11,212 @@
     },
     {
       "name":"Lunch"
+    },
+    {
+      "name": "Instant Pot"
     }
   ],
   "recipes":[
     {
-      "description":"Boiled in water",
-      "name":"Hot Dog",
-      "servings":1,
-      "imageUri": "asset://image_library/HotDog.jpg",
+      "description":"",
+      "imageUri":"asset://image_library/FrenchToast.jpg",
+      "name":"French Toast",
+      "servings":3,
       "ingredients":[
         {
-          "amount":2.0,
-          "name":"Mustard",
-          "unit":"tbsp",
+          "amount":3.0,
+          "name":"Eggs",
+          "unit":"",
           "order":0
         },
         {
-          "amount":1.0,
-          "name":"Hot dog",
-          "unit":"",
+          "amount":0.25,
+          "name":"Milk",
+          "unit":"cup",
           "order":1
         },
         {
-          "amount":1.0,
-          "name":"Hot dog bun",
-          "unit":"",
+          "amount":2.0,
+          "name":"Granulated sugar",
+          "unit":"tbsp",
           "order":2
+        },
+        {
+          "amount":1.0,
+          "name":"Vanilla extract",
+          "unit":"tsp",
+          "order":3
+        },
+        {
+          "amount":0.5,
+          "name":"Ground cinnamon ",
+          "unit":"tsp",
+          "order":4
+        },
+        {
+          "amount":0.0,
+          "name":"Butter",
+          "unit":"",
+          "order":5
+        },
+        {
+          "amount":0.0,
+          "name":"Bread",
+          "unit":"",
+          "order":6
         }
       ],
       "directions":[
         {
-          "content":"Boil water.",
+          "content":"Put eggs in large bowl and scramble",
           "order":0
         },
         {
-          "content":"Cook hot dogs in boiling water for 10 minutes.",
+          "content":"Add milk, sugar, vanilla and cinnamon and mix",
           "order":1
         },
         {
-          "content":"Put hot dog and mustard on the bun.",
+          "content":"Heat skillet until butter melts",
           "order":2
+        },
+        {
+          "content":"Dip bread in the bowl mixture and cook kin the skillet",
+          "order":3
         }
       ],
-      "categories": [
-        "Dinner",
-        "Lunch"
+      "categories":[
+        "Breakfast"
       ]
     },
     {
-      "description":"Made with two different kinds of cheese",
-      "name":"Grilled Cheese",
-      "servings":1,
-      "imageUri": "asset://image_library/GrilledCheese.jpg",
+      "description":"",
+      "imageUri":"asset://image_library/LemonChicken.jpg",
+      "name":"Lemon chicken",
+      "servings":2,
       "ingredients":[
         {
-          "amount":2.0,
-          "name":"Butter",
-          "unit":"tbsp",
+          "amount":1.0,
+          "name":"Chicken breast",
+          "unit":"lb",
           "order":0
         },
         {
-          "amount":2.0,
-          "name":"Potato bread",
+          "amount":0.0,
+          "name":"Salt",
           "unit":"",
           "order":1
         },
         {
-          "amount":4.0,
-          "name":"American cheese",
-          "unit":"Slices",
+          "amount":0.0,
+          "name":"Pepper",
+          "unit":"",
           "order":2
+        },
+        {
+          "amount":0.3333333333333333,
+          "name":"Flour ",
+          "unit":"cup",
+          "order":3
+        },
+        {
+          "amount":3.0,
+          "name":"Lemon juice",
+          "unit":"tbsp",
+          "order":4
+        },
+        {
+          "amount":0.0,
+          "name":"Olive oil",
+          "unit":"",
+          "order":5
+        },
+        {
+          "amount":1.5,
+          "name":"Minced garlic",
+          "unit":"tsp",
+          "order":6
+        },
+        {
+          "amount":0.5,
+          "name":"Chicken broth",
+          "unit":"cup",
+          "order":7
+        },
+        {
+          "amount":3.0,
+          "name":"Parmesan cheese",
+          "unit":"tbsp",
+          "order":8
+        },
+        {
+          "amount":1.0,
+          "name":"Egg",
+          "unit":"",
+          "order":9
+        },
+        {
+          "amount":4.0,
+          "name":"Unsalted butter",
+          "unit":"tbsp",
+          "order":10
+        },
+        {
+          "amount":1.5,
+          "name":"Fresh parsley",
+          "unit":"tbsp",
+          "order":11
         }
       ],
       "directions":[
         {
-          "content":"Put both american and cheddar cheese in bread",
+          "content":"Season both sides of the chicken with salt and pepper",
           "order":0
         },
         {
-          "content":"Heat butter in a pan",
+          "content":"Dip in egg",
           "order":1
         },
         {
-          "content":"Cook sandwich in pan until cheese is melted and the bread is nice a brown",
+          "content":"Dredge chicken in flour and Parmesan cheese mix",
           "order":2
+        },
+        {
+          "content":"Place Oliver oil in instant pot and put it in saute mode",
+          "order":3
+        },
+        {
+          "content":"Cook until brown",
+          "order":4
+        },
+        {
+          "content":"Remove from pot",
+          "order":5
+        },
+        {
+          "content":"Add butter, garlic and lemon juice to pot",
+          "order":6
+        },
+        {
+          "content":"Cook for 1 minute",
+          "order":7
+        },
+        {
+          "content":"Add broth and chicken to pot",
+          "order":8
+        },
+        {
+          "content":"Cook on manual mode for 7 minutes",
+          "order":9
+        },
+        {
+          "content":"Add lemon slices and parsley to serve",
+          "order":10
         }
       ],
-      "categories": [
+      "categories":[
         "Dinner",
-        "Lunch"
+        "Instant Pot",
+        "Chicken"
       ]
     }
   ],

@@ -4,7 +4,7 @@
       "name": "Dinner"
     },
     {
-      "name": "Air fryer"
+      "name": "Instant Pot"
     },
     {
       "name": "Chicken"
@@ -104,7 +104,7 @@
           "order":2
         },
         {
-          "content":"Place Oliver oil in pressure cooker and put it in saute mode",
+          "content":"Place Oliver oil in instant pot and put it in saute mode",
           "order":3
         },
         {
@@ -138,7 +138,7 @@
       ],
       "categories":[
         "Dinner",
-        "Air fryer",
+        "Instant Pot",
         "Chicken"
       ]
     }
