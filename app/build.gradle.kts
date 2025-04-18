@@ -19,11 +19,11 @@ android {
             keyPassword = properties.getProperty("keyPassword")
         }
     }
-    namespace = "com.pangaea.idothecooking"
+    namespace = "com.lifeoneuropa.idothecooking"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.pangaea.idothecooking"
+        applicationId = "com.lifeoneuropa.idothecooking"
         minSdk = 21
         targetSdk = 34
         versionCode = 4
