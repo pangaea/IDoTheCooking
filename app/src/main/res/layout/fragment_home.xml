@@ -54,7 +54,7 @@
                                 android:layout_height="match_parent"
                                 android:paddingTop="4dp"
                                 android:layout_marginStart="10dp"
-                                android:text="@string/home_recently_updated" />
+                                android:text="@string/home_favorites" />
                             <Button
                                 android:id="@+id/viewRecipes"
                                 android:layout_width="match_parent"

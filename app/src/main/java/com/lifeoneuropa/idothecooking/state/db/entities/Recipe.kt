@@ -25,4 +25,7 @@ data class Recipe (
     @ColumnInfo(name = "servings")
     var servings: Int = 0,
 
+    @ColumnInfo(name = "favorite")
+    var favorite: Boolean = false
+
 ) : BaseEntity()

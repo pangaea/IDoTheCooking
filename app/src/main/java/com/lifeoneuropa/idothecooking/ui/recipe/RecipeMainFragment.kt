@@ -98,6 +98,8 @@ class RecipeMainFragment : Fragment() {
                 imageUri = recipe.recipe.imageUri!!
             }
 
+            binding.favorite.isChecked = recipe.recipe.favorite
+
             val amountView = view.findViewById<NumberPicker>(R.id.editServings)
             amountView.minValue = 0
             amountView.maxValue = 100
@@ -223,6 +225,10 @@ class RecipeMainFragment : Fragment() {
                                                           newVal: Int ->
             fireCallback();
         }
+
+        binding.favorite.setOnClickListener() {
+            fireCallback();
+        }
     }
 
     object RequestCode {
@@ -270,6 +276,7 @@ class RecipeMainFragment : Fragment() {
             //recipe.imageUri = binding.editImage.toString()
             recipeOrig.imageUri = imageUri
             recipeOrig.servings = binding.editServings.value
+            recipeOrig.favorite = binding.favorite.isChecked
             //callBackListener?.onRecipeInfoUpdate(recipe);
             requireActivity().runOnUiThread {
                 selectedRecipeModel.updateRecipe(recipeOrig)

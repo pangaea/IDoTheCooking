@@ -42,13 +42,10 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<RecipeDetails>,
             holder.imageView.visibility = View.GONE
         } else {
             ImageTool(activity).display(holder.imageView, item.recipe.imageUri!!)
-//            try {
-//                Glide.with(holder.imageView.context)
-//                    .load(item.imageUri)
-//                    .into(holder.imageView)
-//            } catch(_: Exception) {
-//            }
         }
+
+        // Show star for favorites
+        holder.favorite.visibility = if (item.recipe.favorite) View.VISIBLE else View.GONE
 
         holder.contentView.text = item.recipe.name
         holder.descView.text = item.recipe.description
@@ -75,6 +72,7 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<RecipeDetails>,
         val imageView: ImageView = binding.recipeImage
         val contentView: TextView = binding.content
         val descView: TextView = binding.description
+        val favorite: ImageView = binding.favorite
     }
 
 }

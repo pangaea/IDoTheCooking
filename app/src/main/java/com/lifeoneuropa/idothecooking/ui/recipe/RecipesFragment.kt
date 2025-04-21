@@ -72,8 +72,6 @@ class RecipesFragment : Fragment() {
                 }
 
                 with(list) {
-                    //addItemDecoration(RecipeItemDecoration(this.context));
-                    //layoutManager = LinearLayoutManager(context)
                     layoutManager = if (gridView) {
                         GridLayoutManager(context, 2)
                     } else {
@@ -86,10 +84,8 @@ class RecipesFragment : Fragment() {
                         }
                     }
                     adapter = RecipeRecyclerViewAdapter(filteredList.toMutableList(), listener, requireActivity())
+                    recycledViewPool.setMaxRecycledViews(0, 0);
                 }
-
-                //list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-                //list.layoutManager = LinearLayoutManager(context)
             }
         }
     }

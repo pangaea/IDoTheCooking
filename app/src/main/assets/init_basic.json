@@ -4,16 +4,22 @@
       "name":"Breakfast"
     },
     {
+      "name":"Lunch"
+    },
+    {
       "name":"Desert"
+    },
+    {
+      "name":"Appetizer"
     },
     {
       "name":"Dinner"
     },
     {
-      "name":"Lunch"
+      "name": "Instant Pot"
     },
     {
-      "name": "Instant Pot"
+      "name": "Chicken"
     }
   ],
   "recipes":[
@@ -22,6 +28,7 @@
       "imageUri":"asset://image_library/FrenchToast.jpg",
       "name":"French Toast",
       "servings":3,
+      "favorite": true,
       "ingredients":[
         {
           "amount":3.0,
@@ -93,6 +100,7 @@
       "imageUri":"asset://image_library/LemonChicken.jpg",
       "name":"Lemon chicken",
       "servings":2,
+      "favorite": true,
       "ingredients":[
         {
           "amount":1.0,
@@ -217,6 +225,150 @@
         "Dinner",
         "Instant Pot",
         "Chicken"
+      ]
+    },
+    {
+      "description":"Delicious and easy to make",
+      "imageUri":"asset://image_library/ChickenParmHero.jpg",
+      "name":"Chicken Parmesan",
+      "servings":3,
+      "ingredients":[
+        {
+          "amount":1.5,
+          "name":"chicken breast",
+          "unit":"lbs",
+          "order":0
+        },
+        {
+          "amount":0.25,
+          "name":"olive oil",
+          "unit":"cup",
+          "order":1
+        },
+        {
+          "amount":0.0,
+          "name":"Italian bread crumbs",
+          "unit":"",
+          "order":2
+        },
+        {
+          "amount":24.0,
+          "name":"marinara sauce",
+          "unit":"oz",
+          "order":3
+        },
+        {
+          "amount":1.0,
+          "name":"shredded mozzarella cheese",
+          "unit":"cup",
+          "order":4
+        },
+        {
+          "amount":0.0,
+          "name":"salt",
+          "unit":"",
+          "order":5
+        },
+        {
+          "amount":0.0,
+          "name":"pepper",
+          "unit":"",
+          "order":6
+        },
+        {
+          "amount":0.0,
+          "name":"fresh basil",
+          "unit":"",
+          "order":7
+        }
+      ],
+      "directions":[
+        {
+          "content":"heat olive oil in pan",
+          "order":0
+        },
+        {
+          "content":"dredge chicken breast in bread crumbs",
+          "order":1
+        },
+        {
+          "content":"cook chicken in the pan to 165°",
+          "order":2
+        },
+        {
+          "content":"pour half the sauce into casserole dish",
+          "order":3
+        },
+        {
+          "content":"place chicken in dish evenly and cover with remaining sauce",
+          "order":4
+        },
+        {
+          "content":"cover chicken with cheese and chopped basil ",
+          "order":5
+        },
+        {
+          "content":"heat in oven at 425° for 15 minutes",
+          "order":6
+        }
+      ],
+      "categories":[
+        "Dinner",
+        "Chicken"
+      ]
+    },
+    {
+      "description":"Sweet and delicious",
+      "imageUri":"asset://image_library/SwedishMeatballs.jpg",
+      "name":"Swedish Meatballs",
+      "servings":10,
+      "favorite": true,
+      "ingredients":[
+        {
+          "amount":2.0,
+          "name":"frozen meatballs",
+          "unit":"lbs",
+          "order":0
+        },
+        {
+          "amount":12.0,
+          "name":"chili sauce",
+          "unit":"oz",
+          "order":1
+        },
+        {
+          "amount":18,
+          "name":"grape jelly",
+          "unit":"oz",
+          "order":2
+        },
+        {
+          "amount":2.0,
+          "name":"brown sugar",
+          "unit":"tbsp",
+          "order":3
+        }
+      ],
+      "directions":[
+        {
+          "content":"Brown meatballs",
+          "order":0
+        },
+        {
+          "content":"Heat jelly, chili sauce and brown sugar in pan",
+          "order":1
+        },
+        {
+          "content":"Add meatballs to sauce",
+          "order":2
+        },
+        {
+          "content":"Cover and simmer for 1 to 2 hours",
+          "order":3
+        }
+      ],
+      "categories":[
+        "Appetizer"
       ]
     }
   ],

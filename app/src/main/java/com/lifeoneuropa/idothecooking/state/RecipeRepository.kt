@@ -22,6 +22,10 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         return recipeDao.loadAllRecipesWithDetails()
     }
 
+    fun getAllFavoriteRecipesWithDetails(): LiveData<List<RecipeDetails>> {
+        return recipeDao.loadAllFavoriteRecipesWithDetails()
+    }
+
     fun getRecipe(id: Long): LiveData<List<Recipe>> {
         return recipeDao.loadRecipesByIds(intArrayOf(id.toInt()))
     }
@@ -44,6 +48,18 @@ class RecipeRepository(application: Application) : RepositoryBase<Recipe>() {
         updateWithTimestamp(recipe.recipe)
         return recipeDao.updateAll(directionDao, ingredientDao, recipeCategoryLinkDao, recipe,
                                          tc.dateToTimestamp(recipe.recipe.modifiedAt)).toLong()
+    }
+
+    suspend fun update(recipe: Recipe): Long {
+        updateWithTimestamp(recipe)
+        return recipeDao.update(recipe).toLong()
+    }
+
+    suspend fun updateFavorite(recipe: Recipe): Long {
+        val tc = TimestampConverter()
+        updateWithTimestamp(recipe)
+        return recipeDao.updateFavorite(recipe.id.toLong(), tc.dateToTimestamp(recipe.modifiedAt),
+                                        recipe.favorite).toLong()
     }
 
     suspend fun delete(recipe: Recipe) {

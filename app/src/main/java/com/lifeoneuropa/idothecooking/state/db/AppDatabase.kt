@@ -21,13 +21,14 @@ import com.lifeoneuropa.idothecooking.state.db.entities.Category
 import com.lifeoneuropa.idothecooking.state.db.entities.RecipeCategoryLink
 import com.lifeoneuropa.idothecooking.state.db.entities.ShoppingList
 import com.lifeoneuropa.idothecooking.state.db.entities.ShoppingListItem
+import com.lifeoneuropa.idothecooking.state.db.migrations.MIGRATION_1_2
 import com.lifeoneuropa.idothecooking.utils.data.JsonImportTool
 import com.lifeoneuropa.idothecooking.utils.extensions.readContentFromAssets
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.future.future
 
-@Database(version = 1, entities = [Recipe::class, Ingredient::class, Direction::class,
+@Database(version = 2, entities = [Recipe::class, Ingredient::class, Direction::class,
     Category::class, RecipeCategoryLink::class, ShoppingList::class, ShoppingListItem::class], exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao?
@@ -56,7 +57,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "i_do_the_cooking"
-                ).addCallback(sRoomDatabaseCallback).build()
+                ).addCallback(sRoomDatabaseCallback)
+                    .addMigrations(MIGRATION_1_2)
+                    .build()
                 INSTANCE = instance
                 // return instance
                 instance
@@ -91,7 +94,22 @@ abstract class AppDatabase : RoomDatabase() {
                 return null
             }
 
+            suspend fun importTemplateRecipes(templates: List<String>) {
+                val p = JsonImportTool(mainApp, null, emptyMap<String, Int>().toMutableMap(),
+                                       emptyMap<String, Int>().toMutableMap(),
+                                       emptyMap<String, Int>().toMutableMap())
+                templates.forEach { name ->
+                    val json: String? =
+                        appContext?.readContentFromAssets("recipe_templates/${name}.json")
+                    if (!json.isNullOrEmpty()) {
+                        p.import(json)
+                    }
+                }
+            }
+
             suspend fun initDatabase() {
+//                importTemplateRecipes(listOf("FrenchToast", "LemonChicken",
+//                                            "SwedishMeatballs", "ChickenParmesan"))
                 val json: String? = appContext?.readContentFromAssets("init_basic.json")
                 if (json != null) {
                     val p = JsonImportTool(mainApp, null, emptyMap<String, Int>().toMutableMap(),

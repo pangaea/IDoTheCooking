@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
         val itemsCount = sharedPreferences.getInt("recent_items_count2", 3)//!!.toInt()
 
         recipeViewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
-        recipeViewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
+        recipeViewModel.getAllFavoriteRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
             val linearLayout = root.findViewById<LinearLayout>(R.id.recipeHolder)
             linearLayout.removeAllViews()
             for ((index, recipeDetails: RecipeDetails) in recipesDetails.withIndex()) {

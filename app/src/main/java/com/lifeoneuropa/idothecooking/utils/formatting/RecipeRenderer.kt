@@ -12,7 +12,7 @@ class RecipeRenderer(private val context: Context, private val recipeDetails: Re
                      private val servingSize: Int, private val categoryMap: Map<Int, String>) {
 
     fun drawRecipeHtml(): String {
-        return renderRecipe(R.string.html_recipe, R.string.html_recipe_ingredient,
+        return renderRecipe(R.string.html_recipe2, R.string.html_recipe2_ingredient,
                                       R.string.html_recipe_direction)
     }
 

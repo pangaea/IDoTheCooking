@@ -32,12 +32,20 @@
             android:text="@string/enhance_using_ai" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorite"
+            android:gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/icon_margin"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/material_switch"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/lock_screen"
             android:gravity="center_vertical|end"
-            android:layout_marginEnd="@dimen/appbar_padding"/>
+            android:layout_marginEnd="@dimen/icon_margin"/>
     </LinearLayout>
 
     <WebView

@@ -1,6 +1,8 @@
 package com.lifeoneuropa.idothecooking.ui.recipe.viewmodels
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +25,11 @@ class RecipeViewModel(val app: Application, private val recipeId: Long?) : ViewM
     fun getAllRecipesWithDetails(): LiveData<List<RecipeDetails>> {
         return recipeRepository.getAllRecipesWithDetails()
     }
+
+    fun getAllFavoriteRecipesWithDetails(): LiveData<List<RecipeDetails>> {
+        return recipeRepository.getAllFavoriteRecipesWithDetails()
+    }
+
     fun getRecipe(): LiveData<List<Recipe>>? {
         return recipeId?.let { recipeRepository.getRecipe(it) }
     }
@@ -40,6 +47,7 @@ class RecipeViewModel(val app: Application, private val recipeId: Long?) : ViewM
 //        }
 //        return -1
 //    }
+    @RequiresApi(Build.VERSION_CODES.N)
     fun insert(recipe: RecipeDetails, callback: Consumer<Long>) = viewModelScope.launch {
         try {
             val id = recipeRepository.insert(recipe)
@@ -50,6 +58,7 @@ class RecipeViewModel(val app: Application, private val recipeId: Long?) : ViewM
             DisplayException.show(app.baseContext, e)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.N)
     fun update(recipe: RecipeDetails, callback: Consumer<Long>?) = viewModelScope.launch {
         try {
             val id = recipeRepository.update(recipe)
@@ -60,6 +69,30 @@ class RecipeViewModel(val app: Application, private val recipeId: Long?) : ViewM
             DisplayException.show(app.baseContext, e)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun update(recipe: Recipe, callback: Consumer<Long>?) = viewModelScope.launch {
+        try {
+            val id = recipeRepository.update(recipe)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+                o.accept(id)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun updateFavorite(recipe: Recipe, callback: Consumer<Long>?) = viewModelScope.launch {
+        try {
+            val id = recipeRepository.updateFavorite(recipe)
+            Optional.ofNullable(callback).ifPresent { o: Consumer<Long> ->
+                o.accept(id)
+            }
+        } catch(e: Exception) {
+            DisplayException.show(app.baseContext, e)
+        }
+    }
+
     fun delete(recipe: Recipe) = viewModelScope.launch {
         try {
             recipeRepository.delete(recipe)

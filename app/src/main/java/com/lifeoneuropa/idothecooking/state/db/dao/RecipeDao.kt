@@ -22,6 +22,10 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes ORDER BY modified_at COLLATE NOCASE DESC")
     fun loadAllRecipesWithDetails(): LiveData<List<RecipeDetails>>
 
+    @Transaction
+    @Query("SELECT * FROM recipes WHERE favorite = 1 ORDER BY name COLLATE NOCASE ASC")
+    fun loadAllFavoriteRecipesWithDetails(): LiveData<List<RecipeDetails>>
+
     @Query("SELECT * FROM recipes WHERE id IN (:recipeIds)")
     fun loadRecipesByIds(recipeIds: IntArray): LiveData<List<Recipe>>
 
@@ -36,12 +40,15 @@ interface RecipeDao {
     suspend fun insert(recipe: Recipe): Long
 
     @Update
-    suspend fun update(recipe: Recipe)
+    suspend fun update(recipe: Recipe): Int
 
     @Query("UPDATE recipes SET name = :name, description = :description, imageUri = :imageUri," +
-            "servings = :servings, modified_at = :modifiedAt WHERE id = :id")
+            "servings = :servings, favorite = :favorite, modified_at = :modifiedAt WHERE id = :id")
     suspend fun updateData(id: Long, name: String?, description: String?, imageUri: String?,
-                           servings: Int?, modifiedAt: String?): Int
+                           servings: Int?, modifiedAt: String?, favorite: Boolean): Int
+
+    @Query("UPDATE recipes SET favorite = :favorite, modified_at = :modifiedAt WHERE id = :id")
+    suspend fun updateFavorite(id: Long, modifiedAt: String?, favorite: Boolean): Int
 
     @Transaction
     suspend fun createAll(directionDao: RecipeDirectionDao, ingredientDao: RecipeIngredientDao,
@@ -56,7 +63,8 @@ interface RecipeDao {
     suspend fun updateAll(directionDao: RecipeDirectionDao, ingredientDao: RecipeIngredientDao,
                           recipeCategoryLinkDao: RecipeCategoryLinkDao, recipe: RecipeDetails, modifiedAt: String?): Int {
         val id: Int = updateData(recipe.recipe.id.toLong(), recipe.recipe.name, recipe.recipe.description,
-                                           recipe.recipe.imageUri, recipe.recipe.servings, modifiedAt)
+                                           recipe.recipe.imageUri, recipe.recipe.servings, modifiedAt,
+                                 recipe.recipe.favorite)
         directionDao.deleteAllByRecipe(recipe.recipe.id)
         insertDirections(directionDao, recipe.directions, recipe.recipe.id)
         ingredientDao.deleteAllByRecipe(recipe.recipe.id)

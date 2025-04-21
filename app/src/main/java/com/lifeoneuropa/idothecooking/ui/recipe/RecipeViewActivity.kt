@@ -1,11 +1,13 @@
 package com.lifeoneuropa.idothecooking.ui.recipe
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import com.lifeoneuropa.idothecooking.MainActivity
 import com.lifeoneuropa.idothecooking.R
 import com.lifeoneuropa.idothecooking.databinding.ActivityRecipeViewBinding
@@ -32,6 +34,7 @@ class RecipeViewActivity : ShareAndPrintActivity() {
     private var servingSize: Int = 0
     private val categoryMap = emptyMap<Int, String>().toMutableMap()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,6 +59,12 @@ class RecipeViewActivity : ShareAndPrintActivity() {
             categoryViewModel.getAllCategories().observe(this) { categories ->
                 categoryMap.putAll(categories.associateBy({ it.id }, { it.name }).toMap())
                 drawRecipe()
+            }
+
+            binding.favorite.isChecked = recipeDetails.recipe.favorite
+            binding.favorite.setOnCheckedChangeListener { _, isChecked ->
+                recipeDetails.recipe.favorite = isChecked
+                viewModel.updateFavorite(recipeDetails.recipe) {}
             }
         }
 
