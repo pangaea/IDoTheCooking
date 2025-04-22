@@ -8,21 +8,19 @@
 
     <ImageView
         android:id="@+id/bullet"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="50dp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:paddingStart="25dp"
-        android:paddingEnd="0dp"
         android:layout_gravity="center_horizontal|top"
-        android:scaleType="center"
-        android:src="@android:drawable/presence_invisible" />
+        android:scaleType="fitXY"
+        android:src="@mipmap/icon_bullet_14" />
 
     <TextView
         android:id="@+id/text"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:padding="14dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="14dp"
+        android:paddingEnd="14dp"
         android:hint="@string/direction_content_hint"
         android:textStyle="bold"
         android:layout_height="wrap_content"

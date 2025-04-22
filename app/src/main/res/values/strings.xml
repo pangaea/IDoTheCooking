@@ -70,7 +70,7 @@
 
     <string name="recipe_main">Name</string>
     <string name="recipe_description">Description</string>
-    <string name="recipe_image">Image</string>
+    <string name="recipe_image">Set Image</string>
     <string name="recipe_servings">Servings</string>
     <string name="recipe_categories">Categories</string>
     <string name="recipe_select_categories">Select Categories</string>
