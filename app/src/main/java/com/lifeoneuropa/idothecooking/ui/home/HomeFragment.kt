@@ -83,7 +83,7 @@ class HomeFragment : Fragment() {
                     startActivityWithBundle(RecipeViewActivity::class.java, "id", recipe.id)
                 }
                 linearLayout.addView(recipeLayout)
-                if (index >= (itemsCount-1)) break;
+                //if (index >= (itemsCount-1)) break;
             }
         }
 

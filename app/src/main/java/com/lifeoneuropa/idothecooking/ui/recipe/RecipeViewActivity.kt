@@ -96,7 +96,8 @@ class RecipeViewActivity : ShareAndPrintActivity() {
     }
 
     fun navigateToRecipeList() {
-        startActivityWithBundle(MainActivity::class.java, "start", "recipes")
+        onBackPressed()
+        //startActivityWithBundle(MainActivity::class.java, "start", "recipes")
     }
 
     private fun drawRecipe() {
@@ -111,7 +112,6 @@ class RecipeViewActivity : ShareAndPrintActivity() {
         // Close
         val itemCancel = menu.findItem(R.id.item_cancel)
         itemCancel.setOnMenuItemClickListener { menuItem ->
-            //onBackPressed()
             navigateToRecipeList()
             false
         }

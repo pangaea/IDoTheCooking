@@ -1,11 +1,13 @@
 package com.lifeoneuropa.idothecooking.ui.recipe
 
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -90,6 +92,7 @@ class RecipeActivity : AppCompatActivity() {
         // Handle back navigation
         //val self = this
         val callbackBack = object : OnBackPressedCallback(true) {
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun handleOnBackPressed() {
                 isEnabled = false
                 this.remove()
@@ -99,15 +102,20 @@ class RecipeActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, callbackBack)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun tryNavigateToViewActivity() {
         if (_itemSave?.isEnabled == true) {
             selectedRecipeModel.selectedRecipe.observeOnce(this) { recipeDetails ->
                 val saveChangesAlertBuilder = AlertDialog.Builder(this)
                     .setMessage(resources.getString(R.string.exit_with_save))
                     .setCancelable(true)
-                    .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> navigateToViewActivity(recipeId) }
+                    .setNegativeButton(resources.getString(R.string.no)) { dialog, _ ->
+                        _itemSave?.setAsDisabled()
+                        navigateToViewActivity(recipeId) }
                     .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                        viewModel.update(recipeDetails) { navigateToViewActivity(recipeId) }
+                        viewModel.update(recipeDetails) {
+                            _itemSave?.setAsDisabled()
+                            navigateToViewActivity(recipeId) }
                     }
                 val saveChangesAlert = saveChangesAlertBuilder.create()
                 saveChangesAlert.show()
@@ -118,9 +126,11 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     private fun navigateToViewActivity(id: Int) {
-        startActivityWithBundle(RecipeViewActivity::class.java, "id", id)
+        onBackPressed()
+        //startActivityWithBundle(RecipeViewActivity::class.java, "id", id)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.recipe_menu, menu)

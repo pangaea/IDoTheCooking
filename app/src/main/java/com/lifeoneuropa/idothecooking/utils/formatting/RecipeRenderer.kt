@@ -13,7 +13,7 @@ class RecipeRenderer(private val context: Context, private val recipeDetails: Re
 
     fun drawRecipeHtml(): String {
         return renderRecipe(R.string.html_recipe2, R.string.html_recipe2_ingredient,
-                                      R.string.html_recipe_direction)
+                                      R.string.html_recipe2_direction)
     }
 
     fun drawRecipeText(): String {

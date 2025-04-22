@@ -10,8 +10,8 @@
 
         <SeekBarPreference
             android:key="recent_items_count2"
-            android:title="Recent items displayed count"
-            android:summary="Used for recipes and shopping lists"
+            android:title="@string/recent_items_count"
+            android:summary="@string/recent_items_count_summary"
             android:defaultValue="3"
             android:max="10"
             app:showSeekBarValue="true"

@@ -34,9 +34,6 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<RecipeDetails>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //holder.itemView.setBackgroundResource(R.mipmap.paper3)
-//        val param = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-//        param.marginEnd = 10
-//        holder.itemView.layoutParams = param
         val item = values[position]
         if (item.recipe.imageUri == null || item.recipe.imageUri!!.isEmpty()) {
             holder.imageView.visibility = View.GONE

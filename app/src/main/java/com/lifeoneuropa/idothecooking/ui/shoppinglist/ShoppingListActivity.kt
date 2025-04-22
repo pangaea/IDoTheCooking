@@ -129,9 +129,13 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
             val deleteAlertBuilder = AlertDialog.Builder(this)
                 .setMessage(Html.fromHtml(resources.getString(R.string.exit_with_save_auto_save)))
                 .setCancelable(true)
-                .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> navigateToChecklistFragment() }
+                .setNegativeButton(resources.getString(R.string.no)) { dialog, _ ->
+                    _itemSave?.setAsDisabled()
+                    navigateToChecklistFragment() }
                 .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                    saveShoppingList() { navigateToChecklistFragment() }
+                    saveShoppingList() {
+                        _itemSave?.setAsDisabled()
+                        navigateToChecklistFragment() }
                 }
             val deleteAlert = deleteAlertBuilder.create()
             deleteAlert.show()
@@ -141,7 +145,8 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
     }
 
     private fun navigateToChecklistFragment() {
-        startActivityWithBundle(MainActivity::class.java, "start", "shoppingLists")
+        onBackPressed()
+        //startActivityWithBundle(MainActivity::class.java, "start", "shoppingLists")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
