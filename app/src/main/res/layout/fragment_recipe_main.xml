@@ -92,6 +92,7 @@
         <TextView
             android:text="@string/recipe_categories"
             android:textSize="12sp"
+            android:padding="12dp"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -110,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
+            android:padding="12dp"
             android:text="@string/favorite"
             android:gravity="center_vertical|end"
             android:layout_marginEnd="@dimen/icon_margin"/>
