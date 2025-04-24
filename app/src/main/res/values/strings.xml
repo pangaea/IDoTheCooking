@@ -45,7 +45,7 @@
     <string name="import_from_library">Select From Library…</string>
     <string name="do_not_show_about_at_startup">Don\'t show at startup</string>
     <string name="open_about_at_startup">Open About Dialog at Startup</string>
-    <string name="show_sample_library">Show Sample Library</string>
+    <string name="show_sample_library">Show Sample Recipe Library</string>
     <string name="general_setting">General Settings</string>
 
     <string name="save_as_prompt">Please choose a new name</string>
@@ -124,7 +124,8 @@
 
     <string name="recipe_sent_success">Recipe \'{{0}}\' Sent</string>
     <string name="recipe_sent_failed">Recipe \'{{0}}\' Failed</string>
-    <string name="title_activity_shopping_list">ShoppingListActivity</string>
+    <string name="title_activity_shopping_list">Shopping List</string>
+    <string name="title_activity_shopping_list_name">Shopping List - {0}</string>
 
     <string name="adjust_servings_title">Adjust Serving Size</string>
     <string name="adjust_servings_error">Recipe serving size must be specified in order to adjust ingredients properly</string>
@@ -156,7 +157,7 @@
     <!-- Auto-save Preferences -->
     <string name="auto_save_lists_title">Enable For Shopping Lists</string>
 
-    <string name="recent_items_count">Recent items displayed count</string>
+    <string name="recent_items_count">Recently Updated items displayed count</string>
     <string name="recent_items_count_summary">Used for shopping lists</string>
 
     <string name="exception_generic">There was an error trying to save this record.</string>

@@ -1,5 +1,6 @@
 package com.lifeoneuropa.idothecooking.ui.shoppinglist
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Html
@@ -48,13 +49,15 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
     private var _itemSave: MenuItem? = null
 
     private lateinit var binding: ActivityShoppingListBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         _view = binding.root
         setContentView(_view)
         setSupportActionBar(binding.toolbar)
-        _view.setBackgroundResource(R.mipmap.tablecloth3)
+        //_view.setBackgroundResource(R.mipmap.tablecloth3)
+        //_view.setBackgroundColor(R.color.sticky_item_background)
 
         val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
         list.adapter = ShoppingListItemsAdapter(list.context, mutableListOf(), this)
@@ -72,7 +75,7 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
         viewModel = ShoppingListViewModel((application as IDoTheCookingApp), shoppingListId.toLong())
         viewModel.getDetails()?.observeOnce(this) { shoppingLists ->
             shoppingListDetails = shoppingLists[0]
-            title = resources.getString(R.string.title_activity_recipe_name)
+            title = resources.getString(R.string.title_activity_shopping_list_name)
                 .replace("{0}", shoppingListDetails.shoppingList.name)
             binding.name.setText(shoppingListDetails.shoppingList.name)
             /*textWatcher = */binding.name.doAfterTextChanged() {

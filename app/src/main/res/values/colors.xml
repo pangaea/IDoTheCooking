@@ -13,5 +13,5 @@
     <color name="recipe_new_item_background">#DDE1E4</color>
     <color name="recipe_changed_item_background">#EBDE78</color>
     <color name="recipe_selected_item_background">#E7E9F6</color>
-    <color name="sticky_item_background">#FFEB3B</color>
+    <color name="sticky_item_background">#EBDE78</color>
 </resources>
