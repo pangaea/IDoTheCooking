@@ -2,9 +2,13 @@ package com.lifeoneuropa.idothecooking.ui.shared.adapters
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.lifeoneuropa.idothecooking.R
 import com.lifeoneuropa.idothecooking.state.db.entities.Recipe
 import com.lifeoneuropa.idothecooking.state.db.entities.RecipeDetails
@@ -13,6 +17,7 @@ import com.lifeoneuropa.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.lifeoneuropa.idothecooking.ui.shared.NameOnlyDialog
 import com.lifeoneuropa.idothecooking.utils.data.JsonAsyncImportInterface
 import com.lifeoneuropa.idothecooking.utils.data.JsonAsyncImportTool
+import com.lifeoneuropa.idothecooking.utils.data.JsonImportTool
 import com.lifeoneuropa.idothecooking.utils.extensions.observeOnce
 import com.lifeoneuropa.idothecooking.utils.extensions.readContentFromAssets
 import com.lifeoneuropa.idothecooking.utils.extensions.startActivityWithBundle
@@ -28,6 +33,7 @@ class CreateRecipeAdapter(private val activity: Activity,
                           private val callback: ((id: Long) -> Unit)?)
     : CreateRecipeCallBackListener {
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun attemptRecipeInsert(recipe: RecipeDetails) {
         activity.runOnUiThread {
             viewModel.getRecipeByName(recipe.recipe.name).observeOnce(lifecycleOwner) { recipes ->
@@ -51,14 +57,38 @@ class CreateRecipeAdapter(private val activity: Activity,
         }
     }
 
+    private fun getFirstRecipeId(logs: List<JsonImportTool.ParseLog>): Int {
+        val stats = logs.find { it.type == JsonImportTool.MessageType.STATS }
+        if (stats != null) {
+            val mapper = ObjectMapper()
+            val node: JsonNode = mapper.readTree(stats.message)
+            val recipeIdsNode: JsonNode? = node.get("newRecipeIds")
+            if (recipeIdsNode != null && recipeIdsNode.isArray) {
+                return recipeIdsNode[0].intValue()
+            }
+        }
+        return 0
+    }
+
     private fun attemptRecipeInsert(json: String, replacementName: String?, tool: JsonAsyncImportInterface,
                                     ctx: JsonAsyncImportTool.ImportContext) {
         activity.runOnUiThread {
             if (!tool.import(json, replacementName, ctx) {
                     CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(context,
-                                       activity.getString(R.string.import_complete),
-                                       Toast.LENGTH_LONG).show()
+                        val recipeId = getFirstRecipeId(it)
+                        if (recipeId > 0) {
+                            if (callback != null) {
+                                callback.invoke(recipeId.toLong())
+                            } else {
+                                activity.startActivityWithBundle(RecipeActivity::class.java,
+                                                                 "id",
+                                                                 recipeId.toInt())
+                            }
+                        } else {
+                            Toast.makeText(context,
+                                           activity.getString(R.string.import_complete),
+                                           Toast.LENGTH_LONG).show()
+                        }
                     }
                 }) {
                 // Name exists - prompt for a new one
@@ -75,6 +105,7 @@ class CreateRecipeAdapter(private val activity: Activity,
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun createRecipe(name: String, fileName: String?) {
         if (fileName == null) {
             val recipe = Recipe()

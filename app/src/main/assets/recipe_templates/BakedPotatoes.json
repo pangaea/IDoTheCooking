@@ -4,7 +4,7 @@
       "name":"Dinner"
     },
     {
-      "name":"Air fryer"
+      "name":"Air Fryer"
     }
   ],
   "recipes": [
@@ -55,7 +55,7 @@
       ],
       "categories":[
         "Dinner",
-        "Air fryer"
+        "Air Fryer"
       ]
     }
   ]

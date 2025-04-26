@@ -15,7 +15,7 @@
             android:defaultValue="3"
             android:max="10"
             app:showSeekBarValue="true"
-            app:min="3" />
+            app:min="2" />
 
 <!--        <ListPreference-->
 <!--            app:defaultValue="3"-->

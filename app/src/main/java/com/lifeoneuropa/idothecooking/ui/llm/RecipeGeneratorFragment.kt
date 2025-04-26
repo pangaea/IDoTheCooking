@@ -1,6 +1,7 @@
 package com.lifeoneuropa.idothecooking.ui.llm
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -74,6 +76,7 @@ class RecipeGeneratorFragment : Fragment() {
                                     with(list) {
                                         layoutManager = LinearLayoutManager(context)
                                         val listener = object : RecycleViewClickListener() {
+                                            @RequiresApi(Build.VERSION_CODES.N)
                                             @SuppressLint("NotifyDataSetChanged")
                                             override fun click(id: Int) {
                                                 val adpt: RecipeGeneratorAdapter =

@@ -4,6 +4,7 @@ import android.app.Application
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.lifeoneuropa.idothecooking.R
 import com.lifeoneuropa.idothecooking.state.CategoryRepository
 import com.lifeoneuropa.idothecooking.state.RecipeRepository
@@ -22,13 +23,15 @@ class JsonImportTool(val app: Application, private var replaceName: String?,
                      private var categoryMap: MutableMap<String, Int>,
                      private var recipeMap: MutableMap<String, Int>,
                      private var shoppingListMap: MutableMap<String, Int>) {
-    enum class MessageType { ERROR, WARNING, INFORMATION }
+    enum class MessageType { ERROR, WARNING, INFORMATION, STATS }
     data class ParseLog(val type: MessageType, val message: String)
 
     private val categoryRepository = CategoryRepository(app)
     private val recipeRepo = RecipeRepository(app)
     private val shoppingListRepo = ShoppingListRepository(app)
     private val messages: MutableList<ParseLog> = emptyList<ParseLog>().toMutableList()
+    private val newRecipeIds = emptyList<Long>().toMutableList()
+    private val newListIds = emptyList<Long>().toMutableList()
 
     suspend fun import(json: String): List<ParseLog> {
         val mapper = ObjectMapper()
@@ -57,6 +60,14 @@ class JsonImportTool(val app: Application, private var replaceName: String?,
         if (messages.isEmpty()) {
             messages.add(ParseLog(MessageType.INFORMATION, app.getString(R.string.import_complete)))
         }
+
+        val rootNode: ObjectNode = mapper.createObjectNode()
+        rootNode.put("newRecipeIds", mapper.convertValue(ArrayList(newRecipeIds),
+                                                      JsonNode::class.java))
+        rootNode.put("newListIds", mapper.convertValue(ArrayList(newListIds),
+                                                      JsonNode::class.java))
+        rootNode.toString()
+        messages.add(ParseLog(MessageType.STATS, rootNode.toString()))
         return messages;
     }
 
@@ -101,6 +112,7 @@ class JsonImportTool(val app: Application, private var replaceName: String?,
                 try {
                     val id = recipeRepo.insert(recipe)
                     recipeMap[recipe.recipe.name] = id.toInt()
+                    newRecipeIds.add(id)
                 } catch (e: Exception) {
                     messages.add(ParseLog(MessageType.ERROR, e.message.let{e.message} ?:
                     app.getString(R.string.import_error_recipe_exists)
@@ -131,7 +143,8 @@ class JsonImportTool(val app: Application, private var replaceName: String?,
             newShoppingLists.forEach {shoppingList ->
                 try {
                     val id = shoppingListRepo.insert(shoppingList)
-                    recipeMap[shoppingList.shoppingList.name] = id.toInt()
+                    shoppingListMap[shoppingList.shoppingList.name] = id.toInt()
+                    newListIds.add(id)
                 } catch (e: Exception) {
                     messages.add(ParseLog(MessageType.ERROR, e.message.let{e.message} ?:
                     app.getString(R.string.import_error_shopping_list)

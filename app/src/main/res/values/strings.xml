@@ -157,8 +157,8 @@
     <!-- Auto-save Preferences -->
     <string name="auto_save_lists_title">Enable For Shopping Lists</string>
 
-    <string name="recent_items_count">Recently Updated items displayed count</string>
-    <string name="recent_items_count_summary">Used for shopping lists</string>
+    <string name="recent_items_count">Recently Updated items max.</string>
+    <string name="recent_items_count_summary">Used for recipes and shopping lists</string>
 
     <string name="exception_generic">There was an error trying to save this record.</string>
     <string name="exception_duplicate_name">You cannot use a duplicate name. Please try again with a unique name.</string>
@@ -186,5 +186,5 @@
     <string name="helper_desc_hint">Explain what kind of suggestions you are looking for</string>
     <string name="helper_button_text">Get Suggestions</string>
     <string name="helper_prompt_title">Add this suggestion to your recipe?</string>
-    <string name="llm_failure">The AI portal is down, please try again later.</string>
+    <string name="llm_failure">The AI portal is down, please try again later. If it persists, check for an update.</string>
 </resources>

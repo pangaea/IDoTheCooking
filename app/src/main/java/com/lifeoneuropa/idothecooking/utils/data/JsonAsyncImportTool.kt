@@ -1,6 +1,8 @@
 package com.lifeoneuropa.idothecooking.utils.data
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import com.lifeoneuropa.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.lifeoneuropa.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
@@ -39,6 +41,7 @@ class JsonAsyncImportTool(val app: Application, private val lifecycleOwner: Life
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @OptIn(DelicateCoroutinesApi::class)
     private fun launchImportTool(json: String, replacementName: String?, ctx: ImportContext,
                                  callback: Consumer<List<JsonImportTool.ParseLog>>) {
@@ -54,6 +57,7 @@ class JsonAsyncImportTool(val app: Application, private val lifecycleOwner: Life
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun import(json: String, replacementName: String?, ctx: ImportContext,
                         callback: Consumer<List<JsonImportTool.ParseLog>>): Boolean {
         if (!ctx.recipeMap.contains(replacementName)) {

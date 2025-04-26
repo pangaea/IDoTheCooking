@@ -56,35 +56,15 @@ class HomeFragment : Fragment() {
         val itemsCount = sharedPreferences.getInt("recent_items_count2", 3)//!!.toInt()
 
         recipeViewModel = RecipeViewModelFactory(requireActivity().application, null).create(RecipeViewModel::class.java)
-        recipeViewModel.getAllFavoriteRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
-            val linearLayout = root.findViewById<LinearLayout>(R.id.recipeHolder)
-            linearLayout.removeAllViews()
-            for ((index, recipeDetails: RecipeDetails) in recipesDetails.withIndex()) {
-                val recipe = recipeDetails.recipe
-                val recipeLayout: View =
-                    requireActivity().layoutInflater.inflate(R.layout.home_recent_recipe,
-                                                             null,false)!!
-                val image = recipeLayout.findViewById<ImageView>(R.id.recipeImage)
-                if (recipe.imageUri != null && !recipe.imageUri!!.isEmpty()) {
-                    ImageTool(requireActivity()).display(image, recipe.imageUri!!)
-                } else {
-                    image.visibility = View.GONE
-                }
 
-                val content = recipeLayout.findViewById<TextView>(R.id.content)
-                content.text = recipe.name
-                val description = recipeLayout.findViewById<TextView>(R.id.description)
-                if (recipe.description.isEmpty()) {
-                    description.text = recipeDetails.ingredients.map { it.name }.joinToString(", ")
-                } else {
-                    description.text = recipe.description
-                }
-                recipeLayout.rootView.setOnClickListener{
-                    startActivityWithBundle(RecipeViewActivity::class.java, "id", recipe.id)
-                }
-                linearLayout.addView(recipeLayout)
-                //if (index >= (itemsCount-1)) break;
-            }
+        // Load favorites
+        recipeViewModel.getAllFavoriteRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
+            drawRecipes(root, R.id.recipeFavoritesHolder, recipesDetails, 0)
+        }
+
+        // Load recently changed
+        recipeViewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
+            drawRecipes(root, R.id.recipeHolder, recipesDetails, itemsCount)
         }
 
         shoppingListViewModel = ShoppingListViewModelFactory((activity?.application as IDoTheCookingApp),
@@ -149,6 +129,37 @@ class HomeFragment : Fragment() {
             activity?.findNavController(R.id.nav_host_fragment_content_main)?.navigate(R.id.nav_shopping_lists)
         }
         return root
+    }
+
+    private fun drawRecipes(root: View, id: Int, recipesDetails: List<RecipeDetails>, itemsCount: Int) {
+        val linearLayout = root.findViewById<LinearLayout>(id)
+        linearLayout.removeAllViews()
+        for ((index, recipeDetails: RecipeDetails) in recipesDetails.withIndex()) {
+            val recipe = recipeDetails.recipe
+            val recipeLayout: View =
+                requireActivity().layoutInflater.inflate(R.layout.home_recent_recipe,
+                                                         null,false)!!
+            val image = recipeLayout.findViewById<ImageView>(R.id.recipeImage)
+            if (recipe.imageUri != null && !recipe.imageUri!!.isEmpty()) {
+                ImageTool(requireActivity()).display(image, recipe.imageUri!!)
+            } else {
+                image.visibility = View.GONE
+            }
+
+            val content = recipeLayout.findViewById<TextView>(R.id.content)
+            content.text = recipe.name
+            val description = recipeLayout.findViewById<TextView>(R.id.description)
+            if (recipe.description.isEmpty()) {
+                description.text = recipeDetails.ingredients.map { it.name }.joinToString(", ")
+            } else {
+                description.text = recipe.description
+            }
+            recipeLayout.rootView.setOnClickListener{
+                startActivityWithBundle(RecipeViewActivity::class.java, "id", recipe.id)
+            }
+            linearLayout.addView(recipeLayout)
+            if (itemsCount != 0 && index >= (itemsCount-1)) break;
+        }
     }
 
     override fun onDestroyView() {

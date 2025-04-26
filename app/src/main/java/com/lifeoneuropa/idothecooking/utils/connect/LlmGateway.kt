@@ -87,18 +87,23 @@ class LlmGateway(val context: Context) {
             .readTimeout(60, TimeUnit.SECONDS)    // Set read timeout to 30 seconds
             .writeTimeout(30, TimeUnit.SECONDS)   // Set write timeout to 30 seconds
             .build()
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                //throw IOException("Unexpected code $response")
-                callback(false, null)
-            } else {
-                val json = response.body!!.string()
-                val jsonRoot = JsonParser.parseString(json).asJsonObject;
-                val choices = jsonRoot.get("choices").asJsonArray
-                val choice = choices[0].asJsonObject
-                val msg = choice.get("message").asJsonObject
-                callback(true, msg.get("content").asString)
+        try {
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    //throw IOException("Unexpected code $response")
+                    callback(false, null)
+                } else {
+                    val json = response.body!!.string()
+                    val jsonRoot = JsonParser.parseString(json).asJsonObject;
+                    val choices = jsonRoot.get("choices").asJsonArray
+                    val choice = choices[0].asJsonObject
+                    val msg = choice.get("message").asJsonObject
+                    callback(true, msg.get("content").asString)
+                }
             }
+        }
+        catch (e: Exception) {
+            callback(false, null)
         }
     }
 

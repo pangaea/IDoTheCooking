@@ -20,6 +20,9 @@
     },
     {
       "name": "Chicken"
+    },
+    {
+      "name": "Air Fryer"
     }
   ],
   "recipes":[
@@ -28,7 +31,7 @@
       "imageUri":"asset://image_library/FrenchToast.jpg",
       "name":"French Toast",
       "servings":3,
-      "favorite": true,
+      "favorite":false,
       "ingredients":[
         {
           "amount":3.0,
@@ -369,6 +372,56 @@
       ],
       "categories":[
         "Appetizer"
+      ]
+    },
+    {
+      "description":"With crispy skins",
+      "imageUri":"asset://image_library/BakedPotatoes.jpg",
+      "name":"Baked Potatoes",
+      "servings":2,
+      "ingredients":[
+        {
+          "amount":2.0,
+          "name":"potatoes",
+          "unit":"",
+          "order":0
+        },
+        {
+          "amount":0.0,
+          "name":"olive oil",
+          "unit":"",
+          "order":1
+        },
+        {
+          "amount":0.0,
+          "name":"salt",
+          "unit":"",
+          "order":2
+        },
+        {
+          "amount":0.0,
+          "name":"pepper",
+          "unit":"",
+          "order":3
+        }
+      ],
+      "directions":[
+        {
+          "content":"Clean potatoes and poke holes",
+          "order":0
+        },
+        {
+          "content":"Cover in olive oil, salt and pepper.",
+          "order":1
+        },
+        {
+          "content":"Cook in the air fryer at 400° for 40 minutes, or until the internal temperature is 209°. Turn halfway.",
+          "order":2
+        }
+      ],
+      "categories":[
+        "Dinner",
+        "Air Fryer"
       ]
     }
   ],
