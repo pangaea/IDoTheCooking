@@ -26,8 +26,8 @@ android {
         applicationId = "com.lifeoneuropa.idothecooking"
         minSdk = 21
         targetSdk = 34
-        versionCode = 4
-        versionName = "4.0"
+        versionCode = 5
+        versionName = "5.0"
 
         // Load the values from apikey.properties file
         val keystoreFile = project.rootProject.file("apikey.properties")
