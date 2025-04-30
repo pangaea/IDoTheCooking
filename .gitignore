@@ -2,6 +2,7 @@
 .gradle
 /local.properties
 /apikey.properties
+/release.properties
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
