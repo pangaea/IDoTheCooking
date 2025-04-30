@@ -7,31 +7,31 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.lifeoneuropa.idothecooking.ui.home.HomeFragment"
+        android:name="com.pangaea.idothecooking.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_recipes"
-        android:name="com.lifeoneuropa.idothecooking.ui.recipe.RecipesFragment"
+        android:name="com.pangaea.idothecooking.ui.recipe.RecipesFragment"
         android:label="@string/menu_recipes"
         tools:layout="@layout/fragment_recipe_list" />
 
     <fragment
         android:id="@+id/nav_categories"
-        android:name="com.lifeoneuropa.idothecooking.ui.category.CategoriesFragment"
+        android:name="com.pangaea.idothecooking.ui.category.CategoriesFragment"
         android:label="Categories"
         tools:layout="@layout/fragment_category_list" />
 
     <fragment
         android:id="@+id/nav_shopping_lists"
-        android:name="com.lifeoneuropa.idothecooking.ui.shoppinglist.ShoppingListsFragment"
+        android:name="com.pangaea.idothecooking.ui.shoppinglist.ShoppingListsFragment"
         android:label="@string/menu_shopping_lists"
         tools:layout="@layout/fragment_shopping_list_list" />
 
     <fragment
         android:id="@+id/nav_recipe_generator"
-        android:name="com.lifeoneuropa.idothecooking.ui.llm.RecipeGeneratorFragment"
+        android:name="com.pangaea.idothecooking.ui.llm.RecipeGeneratorFragment"
         android:label="@string/recipe_generator"
         tools:layout="@layout/fragment_recipe_generator" />
 </navigation>
