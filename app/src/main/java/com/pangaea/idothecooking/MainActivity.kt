@@ -105,24 +105,10 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    val OPEN_DOCUMENT_REQUEST_CODE = 2
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
-                true
-            }
-            R.id.action_export -> {
-                generateRecipeExport()
-                true
-            }
-            R.id.action_import -> {
-                val openDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "text/*"
-                }
-                startActivityForResult(openDocumentIntent, OPEN_DOCUMENT_REQUEST_CODE)
                 true
             }
             R.id.action_about -> {
@@ -133,93 +119,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //tryHandleOpenDocumentResult(requestCode, resultCode, data)
-        if (requestCode == OPEN_DOCUMENT_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK && data != null) {
-                val contentUri = data.data
-                if (contentUri != null) {
-                    try {
-                        val stream: InputStream? = application.contentResolver.openInputStream(contentUri)
-                        if (stream != null) {
-                            JsonAsyncImportTool(application, this).loadData() { tool, ctx ->
-                                tool.import(stream.readAllBytes()
-                                                .toString(Charset.defaultCharset()), null, ctx) {
-                                    CoroutineScope(Dispatchers.Main).launch {
-                                        Toast.makeText(applicationContext,
-                                                       getString(R.string.import_complete),
-                                                       Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            }
-                        }
-                    } catch (exception: FileNotFoundException) {
-                        Toast.makeText(applicationContext, exception.message, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    private fun generateRecipeExport() {
-        val mapper = ObjectMapper()
-
-        val categoryViewModel = CategoryViewModelFactory(application, null).create(CategoryViewModel::class.java)
-        categoryViewModel.getAllCategories().observeOnce(this) { categories ->
-
-            val rootNode: ObjectNode = mapper.createObjectNode()
-            rootNode.put("categories", mapper.convertValue(categories, JsonNode::class.java))
-            val categoryMap = categories.associateBy({it.id}, {it.name})
-
-            val recipeViewModel = RecipeViewModelFactory(application, null).create(RecipeViewModel::class.java)
-            recipeViewModel.getAllRecipesWithDetails().observeOnce(this) { recipes ->
-                val recipeArray: ArrayNode = mapper.createArrayNode()
-                recipes.forEach { recipeDetails ->
-                    val jsonNode: JsonNode = mapper.convertValue(recipeDetails.recipe, JsonNode::class.java)
-                    (jsonNode as ObjectNode).put("ingredients", mapper.convertValue(
-                        recipeDetails.ingredients.sortedBy { it.order }, JsonNode::class.java))
-                    jsonNode.put("directions", mapper.convertValue(
-                        recipeDetails.directions.sortedBy { it.order }, JsonNode::class.java))
-                    jsonNode.put("categories", mapper.convertValue(recipeDetails.categories.map { categoryMap[it.category_id] },
-                                                                   JsonNode::class.java))
-                    recipeArray.add(jsonNode)
-                }
-                rootNode.put("recipes", recipeArray)
-
-                val shoppingListViewModel = ShoppingListViewModelFactory((application),null).create(ShoppingListViewModel::class.java)
-                shoppingListViewModel.getAllShoppingListsWithDetails().observeOnce(this) { shoppingLists ->
-                    val shoppingListArray: ArrayNode = mapper.createArrayNode()
-                    shoppingLists.forEach { shoppingListDetails ->
-                        val jsonNode: JsonNode = mapper.convertValue(shoppingListDetails.shoppingList, JsonNode::class.java)
-                        (jsonNode as ObjectNode).put("shoppingListItems", mapper.convertValue(
-                            shoppingListDetails.shoppingListItems.sortedBy { it.order },
-                            JsonNode::class.java))
-                        shoppingListArray.add(jsonNode)
-                    }
-                    rootNode.put("shoppingLists", shoppingListArray)
-
-                    // Send backup data to Google drive
-                    val sendIntent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, rootNode.toString())
-                        val sdf = SimpleDateFormat("yyyy-M-dd hh:mm:ss")
-                        val currentDate = sdf.format(Date())
-                        putExtra(Intent.EXTRA_SUBJECT,
-                                 resources.getString(R.string.app_internal_name) + "-" + currentDate + ".json")
-                        setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        setPackage("com.google.android.apps.docs")
-                        type = "text/json"
-                    }
-                    startActivity(sendIntent)
-                }
-            }
-        }
     }
 }

@@ -35,8 +35,8 @@
     <string name="about">About</string>
     <string name="adj_srv_size">Adjust Serving Size</string>
     <string name="filter">Filter</string>
-    <string name="export_data">Export All Data</string>
-    <string name="import_data">Import From File</string>
+<!--    <string name="export_data">Export All Data</string>-->
+<!--    <string name="import_data">Import From File</string>-->
     <string name="import_complete">Import Complete</string>
     <string name="import_recipe_complete">Import [{0}] Complete</string>
     <string name="import_error_recipe_exists">Recipe [{0}] already exists</string>
@@ -187,4 +187,10 @@
     <string name="helper_button_text">Get Suggestions</string>
     <string name="helper_prompt_title">Add this suggestion to your recipe?</string>
     <string name="llm_failure">The AI portal is down, please try again later. If it persists, check for an update.</string>
+
+    <string name="backup_restore_title">Backup and Restore</string>
+    <string name="data_backup_button">Backup Data</string>
+    <string name="data_backup_overview"><![CDATA[Backup recipes, categories and shopping lists to your Google Drive. It will be saved as a JSON file and can read in any editor.]]></string>
+    <string name="data_restore_button">Restore Data</string>
+    <string name="data_restore_overview"><![CDATA[Restore backed up data from the JSON file in your Google Drive.]]></string>
 </resources>

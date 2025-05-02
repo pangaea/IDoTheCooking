@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="4dp"
+    android:isScrollContainer="true"
+    android:orientation="vertical"
+    tools:context=".ui.data.BackupRestoreFragment">
+
+    <TextView
+        android:id="@+id/textBackupOverview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="40dp"
+        android:text="@string/data_backup_overview" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backupData"
+        android:layout_height="wrap_content"
+        android:text="@string/data_backup_button"
+        style="@style/backupButton"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="28dp"/>
+
+    <View style="@style/Divider"/>
+
+    <TextView
+        android:id="@+id/textRestoreOverview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="40dp"
+        android:text="@string/data_restore_overview" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/restoreData"
+        android:layout_height="wrap_content"
+        android:text="@string/data_restore_button"
+        android:src="@android:drawable/stat_sys_download"
+        style="@style/restoreButton"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"/>
+
+</LinearLayout>
