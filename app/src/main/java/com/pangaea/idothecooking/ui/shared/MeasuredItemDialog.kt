@@ -98,12 +98,12 @@ class MeasuredItemDialog(val resInt: Int,
         return ingredientView.create()
     }
 
-    override fun onResume() {
-        super.onResume()
-        val window = dialog!!.window ?: return
-        val params = window.attributes
-//        params.width = WindowManager.LayoutParams.MATCH_PARENT
-//        params.height = 1500
-        window.attributes = params
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        val window = dialog!!.window ?: return
+//        val params = window.attributes
+////        params.width = WindowManager.LayoutParams.MATCH_PARENT
+////        params.height = 1500
+//        window.attributes = params
+//    }
 }

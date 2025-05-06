@@ -2,6 +2,7 @@ package com.pangaea.idothecooking.ui.home
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
+import com.pangaea.idothecooking.ui.shared.BackDataDlg
 import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
@@ -29,12 +31,14 @@ import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
+import kotlin.random.Random
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var recipeViewModel: RecipeViewModel
     private lateinit var shoppingListViewModel: ShoppingListViewModel
+    private var lastModifiedTime: Long = 0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -46,7 +50,26 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return drawHomeScreen()
+        val view = drawHomeScreen()
+
+        // User Data Backup Alert ////////////////////////////
+        Handler().postDelayed({
+              val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+              val lastBackupTime = sharedPreferences.getLong("last_backup_time", 0)
+              val timeDelta = 1/*days*/ * 24/*hours*/ * 60/*minutes*/ * 60/*seconds*/ * 1000/*milliseconds*/
+              if (lastModifiedTime > lastBackupTime && (lastModifiedTime + timeDelta) < System.currentTimeMillis()) {
+                  // Recipe modified since last backup...
+                  // Been more than 24 hours since the last update...
+                  // 20% chance of showing backup suggestion
+                  val randomNumber = Random.nextInt(1, 6)
+                  if (randomNumber == 1) {
+                      BackDataDlg().show(childFragmentManager, null)
+                  }
+              }
+        }, 3000)
+        ///////////////////////////////////////////////////////////////
+
+        return view
     }
 
     private fun drawHomeScreen() : View {
@@ -65,6 +88,10 @@ class HomeFragment : Fragment() {
         // Load recently changed
         recipeViewModel.getAllRecipesWithDetails().observe(viewLifecycleOwner) { recipesDetails ->
             drawRecipes(root, R.id.recipeHolder, recipesDetails, itemsCount)
+            if (recipesDetails.isNotEmpty()) {
+                // Set last modified recipe
+                lastModifiedTime = recipesDetails[0].recipe.modifiedAt.time
+            }
         }
 
         shoppingListViewModel = ShoppingListViewModelFactory((activity?.application as IDoTheCookingApp),
@@ -128,6 +155,7 @@ class HomeFragment : Fragment() {
         binding.viewShoppingLists.setOnClickListener(){
             activity?.findNavController(R.id.nav_host_fragment_content_main)?.navigate(R.id.nav_shopping_lists)
         }
+
         return root
     }
 

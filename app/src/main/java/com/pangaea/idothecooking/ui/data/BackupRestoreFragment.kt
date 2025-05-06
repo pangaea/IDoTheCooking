@@ -2,6 +2,7 @@ package com.pangaea.idothecooking.ui.data
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -141,6 +143,12 @@ class BackupRestoreFragment : Fragment() {
                         type = "text/json"
                     }
                     startActivity(sendIntent)
+
+                    // TODO: Since we don't know if the user actually saves the file we set backup time here
+                    val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                    val pref = sharedPreferences.edit()
+                    pref.putLong("last_backup_time", System.currentTimeMillis())
+                    pref.apply()
                 }
             }
         }

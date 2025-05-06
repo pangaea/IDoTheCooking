@@ -72,12 +72,12 @@ abstract class SelectAssetsDialog(private val path: String, private val selectio
         return dlg
     }
 
-    override fun onResume() {
-        super.onResume()
-        val window = dialog!!.window ?: return
-        val params = window.attributes
-        params.width = WindowManager.LayoutParams.MATCH_PARENT
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT
-        window.attributes = params
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        val window = dialog!!.window ?: return
+//        val params = window.attributes
+//        params.width = WindowManager.LayoutParams.MATCH_PARENT
+//        params.height = WindowManager.LayoutParams.WRAP_CONTENT
+//        window.attributes = params
+//    }
 }

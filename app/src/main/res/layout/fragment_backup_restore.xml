@@ -10,10 +10,20 @@
     tools:context=".ui.data.BackupRestoreFragment">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/homeRecipeRecentTitle"
+        android:padding="10dp"
+        android:text="@string/backup_title" />
+
+    <TextView
         android:id="@+id/textBackupOverview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="40dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="40dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
         android:text="@string/data_backup_overview" />
 
     <com.google.android.material.button.MaterialButton
@@ -30,10 +40,20 @@
     <View style="@style/Divider"/>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/homeRecipeRecentTitle"
+        android:padding="10dp"
+        android:text="@string/restore_title" />
+
+    <TextView
         android:id="@+id/textRestoreOverview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="40dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="40dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
         android:text="@string/data_restore_overview" />
 
     <com.google.android.material.button.MaterialButton
