@@ -189,12 +189,12 @@
     <string name="llm_failure">The AI portal is down, please try again later. If it persists, check for an update.</string>
 
     <string name="backup_restore_title">Backup and Restore</string>
-    <string name="backup_title">Backup all Data</string>
-    <string name="restore_title">Restore from Backup</string>
+    <string name="backup_title">Backup</string>
+    <string name="restore_title">Restore</string>
     <string name="data_backup_button">Backup Data</string>
     <string name="data_backup_overview">Backup recipes, categories and shopping lists to your Google Drive. It will be saved as a JSON file and can read in any editor.</string>
     <string name="data_restore_button">Restore Data</string>
-    <string name="data_restore_overview">Restore backed up data from JSON file in your Google Drive.</string>
+    <string name="data_restore_overview">Restore backed up data from JSON file on your Google Drive or device</string>
     <string name="alert_data_backup_title">Backup Your Data</string>
     <string name="alert_data_backup_message">All your recipes, categories and lists are currently only stored locally on your device. Protect your data, and make it shareable across devices, by backing it up to a file on your cloud drive.</string>
     <string name="alert_data_backup_button">Go to data backup</string>
