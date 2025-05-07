@@ -44,6 +44,10 @@
             app:key="show_sample_library"
             app:defaultValue="false"
             app:title="@string/show_sample_library" />
+        <SwitchPreferenceCompat
+            app:key="show_backup_reminder"
+            app:defaultValue="true"
+            app:title="@string/alert_data_backup_enabled" />
     </PreferenceCategory>
 
 </PreferenceScreen>

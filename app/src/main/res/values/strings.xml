@@ -197,6 +197,8 @@
     <string name="data_restore_overview">Restore backed up data from JSON file on your Google Drive or device</string>
     <string name="alert_data_backup_title">Backup Your Data</string>
     <string name="alert_data_backup_message">All your recipes, categories and lists are currently only stored locally on your device. Protect your data, and make it shareable across devices, by backing it up to a file on your cloud drive.</string>
-    <string name="alert_data_backup_button">Go to data backup</string>
+    <string name="alert_data_backup_button">Start</string>
     <string name="alert_data_backup_later">Later</string>
+    <string name="alert_data_backup_stop">Stop bugging me</string>
+    <string name="alert_data_backup_enabled">Backup Alert Reminder</string>
 </resources>

@@ -54,18 +54,20 @@ class HomeFragment : Fragment() {
 
         // User Data Backup Alert ////////////////////////////
         Handler().postDelayed({
-              val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-              val lastBackupTime = sharedPreferences.getLong("last_backup_time", 0)
-              val timeDelta = 1/*days*/ * 24/*hours*/ * 60/*minutes*/ * 60/*seconds*/ * 1000/*milliseconds*/
-              if (lastModifiedTime > lastBackupTime && (lastModifiedTime + timeDelta) < System.currentTimeMillis()) {
-                  // Recipe modified since last backup...
-                  // Been more than 24 hours since the last update...
-                  // 20% chance of showing backup suggestion
-                  val randomNumber = Random.nextInt(1, 6)
-                  if (randomNumber == 1) {
-                      BackDataDlg().show(childFragmentManager, null)
-                  }
-              }
+            val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            if (sharedPreferences.getBoolean("show_backup_reminder", true)) {
+                val lastBackupTime = sharedPreferences.getLong("last_backup_time", 0)
+                val timeDelta = 3/*days*/ * 24/*hours*/ * 60/*minutes*/ * 60/*seconds*/ * 1000/*milliseconds*/
+                if (lastModifiedTime > lastBackupTime && (lastModifiedTime + timeDelta) < System.currentTimeMillis()) {
+                    // Recipe modified since last backup...
+                    // Been more than 3 days since the last update...
+                    // 10% chance of showing backup suggestion
+                    val randomNumber = Random.nextInt(1, 11)
+                    if (randomNumber == 1) {
+                        BackDataDlg().show(childFragmentManager, null)
+                    }
+                }
+                                  }
         }, 3000)
         ///////////////////////////////////////////////////////////////
 
