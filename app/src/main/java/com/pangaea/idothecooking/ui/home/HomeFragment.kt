@@ -6,6 +6,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,19 +21,20 @@ import com.pangaea.idothecooking.databinding.FragmentHomeBinding
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingList
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
-import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.ui.recipe.RecipeViewActivity
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.BackDataDlg
 import com.pangaea.idothecooking.ui.shared.CreateRecipeDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
+import com.pangaea.idothecooking.ui.shared.NameOnlyDialog
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.ShoppingListActivity
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 import kotlin.random.Random
+
 
 class HomeFragment : Fragment() {
 
@@ -61,14 +64,28 @@ class HomeFragment : Fragment() {
                 if (lastModifiedTime > lastBackupTime && (lastModifiedTime + timeDelta) < System.currentTimeMillis()) {
                     // Recipe modified since last backup...
                     // Been more than 3 days since the last update...
-                    // 10% chance of showing backup suggestion
-                    val randomNumber = Random.nextInt(1, 11)
+                    // 20% chance of showing backup suggestion
+                    val randomNumber = Random.nextInt(1, 6)
                     if (randomNumber == 1) {
-                        BackDataDlg().show(childFragmentManager, null)
+                        //    BackDataDlg().show(childFragmentManager, null)
+                        binding.backupAlert.visibility = View.VISIBLE
+                        binding.disableBackupAlert.setOnClickListener() {
+                            binding.backupAlert.visibility = View.GONE
+                            val s = sharedPreferences.edit()
+                            s.putBoolean("show_backup_reminder", false)
+                            s.apply()
+                        }
+                        binding.later.setOnClickListener() {
+                            binding.backupAlert.visibility = View.GONE
+                        }
+                        binding.backup.setOnClickListener() {
+                            activity?.findNavController(R.id.nav_host_fragment_content_main)
+                                ?.navigate(R.id.nav_backup_restore)
+                        }
                     }
                 }
-                                  }
-        }, 3000)
+            }
+        }, 2000)
         ///////////////////////////////////////////////////////////////
 
         return view

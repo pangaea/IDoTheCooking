@@ -4,10 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="4dp"
     android:isScrollContainer="true"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
+
+
+    <LinearLayout
+        android:id="@+id/backupAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="@style/backupAlert"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/backupAlertTitle"
+            android:text="@string/alert_data_backup_title" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/backupAlertMessage"
+            android:text="@string/alert_data_backup_message" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/disableBackupAlert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/backupAlertLink"
+                android:text="@string/alert_data_backup_stop" />
+            <TextView
+                android:id="@+id/later"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/backupAlertLink"
+                android:text="@string/alert_data_backup_later" />
+            <TextView
+                android:id="@+id/backup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/backupAlertLink"
+                android:text="@string/alert_data_backup_goto" />
+        </LinearLayout>
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"

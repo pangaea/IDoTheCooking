@@ -201,4 +201,5 @@
     <string name="alert_data_backup_later">Later</string>
     <string name="alert_data_backup_stop">Stop bugging me</string>
     <string name="alert_data_backup_enabled">Backup Alert Reminder</string>
+    <string name="alert_data_backup_goto">Go to Backup</string>
 </resources>
