@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
-
     <LinearLayout
         android:id="@+id/backupAlert"
         android:layout_width="match_parent"
