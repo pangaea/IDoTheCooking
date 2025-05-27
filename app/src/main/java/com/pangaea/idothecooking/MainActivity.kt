@@ -1,16 +1,12 @@
 package com.pangaea.idothecooking
 
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -19,31 +15,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ArrayNode
-import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.android.material.navigation.NavigationView
 import com.pangaea.idothecooking.databinding.ActivityMainBinding
-import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
-import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
-import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
-import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.settings.SettingsActivity
 import com.pangaea.idothecooking.ui.shared.AboutDialog
-import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
-import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
-import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
-import com.pangaea.idothecooking.utils.extensions.observeOnce
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.FileNotFoundException
-import java.io.InputStream
-import java.nio.charset.Charset
-import java.text.SimpleDateFormat
-import java.util.Date
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -91,11 +66,11 @@ class MainActivity : AppCompatActivity() {
         // Display about modal at startup
         val app = (application as IDoTheCookingApp)
         if (app.startupMode) {
+            app.startupMode = false
             val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
             if (sharedPreferences.getBoolean("auto_launch_about", true)) {
                 AboutDialog().show(supportFragmentManager, null)
             }
-            app.startupMode = false
         }
     }
 
