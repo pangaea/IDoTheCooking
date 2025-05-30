@@ -190,7 +190,9 @@ class HomeFragment : Fragment() {
             if (recipe.imageUri != null && !recipe.imageUri!!.isEmpty()) {
                 ImageTool(requireActivity()).display(image, recipe.imageUri!!)
             } else {
-                image.visibility = View.GONE
+                //image.visibility = View.GONE
+                image.setImageResource(R.mipmap.recipes_icon)
+                image.imageAlpha = 64
             }
 
             val content = recipeLayout.findViewById<TextView>(R.id.content)

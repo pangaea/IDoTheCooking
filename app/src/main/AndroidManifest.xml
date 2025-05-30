@@ -22,10 +22,10 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/main_recipe_icon"
+        android:icon="@mipmap/chef_hat"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/main_recipe_icon"
+        android:roundIcon="@mipmap/chef_hat"
         android:supportsRtl="true"
         android:theme="@style/Theme.IDoTheCooking"
         tools:targetApi="31">

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.FragmentRecipeItemBinding
 import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
@@ -36,7 +37,9 @@ class RecipeRecyclerViewAdapter(private val values: MutableList<RecipeDetails>,
         //holder.itemView.setBackgroundResource(R.mipmap.paper3)
         val item = values[position]
         if (item.recipe.imageUri == null || item.recipe.imageUri!!.isEmpty()) {
-            holder.imageView.visibility = View.GONE
+            //holder.imageView.visibility = View.GONE
+            holder.imageView.setImageResource(R.mipmap.recipes_icon)
+            holder.imageView.imageAlpha = 64
         } else {
             ImageTool(activity).display(holder.imageView, item.recipe.imageUri!!)
         }
