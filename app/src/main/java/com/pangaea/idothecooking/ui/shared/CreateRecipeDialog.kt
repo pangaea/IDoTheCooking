@@ -150,7 +150,7 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
             }
         } else {
             val libraryImage: ImageView = row.findViewById(R.id.library_image)
-            libraryImage.setImageResource(R.mipmap.chef_hat)
+            libraryImage.setImageResource(R.mipmap.chef_hat2)
             val recipeName: TextView = row.findViewById(R.id.recipe_name);
             recipeName.text = resources.getText(R.string.create_from_scratch)
             val recipeDesc: TextView = row.findViewById(R.id.recipe_desc)
