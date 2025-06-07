@@ -18,7 +18,17 @@ class AboutDialog() : DialogFragment() {
             requireActivity().layoutInflater.inflate(R.layout.about_view, null, false)!!
         val webView = layout.findViewById<WebView>(R.id.viewport)
         val data: String = requireContext().readContentFromAssets("about.html")
-        webView.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+
+        // Variable replacement routine
+        val regex = Regex("\\$\\{([a-zA-Z0-9_]+)\\}")
+        val qq = regex.replace(data) { matchResult ->
+            val variableName = matchResult.groupValues[1]
+            val resourceId = resources.getIdentifier(variableName, "string", requireContext().packageName)
+            if (resourceId > 0) resources.getText(resourceId) else matchResult.value
+        }
+        /////////////////////////////////////////////////////////////////
+
+        webView.loadDataWithBaseURL(null, qq, "text/html", "utf-8", null);
         val recipeView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         recipeView.setView(layout)
             .setNegativeButton(R.string.close) { dialog, _ ->

@@ -202,4 +202,19 @@
     <string name="alert_data_backup_stop">Stop bugging me</string>
     <string name="alert_data_backup_enabled">Backup Alert Reminder</string>
     <string name="alert_data_backup_goto">Go to Backup</string>
+
+    <string name="about_subheading">For those who do the cooking</string>
+    <string name="about_description"><![CDATA[<b>IDoTheCooking</b> is a comprehensive recipe application designed to help users generate, store and improve their recipes using AI, while also managing their shopping lists. This app not only allows users to keep track of their culinary creations but also provides intelligent suggestions to enhance recipes and optimize ingredient lists. It\'s the perfect companion for both the experienced and beginner cook.]]></string>
+    <string name="about_key_features">Key Features</string>
+    <string name="about_storage_organization">Recipe Storage and Organization</string>
+    <string name="about_storage_organization1"><![CDATA[<b>Create and Save Recipes:</b> Users can input their own recipes with detailed ingredients, instructions and cooking times. Recipes are stored in a personal collection and can be easily filtered by categories (e.g., breakfast, lunch, dinner, dessert).]]></string>
+    <string name="about_storage_organization2"><![CDATA[<b>Print and Share:</b> Recipes can be printed directly from the app and shared using text messaging. Measurements can be automatically adjusted based on the desired serving size.]]></string>
+    <string name="about_storage_organization3"><![CDATA[<b>Import and Export:</b> Your entire library of recipes, and shopping lists, can be exported as a JSON file directly to your Google drive. Then imported from the same place. This allows you to backup all your recipes for safe keeping.]]></string>
+    <string name="about_generate_suggestions">Recipe Generation and Suggestions</string>
+    <string name="about_generate_suggestions1"><![CDATA[<b>Generate New Recipes:</b> Based on a brief description, or just ingredients you have on hand, the app can generate new recipes. This helps reduce food waste and encourages creative cooking.]]></string>
+    <string name="about_generate_suggestions2"><![CDATA[<b>AI-Powered Improvements:</b> The app can analyze an existing recipe and suggest variations based on user requests. It can suggest improvements such as alternate cooking techniques, flavor enhancements, or added ingredients.]]></string>
+    <string name="about_shopping_list">Shopping List Integration</string>
+    <string name="about_shopping_list1"><![CDATA[<b>Shopping List Integration:</b> Ingredients can be easily migrated from a selected recipe to an existing or new shopping list. Users can check off items they already have at home and continue as they are shopping.]]></string>
+    <string name="about_shopping_list2"><![CDATA[<b>Print and Share:</b> Shopping lists can be printed directly from the app and shared using text messaging.]]></string>
+    <string name="about_footer"><![CDATA[<b>IDoTheCooking</b> aims to be the ultimate kitchen companion for both novice cooks and seasoned chefs, blending technology and creativity to make cooking easier, healthier, and more fun.]]></string>
 </resources>
