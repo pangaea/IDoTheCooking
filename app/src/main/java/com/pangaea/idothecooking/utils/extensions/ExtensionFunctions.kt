@@ -1,5 +1,6 @@
 package com.pangaea.idothecooking.utils.extensions
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -38,6 +39,17 @@ fun Context.readContentFromAssets(path: String): String {
         e.printStackTrace()
         return ""
     }
+}
+
+@SuppressLint("DiscouragedApi")
+fun String.replaceVariables(context: Context, resources: Resources): String {
+    // Variable replacement routine
+    return Regex("\\$\\{([a-zA-Z0-9_]+)\\}").replace(this) { matchResult ->
+        val variableName = matchResult.groupValues[1]
+        val resourceId = resources.getIdentifier(variableName, "string", context.packageName)
+        if (resourceId > 0) resources.getText(resourceId) else matchResult.value
+    }
+    /////////////////////////////////////////////////////////////////
 }
 
 fun View.disable() {

@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.PreferenceManager
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
+import com.pangaea.idothecooking.utils.extensions.replaceVariables
 
 class AboutDialog() : DialogFragment() {
     @SuppressLint("CommitPrefEdits")
@@ -20,15 +21,9 @@ class AboutDialog() : DialogFragment() {
         val data: String = requireContext().readContentFromAssets("about.html")
 
         // Variable replacement routine
-        val regex = Regex("\\$\\{([a-zA-Z0-9_]+)\\}")
-        val qq = regex.replace(data) { matchResult ->
-            val variableName = matchResult.groupValues[1]
-            val resourceId = resources.getIdentifier(variableName, "string", requireContext().packageName)
-            if (resourceId > 0) resources.getText(resourceId) else matchResult.value
-        }
-        /////////////////////////////////////////////////////////////////
+        val formattedHTML = data.replaceVariables(requireContext(), resources)
 
-        webView.loadDataWithBaseURL(null, qq, "text/html", "utf-8", null);
+        webView.loadDataWithBaseURL(null, formattedHTML, "text/html", "utf-8", null);
         val recipeView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         recipeView.setView(layout)
             .setNegativeButton(R.string.close) { dialog, _ ->

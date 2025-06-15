@@ -38,7 +38,7 @@ class RecipesFragment : Fragment() {
         Name, CreatedBy, ModifiedBy
     }
     private lateinit var viewModel: RecipeViewModel
-    private var sortBy: SortBy = SortBy.ModifiedBy
+    private var sortBy: SortBy = SortBy.Name
     private var filterCategories: List<Int> = ArrayList()
     private var _view: View? = null
     private val gridView: Boolean = false
