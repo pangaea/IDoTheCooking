@@ -26,3 +26,8 @@ local.properties
 /.idea/codeStyles/Project.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
+/.idea/AndroidProjectSystem.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/deviceManager.xml
+/.idea/migrations.xml
+/.idea/runConfigurations.xml
