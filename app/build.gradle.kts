@@ -20,14 +20,14 @@ android {
         }
     }
     namespace = "com.pangaea.idothecooking"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.pangaea.idothecooking"
         minSdk = 21
         targetSdk = 35
-        versionCode = 13
-        versionName = "13.0"
+        versionCode = 14
+        versionName = "14.0"
 
         // Load the values from apikey.properties file
         val keystoreFile = project.rootProject.file("apikey.properties")
