@@ -60,6 +60,9 @@ class MainActivity : AppCompatActivity() {
                 "shoppingLists" -> {
                     navController.navigate(R.id.nav_shopping_lists)
                 }
+                "categories" -> {
+                    navController.navigate(R.id.nav_categories)
+                }
             }
         }
 

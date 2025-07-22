@@ -69,13 +69,14 @@
     <string name="home_favorites">Favorites:</string>
 
     <string name="recipe_main">Name</string>
-    <string name="recipe_description">Description</string>
+    <string name="recipe_description">Brief Description (optional)</string>
     <string name="recipe_image">Set Image</string>
     <string name="recipe_servings">Servings</string>
     <string name="recipe_categories">Categories</string>
     <string name="recipe_select_categories">Select Categories</string>
     <string name="recipe_name_missing">Name is required</string>
     <string name="recipe_name_must_be_unique">Name must be unique</string>
+    <string name="manage_categories">Manage Categories</string>
 
     <string name="ingredient_amount_hint">#</string>
     <string name="ingredient_unit_hint">Units</string>

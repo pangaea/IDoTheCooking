@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,7 @@ class BackupRestoreFragment : Fragment() {
         binding.restoreData.setOnClickListener(){
             val openDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
-                type = "text/*"
+                type = "application/json"
             }
             startActivityForResult(openDocumentIntent, OPEN_DOCUMENT_REQUEST_CODE)
         }
@@ -73,8 +74,7 @@ class BackupRestoreFragment : Fragment() {
                         val stream: InputStream? = requireActivity().application.contentResolver.openInputStream(contentUri)
                         if (stream != null) {
                             JsonAsyncImportTool(requireActivity().application, this).loadData() { tool, ctx ->
-                                tool.import(stream.readAllBytes()
-                                                .toString(Charset.defaultCharset()), null, ctx) {
+                                tool.import(stream.readBytes().toString(Charset.defaultCharset()), null, ctx) {
                                     CoroutineScope(Dispatchers.Main).launch {
                                         Toast.makeText(requireActivity().applicationContext,
                                                        getString(R.string.import_complete),

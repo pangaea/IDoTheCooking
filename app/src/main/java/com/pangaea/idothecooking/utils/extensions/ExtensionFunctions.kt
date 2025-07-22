@@ -121,6 +121,15 @@ fun <T> Activity.startActivityWithBundle(clazz: Class<T>, paramName: String,
 }
 
 fun <T> Fragment.startActivityWithBundle(clazz: Class<T>, paramName: String,
+                                         paramValue: String) {
+    val bundle = Bundle()
+    bundle.putString(paramName, paramValue)
+    val intent = Intent(activity, clazz)
+    intent.putExtras(bundle)
+    startActivity(intent)
+}
+
+fun <T> Fragment.startActivityWithBundle(clazz: Class<T>, paramName: String,
                                          paramValue: Int) {
     val bundle = Bundle()
     bundle.putInt(paramName, paramValue)

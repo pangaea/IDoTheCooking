@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.pangaea.idothecooking.MainActivity
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Category
 import com.pangaea.idothecooking.state.db.entities.RecipeCategoryLink
+import com.pangaea.idothecooking.utils.extensions.startActivityWithBundle
 
 class RecipeCategoryDialog(val categories: List<Category>,
                            private val selectedCategory: List<RecipeCategoryLink>,
@@ -40,11 +42,14 @@ class RecipeCategoryDialog(val categories: List<Category>,
             .setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
             }
-            .setNeutralButton(R.string.categories_dlg_clear_all) { _, _ ->
-                for (n in selectedCategory.indices){
-                    selectedCategory[n] = false
-                }
-                callback(ArrayList<Category>())
+//            .setNeutralButton(R.string.categories_dlg_clear_all) { _, _ ->
+//                for (n in selectedCategory.indices){
+//                    selectedCategory[n] = false
+//                }
+//                callback(ArrayList<Category>())
+//            }
+            .setNeutralButton(R.string.manage_categories) { _, _ ->
+                startActivityWithBundle(MainActivity::class.java, "start", "categories")
             }
             .create()
     }
