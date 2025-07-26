@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
@@ -18,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pangaea.idothecooking.IDoTheCookingApp
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.databinding.ActivityShoppingListBinding
+import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.ShoppingListDetails
 import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
@@ -29,6 +31,7 @@ import com.pangaea.idothecooking.ui.shared.adapters.draggable.DraggableItemTouch
 import com.pangaea.idothecooking.ui.shared.adapters.draggable.OnStartDragListener
 import com.pangaea.idothecooking.ui.shoppinglist.adapters.ShoppingListItemsAdapter
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
+import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.ThrottledUpdater
 import com.pangaea.idothecooking.utils.data.IngredientsMigrationTool
 import com.pangaea.idothecooking.utils.extensions.observeOnce
@@ -197,12 +200,30 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
                     val adapter = list.adapter as ShoppingListItemsAdapter
                     val data = shoppingListDetails.shoppingListItems.toMutableList()
                     IngredientsMigrationTool(application, this, recipe.first.toInt(), "", 1.0,
-                                             shoppingListDetails.shoppingList.id).mergeShoppingList(adapter.mItems!!) { items ->
+                                             true).mergeShoppingList(adapter.mItems!!) { items ->
                         //Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
                         adapter.setItems(items)
                         _itemSave?.setAsEnabled()
                         handleChangeEvent()
                         adapter.notifyDataSetChanged()
+                    }
+                }.show(this.supportFragmentManager, null)
+            }
+            false
+        }
+
+        val exportToList = menu.findItem(R.id.export_to_list)
+        exportToList.setOnMenuItemClickListener { menuItem ->
+            //val model = ShoppingListViewModelFactory(application, null).create(ShoppingListViewModel::class.java)
+            viewModel.getAllShoppingLists().observeOnce(this) { shoppingLists ->
+                val options = listOf<Pair<String, String>>().toMutableList()
+                options.add(Pair<String, String>("0", getString(R.string.category_create_new)))
+                options.addAll(shoppingLists.map() { o -> Pair(o.id.toString(), o.name) }.toMutableList())
+                PicklistDlg(getString(R.string.export_to_shopping_list), options) { shoppingList: Pair<String, String> ->
+                    // Update items of list and save
+                    IngredientsMigrationTool(application, this, shoppingListDetails.shoppingList.id, shoppingListDetails.shoppingList.name + " Copy", 1.0,
+                                             false).execute(shoppingList.first.toInt()) {
+                        Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
                     }
                 }.show(this.supportFragmentManager, null)
             }

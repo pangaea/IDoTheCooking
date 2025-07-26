@@ -30,4 +30,9 @@
         android:title="@string/shopping_list_import"
         android:id="@+id/import_from_recipe"
         app:showAsAction="never" />
+    <item
+        android:orderInCategory="100"
+        android:title="@string/export_to_shopping_list"
+        android:id="@+id/export_to_list"
+        app:showAsAction="never" />
 </menu>

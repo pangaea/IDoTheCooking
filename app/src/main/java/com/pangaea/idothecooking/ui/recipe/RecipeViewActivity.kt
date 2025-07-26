@@ -159,15 +159,14 @@ class RecipeViewActivity : ShareAndPrintActivity() {
                 val options = listOf<Pair<String, String>>().toMutableList()
                 options.add(Pair<String, String>("0", getString(R.string.category_create_new)))
                 options.addAll(shoppingLists.map() { o -> Pair(o.id.toString(), o.name) }.toMutableList())
-                PicklistDlg(getString(R.string.export_to_shopping_list),
-                            options) { shoppingList: Pair<String, String> ->
+                PicklistDlg(getString(R.string.export_to_shopping_list), options) { shoppingList: Pair<String, String> ->
                     var adjRatio = 1.0
                     if (recipeDetails.recipe.servings > 0) {
                         // Avoid division by zero
                         adjRatio = (servingSize.toDouble() / recipeDetails.recipe.servings)
                     }
                     IngredientsMigrationTool(application, this, recipeDetails.recipe.id, recipeDetails.recipe.name, adjRatio,
-                                             shoppingList.first.toInt()).execute() {
+                                             true).execute(shoppingList.first.toInt()) {
                         Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
                     }
                 }.show(this.supportFragmentManager, null)

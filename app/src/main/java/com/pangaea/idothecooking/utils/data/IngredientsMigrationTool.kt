@@ -16,8 +16,8 @@ import java.util.Locale
 import java.util.function.Consumer
 
 class IngredientsMigrationTool(val app: Application, private val lifecycleOwner: LifecycleOwner,
-                               private val recipeId: Int, private val listName: String,
-                               val adjRatio: Double, private val shoppingListId: Int?) {
+                               private val srcId: Int, private val listName: String,
+                               val adjRatio: Double, private val recipeSrc: Boolean) {
     private val recipeRepository = RecipeRepository(app)
     private val shoppingListRepository = ShoppingListRepository(app)
 
@@ -30,7 +30,7 @@ class IngredientsMigrationTool(val app: Application, private val lifecycleOwner:
         return !(num != null && num > 0)
     }
 
-    private fun mergeIngredientsIntoShoppingListItems(shoppingListItems: MutableList<ShoppingListItem>, ingredients: List<Ingredient>) {
+    private fun mergeItemsIntoShoppingListItems(shoppingListItems: MutableList<ShoppingListItem>, items: List<MeasuredItem>) {
         val existingItemsMap: MutableMap<String, ShoppingListItem> = emptyMap<String, ShoppingListItem>().toMutableMap()
 
         // Iterate existing list items to avoid duplicates
@@ -38,7 +38,7 @@ class IngredientsMigrationTool(val app: Application, private val lifecycleOwner:
             val key = createKey(shoppingListItem)
             existingItemsMap[key] = shoppingListItem
         }
-        ingredients.forEach { ingredient: Ingredient ->
+        items.forEach { ingredient: MeasuredItem ->
             val item = existingItemsMap[createKey(ingredient)]
             if (item != null) {
                 if (!isNullOrZero(item.amount) && !isNullOrZero(ingredient.amount)) {
@@ -57,13 +57,26 @@ class IngredientsMigrationTool(val app: Application, private val lifecycleOwner:
     fun mergeShoppingList(shoppingListItems: MutableList<ShoppingListItem>,
                           callback: (shoppingListItems: MutableList<ShoppingListItem>) -> Unit) {
 
-        // Pull ingredients from recipe
-        recipeRepository.getRecipeWithDetails(recipeId.toLong()).observeOnce(lifecycleOwner) { recipes ->
-            val recipe: RecipeDetails = recipes[0]
-            mergeIngredientsIntoShoppingListItems(shoppingListItems, recipe.ingredients)
+        if (recipeSrc) {
+            // Pull ingredients from recipe
+            recipeRepository.getRecipeWithDetails(srcId.toLong())
+                .observeOnce(lifecycleOwner) { recipes ->
+                    val recipe: RecipeDetails = recipes[0]
+                    mergeItemsIntoShoppingListItems(shoppingListItems, recipe.ingredients)
 
-            // Fire callback with updated list items
-            callback(shoppingListItems)
+                    // Fire callback with updated list items
+                    callback(shoppingListItems)
+                }
+        } else {
+            // Pull items from shopping list
+            shoppingListRepository.getShoppingListWithDetails(srcId.toLong())
+                .observeOnce(lifecycleOwner) { shoppingLists ->
+                    val shoppingList: ShoppingListDetails = shoppingLists[0]
+                    mergeItemsIntoShoppingListItems(shoppingListItems, shoppingList.shoppingListItems)
+
+                    // Fire callback with updated list items
+                    callback(shoppingListItems)
+                }
         }
     }
 
@@ -83,12 +96,12 @@ class IngredientsMigrationTool(val app: Application, private val lifecycleOwner:
         }
     }
 
-    fun execute(callback: Consumer<Long>) {
+    fun execute(targetListId: Int?, callback: Consumer<Long>) {
         // Query shopping list or create a new one
-        if (shoppingListId != null && shoppingListId > 0) {
-            shoppingListRepository.getShoppingListWithDetails(shoppingListId.toLong()).observeOnce(lifecycleOwner) { shoppingLists ->
+        if (targetListId != null && targetListId > 0) {
+            shoppingListRepository.getShoppingListWithDetails(targetListId.toLong()).observeOnce(lifecycleOwner) { shoppingLists ->
                 mergeAndSaveShoppingList(shoppingLists[0], callback)
-                }
+            }
         } else {
             mergeAndSaveShoppingList(ShoppingListDetails(ShoppingList(0, listName, ""), emptyList()), callback)
         }
