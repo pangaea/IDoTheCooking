@@ -137,8 +137,10 @@
     <string name="selection_required">Please select an option</string>
 
     <string name="export_to_shopping_list">Export to shopping list</string>
-    <string name="success_export_to_shopping_list">Successfully exported ingredients</string>
+    <string name="success_export_to_shopping_list">Successfully exported items to selected shopping list</string>
     <string name="title_activity_settings">Settings Activity</string>
+    <string name="import_from_recipe">Import from recipe</string>
+    <string name="import_from_list">Import from shopping list</string>
 
     <!-- Preference Titles -->
     <string name="home_header">Home Screen</string>

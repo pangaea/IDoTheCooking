@@ -192,16 +192,34 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
         importFromRecipe.setOnMenuItemClickListener { menuItem ->
             val model = RecipeViewModelFactory(application, null).create(RecipeViewModel::class.java)
             model.getAllRecipes().observeOnce(this) { recipes ->
-                PicklistDlg(getString(R.string.export_to_shopping_list),
+                PicklistDlg(getString(R.string.import_from_recipe),
                             recipes.map() { o ->
                                 Pair(o.id.toString(), o.name)
                             }) { recipe: Pair<String, String> ->
                     val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
                     val adapter = list.adapter as ShoppingListItemsAdapter
-                    val data = shoppingListDetails.shoppingListItems.toMutableList()
                     IngredientsMigrationTool(application, this, recipe.first.toInt(), "", 1.0,
                                              true).mergeShoppingList(adapter.mItems!!) { items ->
-                        //Toast.makeText(baseContext, getString(R.string.success_export_to_shopping_list), Toast.LENGTH_LONG).show()
+                        adapter.setItems(items)
+                        _itemSave?.setAsEnabled()
+                        handleChangeEvent()
+                        adapter.notifyDataSetChanged()
+                    }
+                }.show(this.supportFragmentManager, null)
+            }
+            false
+        }
+
+        // Import from list
+        val importFromList = menu.findItem(R.id.import_from_list)
+        importFromList.setOnMenuItemClickListener { menuItem ->
+            viewModel.getAllShoppingLists().observeOnce(this) { shoppingLists ->
+                val options = shoppingLists.map() { o -> Pair(o.id.toString(), o.name)}
+                PicklistDlg(getString(R.string.export_to_shopping_list), options) { shoppingList: Pair<String, String> ->
+                    val list = _view.findViewById<RecyclerView>(R.id.listItemsView)
+                    val adapter = list.adapter as ShoppingListItemsAdapter
+                    IngredientsMigrationTool(application, this, shoppingList.first.toInt(), "", 1.0,
+                                             false).mergeShoppingList(adapter.mItems!!) { items ->
                         adapter.setItems(items)
                         _itemSave?.setAsEnabled()
                         handleChangeEvent()
@@ -214,7 +232,6 @@ class ShoppingListActivity : ShareAndPrintActivity(), OnStartDragListener {
 
         val exportToList = menu.findItem(R.id.export_to_list)
         exportToList.setOnMenuItemClickListener { menuItem ->
-            //val model = ShoppingListViewModelFactory(application, null).create(ShoppingListViewModel::class.java)
             viewModel.getAllShoppingLists().observeOnce(this) { shoppingLists ->
                 val options = listOf<Pair<String, String>>().toMutableList()
                 options.add(Pair<String, String>("0", getString(R.string.category_create_new)))

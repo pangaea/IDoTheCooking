@@ -32,6 +32,11 @@
         app:showAsAction="never" />
     <item
         android:orderInCategory="100"
+        android:title="@string/import_from_list"
+        android:id="@+id/import_from_list"
+        app:showAsAction="never" />
+    <item
+        android:orderInCategory="100"
         android:title="@string/export_to_shopping_list"
         android:id="@+id/export_to_list"
         app:showAsAction="never" />
