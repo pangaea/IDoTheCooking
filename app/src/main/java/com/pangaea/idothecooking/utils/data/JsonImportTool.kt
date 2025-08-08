@@ -102,7 +102,7 @@ class JsonImportTool(val app: Application, private var replaceName: String?,
                             link
                         }))
                 } else {
-                    messages.add(ParseLog(MessageType.ERROR,
+                    messages.add(ParseLog(MessageType.INFORMATION,
                                           app.getString(R.string.import_error_recipe_exists)
                                               .replace("{0}", recipeName)))
                 }
@@ -114,7 +114,7 @@ class JsonImportTool(val app: Application, private var replaceName: String?,
                     recipeMap[recipe.recipe.name] = id.toInt()
                     newRecipeIds.add(id)
                 } catch (e: Exception) {
-                    messages.add(ParseLog(MessageType.ERROR, e.message.let{e.message} ?:
+                    messages.add(ParseLog(MessageType.INFORMATION, e.message.let{e.message} ?:
                     app.getString(R.string.import_error_recipe_exists)
                         .replace("{0}", recipe.recipe.name)))
                 }

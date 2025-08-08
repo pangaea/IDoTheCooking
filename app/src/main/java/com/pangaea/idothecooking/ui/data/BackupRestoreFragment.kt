@@ -27,6 +27,7 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
 import com.pangaea.idothecooking.utils.data.JsonAsyncImportTool
+import com.pangaea.idothecooking.utils.data.JsonImportTool.MessageType
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +55,7 @@ class BackupRestoreFragment : Fragment() {
         binding.restoreData.setOnClickListener(){
             val openDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
-                type = "application/json"
+                type = "*/*"
             }
             startActivityForResult(openDocumentIntent, OPEN_DOCUMENT_REQUEST_CODE)
         }
@@ -76,14 +77,18 @@ class BackupRestoreFragment : Fragment() {
                             JsonAsyncImportTool(requireActivity().application, this).loadData() { tool, ctx ->
                                 tool.import(stream.readBytes().toString(Charset.defaultCharset()), null, ctx) {
                                     CoroutineScope(Dispatchers.Main).launch {
-                                        Toast.makeText(requireActivity().applicationContext,
-                                                       getString(R.string.import_complete),
-                                                       Toast.LENGTH_LONG).show()
+                                        if (it.isNotEmpty() && it[it.size-1].type == MessageType.ERROR) {
+                                            Toast.makeText(requireActivity().applicationContext, it.get(0).message, Toast.LENGTH_LONG).show()
+                                        } else {
+                                            Toast.makeText(requireActivity().applicationContext,
+                                                           getString(R.string.import_complete),
+                                                           Toast.LENGTH_LONG).show()
+                                        }
                                     }
                                 }
                             }
                         }
-                    } catch (exception: FileNotFoundException) {
+                    } catch (exception: Exception) {
                         Toast.makeText(requireActivity().applicationContext, exception.message, Toast.LENGTH_LONG).show()
                     }
                 }
@@ -140,7 +145,7 @@ class BackupRestoreFragment : Fragment() {
                                  resources.getString(R.string.app_internal_name) + "-" + currentDate + ".json")
                         setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         setPackage("com.google.android.apps.docs")
-                        type = "text/json"
+                        type = "application/json"
                     }
                     startActivity(sendIntent)
 

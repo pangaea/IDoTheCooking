@@ -4,12 +4,15 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
+import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModel
 import com.pangaea.idothecooking.ui.category.viewmodels.CategoryViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModel
 import com.pangaea.idothecooking.ui.shoppinglist.viewmodels.ShoppingListViewModelFactory
+import com.pangaea.idothecooking.utils.data.JsonImportTool.MessageType
+import com.pangaea.idothecooking.utils.data.JsonImportTool.ParseLog
 import com.pangaea.idothecooking.utils.extensions.observeOnce
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -46,14 +49,18 @@ class JsonAsyncImportTool(val app: Application, private val lifecycleOwner: Life
     private fun launchImportTool(json: String, replacementName: String?, ctx: ImportContext,
                                  callback: Consumer<List<JsonImportTool.ParseLog>>) {
         GlobalScope.launch {
-            val errs = JsonImportTool(app, replacementName,
-                                      ctx.categoryMap,
-                                      ctx.recipeMap,
-                                      ctx.shoppingListMap).import(json)
-            Optional.ofNullable(callback)
-                .ifPresent { o: Consumer<List<JsonImportTool.ParseLog>> ->
-                    o.accept(errs)
-                }
+            try {
+                val errs = JsonImportTool(app, replacementName,
+                                          ctx.categoryMap,
+                                          ctx.recipeMap,
+                                          ctx.shoppingListMap).import(json)
+                Optional.ofNullable(callback)
+                    .ifPresent { o: Consumer<List<JsonImportTool.ParseLog>> ->
+                        o.accept(errs)
+                    }
+            } catch (e: Exception) {
+                callback.accept(listOf(ParseLog(MessageType.ERROR, app.getString(R.string.import_error_invalid_file))))
+            }
         }
     }
 

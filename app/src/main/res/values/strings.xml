@@ -42,6 +42,7 @@
     <string name="import_error_recipe_exists">Recipe [{0}] already exists</string>
     <string name="import_error_recipe">Error saving recipe [{0}]</string>
     <string name="import_error_shopping_list">Error saving shopping list [{0}]</string>
+    <string name="import_error_invalid_file">Invalid backup file</string>
     <string name="import_from_library">Select From Library…</string>
     <string name="do_not_show_about_at_startup">Don\'t show at startup</string>
     <string name="open_about_at_startup">Open About Dialog at Startup</string>
