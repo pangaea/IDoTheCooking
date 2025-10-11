@@ -46,6 +46,11 @@ class RecipeGeneratorFragment : Fragment() {
         recipeViewModel = RecipeViewModelFactory(requireActivity().application,
                                                  null).create(RecipeViewModel::class.java)
         val descView = view.findViewById<TextInputEditText>(R.id.recipeDesc)
+        val questionnaireBtn = view.findViewById<MaterialButton>(R.id.launch_questionnaire)
+        questionnaireBtn?.setOnClickListener {
+            QuestionnaireDialog() { answers ->
+            }.show(childFragmentManager, null)
+        }
         val fab = view.findViewById<MaterialButton>(R.id.generate_recipes)
         val progressBar = view.findViewById<ProgressBar>(R.id.loading_spinner)
         fab?.setOnClickListener {

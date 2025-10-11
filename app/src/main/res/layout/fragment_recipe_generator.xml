@@ -40,6 +40,16 @@
             android:background="@drawable/roundedbutton"
             android:layout_marginStart="8dp"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/launch_questionnaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Questionnaire"
+            android:src="@android:drawable/sym_action_chat"
+            style="@style/recipeGenButton"
+            android:background="@drawable/roundedbutton"
+            android:layout_marginStart="8dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"

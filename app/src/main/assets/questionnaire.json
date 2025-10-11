@@ -1,0 +1,75 @@
+{
+  "types" : [
+    {
+      "name" : "breakfast",
+      "labelName" : "BreakfastRecipeType",
+      "promptName" : "breakfast",
+      "questions" : ["nutrition"]
+    },
+    {
+      "name" : "lunch",
+      "labelName" : "LunchRecipeType",
+      "promptName" : "lunch",
+      "questions" : ["nutrition"]
+    },
+    {
+      "name" : "dinner",
+      "labelName" : "DinnerRecipeType",
+      "promptName" : "dinner",
+      "questions" : ["nutrition", "protein"]
+    },
+    {
+      "name" : "desert",
+      "labelName" : "DesertRecipeType",
+      "promptName" : "desert",
+      "questions" : ["nutrition"]
+    }
+  ],
+  "questions" : {
+    "nutrition" : {
+      "labelQuestion" : "NutritionQuestion",
+      "answers" : [
+        {
+          "name" : "none",
+          "labelName" : "NutritionAnswerNone",
+          "promptName" : "none"
+        },
+        {
+          "name" : "light",
+          "labelName" : "NutritionAnswerLight",
+          "promptName" : "light"
+        },
+        {
+          "name" : "strict",
+          "labelName" : "NutritionAnswerStrict",
+          "promptName" : "strict"
+        }
+      ]
+    },
+    "protein" : {
+      "labelQuestion" : "ProteinQuestion",
+      "answers" : [
+        {
+          "name" : "beef",
+          "labelName" : "ProteinAnswerBeef",
+          "promptName" : "beef"
+        },
+        {
+          "name" : "chicken",
+          "labelName" : "ProteinAnswerChicken",
+          "promptName" : "chicken"
+        },
+        {
+          "name" : "pork",
+          "labelName" : "ProteinAnswerPork",
+          "promptName" : "pork"
+        },
+        {
+          "name" : "vegetarian",
+          "labelName" : "ProteinAnswerVegetarian",
+          "promptName" : "vegetarian"
+        }
+      ]
+    }
+  }
+}
