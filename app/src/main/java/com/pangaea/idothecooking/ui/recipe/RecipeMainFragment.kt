@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,7 +34,6 @@ import com.pangaea.idothecooking.ui.shared.ImageAssetsDialog
 import com.pangaea.idothecooking.ui.shared.ImageTool
 import com.pangaea.idothecooking.utils.ThrottledUpdater
 import com.pangaea.idothecooking.utils.extensions.observeOnce
-
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -128,7 +128,14 @@ class RecipeMainFragment : Fragment() {
                     popupMenu.setOnMenuItemClickListener { menuItem ->
                         when (menuItem.itemId) {
                             R.id.item_gallery -> {
-                                pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                                pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+                            }
+                            R.id.item_downloads -> {
+                                val openDocumentIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                                    addCategory(Intent.CATEGORY_OPENABLE)
+                                    type = "*/*"
+                                }
+                                startActivityForResult(openDocumentIntent, RequestCode.OPEN_DOCUMENT_REQUEST_CODE)
                             }
                             R.id.item_camera -> {
                                 if (ContextCompat.checkSelfPermission(requireActivity().application,
@@ -183,49 +190,6 @@ class RecipeMainFragment : Fragment() {
             }
         }
 
-        binding.editImage.setOnClickListener(){
-            val popupMenu = activity?.let { it1 -> PopupMenu(it1, binding.editImage) }
-            if (popupMenu != null) {
-                popupMenu.menuInflater.inflate(R.menu.edit_image_menu, popupMenu.menu)
-                popupMenu.setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.item_gallery -> {
-                            pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                        }
-                        R.id.item_camera -> {
-                            if (ContextCompat.checkSelfPermission(requireActivity().application,
-                                                                  Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-                                requestPermissions(arrayOf(Manifest.permission.CAMERA),
-                                                   RequestCode.CAMERA)
-                            } else {
-                                openCamera()
-                            }
-                        }
-                        R.id.item_library -> {
-                            ImageAssetsDialog(imageUri) { o ->
-                                imageUri = "asset://image_library/${o}"
-                                ImageTool(requireActivity()).display(binding.editImage, imageUri)
-                                fireCallback();
-                            }.show(childFragmentManager, null)
-                        }
-                        R.id.item_clear -> {
-                            imageUri = ""
-                            binding.editImage.setImageDrawable(getResources().getDrawable(R.mipmap.image_placeholder3))
-                            this.fireCallback()
-                        }
-                    }
-                    true
-                }
-                // Showing the popup menu
-                popupMenu.show()
-            }
-        }
-        binding.editServings.setOnValueChangedListener() {picker: NumberPicker,
-                                                          oldVal: Int,
-                                                          newVal: Int ->
-            fireCallback();
-        }
-
         binding.favorite.setOnClickListener() {
             fireCallback();
         }
@@ -233,6 +197,7 @@ class RecipeMainFragment : Fragment() {
 
     object RequestCode {
         const val CAMERA = 0
+        const val OPEN_DOCUMENT_REQUEST_CODE = 1
     }
 
     private fun openCamera() {
@@ -262,6 +227,21 @@ class RecipeMainFragment : Fragment() {
             imageUri = imageTool.saveImage(photo, "recipe_photos")
             imageTool.display(binding.editImage, imageUri)
             fireCallback();
+        }
+        if (requestCode == RequestCode.OPEN_DOCUMENT_REQUEST_CODE && data != null) {
+            val contentUri = data.data
+            if (contentUri != null) {
+                try {
+                    requireActivity().contentResolver.takePersistableUriPermission(contentUri,
+                                                                                   Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    val imageTool = ImageTool(requireActivity())
+                    imageUri = contentUri.toString()
+                    imageTool.display(binding.editImage, imageUri)
+                    fireCallback();
+                } catch (exception: Exception) {
+                    Toast.makeText(requireActivity().applicationContext, exception.message, Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 

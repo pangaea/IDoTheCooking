@@ -6,6 +6,10 @@
         android:id="@+id/item_gallery" />
     <item
         android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/image_menu_files"
+        android:id="@+id/item_downloads" />
+    <item
+        android:icon="@android:drawable/ic_menu_save"
         android:title="@string/image_menu_take_picture"
         android:id="@+id/item_camera" />
     <item
@@ -16,8 +20,4 @@
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/image_menu_clear"
         android:id="@+id/item_clear" />
-    <!--item
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:title="@string/cancel"
-        android:id="@+id/item_cancel" /-->
 </menu>

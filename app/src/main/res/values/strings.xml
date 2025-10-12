@@ -171,6 +171,7 @@
     <string name="detailed_measurements">Detailed Measurements</string>
 
     <string name="image_menu_image_gallery">Image Gallery</string>
+    <string name="image_menu_files">Files &amp; Downloads</string>
     <string name="image_menu_take_picture">Take A Picture</string>
     <string name="image_menu_image_library">Image Library</string>
     <string name="image_menu_clear">Clear</string>
