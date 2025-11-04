@@ -209,10 +209,10 @@
       "promptQuestion" : "secondary ingredients",
       "answers" : [
         {
-          "name" : "blue_cheese",
-          "labelName" : "secondary_blue_cheese",
-          "promptName" : "blue cheese",
-          "image": "bluecheese"
+          "name" : "cheeses",
+          "labelName" : "secondary_cheeses",
+          "promptName" : "cheeses",
+          "image": "cheeses"
         },
         {
           "name" : "greens",
@@ -458,7 +458,7 @@
           "name" : "peanut_butter",
           "labelName" : "dessert_flavor_peanut_butter",
           "promptName" : "peanut butter",
-          "image": "chocolate"
+          "image": "peanut_butter"
         },
         {
           "name" : "strawberry",

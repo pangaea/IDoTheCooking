@@ -11,7 +11,7 @@ class AboutViewClient(val activity: Activity?) : WebViewClient() {
 	@Deprecated("Deprecated in Java", ReplaceWith("true"))
 	override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 		// The only link on the page so, we can just assume
-		Intent(Intent.ACTION_VIEW, Uri.parse("http://www.flaticon.com")).apply {
+		Intent(Intent.ACTION_VIEW, Uri.parse("http://www.flaticon.com/authors")).apply {
 			activity?.startActivity(this)
 		}
 		return true
