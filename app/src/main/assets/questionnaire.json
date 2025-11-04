@@ -184,7 +184,12 @@
           "name" : "turkey",
           "labelName" : "protein_answer_turkey",
           "promptName" : "turkey",
-          "image": "turkey"
+          "image": "turkey",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
         },
         {
           "name" : "vegetarian",
@@ -283,7 +288,12 @@
           "name" : "eggs",
           "labelName" : "breakfast_eggs",
           "promptName" : "eggs",
-          "image": "eggs"
+          "image": "eggs",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
         },
         {
           "name" : "griddle",
@@ -301,7 +311,12 @@
           "name" : "omelette",
           "labelName" : "breakfast_omelette",
           "promptName" : "omelette",
-          "image": "omelette"
+          "image": "omelette",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
         },
         {
           "name" : "wraps",
@@ -324,31 +339,56 @@
           "name" : "bacon",
           "labelName" : "breakfast_protein_bacon",
           "promptName" : "bacon",
-          "image": "bacon"
+          "image": "bacon",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
         },
         {
           "name" : "ham",
           "labelName" : "breakfast_protein_ham",
           "promptName" : "ham",
-          "image": "ham"
+          "image": "ham",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
         },
         {
           "name" : "sausage",
           "labelName" : "breakfast_protein_sausage",
           "promptName" : "sausage",
-          "image": "sausage"
+          "image": "sausage",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
         },
         {
           "name" : "seafood",
           "labelName" : "breakfast_protein_seafood",
           "promptName" : "seafood",
-          "image": "seafood"
+          "image": "seafood",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegan"]
+          }
         },
         {
           "name" : "steak",
           "labelName" : "breakfast_protein_steak",
           "promptName" : "steak",
-          "image": "steak"
+          "image": "steak",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
         },
         {
           "name" : "vegetarian",
