@@ -3,7 +3,7 @@
     <string name="prompt_suggest_recipes"><![CDATA[
         Suggest recipes with description: {description}.
         Respond in JSON array, return name, ingredients and directions.
-        Format ingredients as a JSON array including quantity, unit and name, no fractions
+        Format ingredients as a JSON array including quantity as a decimal, unit and name, no fractions
         Format directions as a JSON array
     ]]></string>
     <string name="prompt_suggest_recipe_improvements"><![CDATA[

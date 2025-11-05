@@ -1,0 +1,627 @@
+{
+  "types" : [
+    {
+      "name" : "appetizer",
+      "labelName" : "appetizer_recipe_type",
+      "promptName" : "appetizer",
+      "image": "appetizer",
+      "questions" : ["dietary_requirements", "appetizer", "protein", "secondary" ,"search"]
+    },
+    {
+      "name" : "breakfast",
+      "labelName" : "breakfast_recipe_type",
+      "promptName" : "breakfast",
+      "image": "breakfast",
+      "questions" : ["dietary_requirements", "breakfast", "breakfast_protein", "secondary", "search"]
+    },
+    {
+      "name" : "burger",
+      "labelName" : "burger_recipe_type",
+      "promptName" : "burger",
+      "image": "burger",
+      "questions" : ["dietary_requirements", "protein", "secondary", "search"]
+    },
+    {
+      "name" : "dessert",
+      "labelName" : "dessert_recipe_type",
+      "promptName" : "dessert",
+      "image": "dessert",
+      "questions" : ["dietary_requirements", "dessert", "dessert_flavor", "search"]
+    },
+    {
+      "name" : "entree",
+      "labelName" : "entree_recipe_type",
+      "promptName" : "entree",
+      "image": "entree",
+      "questions" : ["dietary_requirements", "style", "protein", "secondary", "search"]
+    },
+    {
+      "name" : "sandwich",
+      "labelName" : "sandwich_recipe_type",
+      "promptName" : "sandwich",
+      "image": "sandwich",
+      "questions" : ["dietary_requirements", "sandwich", "protein", "secondary", "search"]
+    },
+    {
+      "name" : "salad",
+      "labelName" : "salad_recipe_type",
+      "promptName" : "salad",
+      "image": "salad",
+      "questions" : ["dietary_requirements", "salad", "protein", "secondary", "search"]
+    },
+    {
+      "name" : "soup",
+      "labelName" : "soup_recipe_type",
+      "promptName" : "soup",
+      "image": "soup",
+      "questions" : ["dietary_requirements", "soup", "protein", "secondary", "search"]
+    }
+  ],
+  "questions" : {
+    "dietary_requirements" : {
+      "labelQuestion" : "dietary_question",
+      "promptQuestion" : "dietary requirements",
+      "answers" : [
+        {
+          "name" : "light",
+          "labelName" : "dietary_answer_light",
+          "promptName" : "light",
+          "image": "light"
+        },
+        {
+          "name" : "low_fat",
+          "labelName" : "dietary_answer_low_fat",
+          "promptName" : "low fat",
+          "image": "low_fat"
+        },
+        {
+          "name" : "low_sugar",
+          "labelName" : "dietary_answer_low_sugar",
+          "promptName" : "low sugar",
+          "image": "low_sugar"
+        },
+        {
+          "name" : "vegan",
+          "labelName" : "dietary_answer_vegan",
+          "promptName" : "vegan",
+          "image": "vegan"
+        },
+        {
+          "name" : "vegetarian",
+          "labelName" : "dietary_answer_vegetarian",
+          "promptName" : "vegetarian",
+          "image": "vegetarian"
+        },
+        {
+          "name" : "skip",
+          "labelName" : "dietary_answer_skip",
+          "image": "skip"
+        }
+      ]
+    },
+    "protein" : {
+      "labelQuestion" : "protein_question",
+      "promptQuestion" : "protein",
+      "answers" : [
+        {
+          "name" : "beef",
+          "labelName" : "protein_answer_beef",
+          "promptName" : "beef",
+          "image": "beef",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "chicken",
+          "labelName" : "protein_answer_chicken",
+          "promptName" : "chicken",
+          "image": "chicken",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "lamb",
+          "labelName" : "protein_answer_lamb",
+          "promptName" : "lamb",
+          "image": "lamb",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "pork",
+          "labelName" : "protein_answer_pork",
+          "promptName" : "pork",
+          "image": "pork",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "seafood",
+          "labelName" : "protein_answer_seafood",
+          "promptName" : "seafood",
+          "image": "seafood",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegan"]
+          }
+        },
+        {
+          "name" : "sausage",
+          "labelName" : "protein_answer_sausage",
+          "promptName" : "sausage",
+          "image": "sausage",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "steak",
+          "labelName" : "protein_answer_steak",
+          "promptName" : "steak",
+          "image": "steak",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "turkey",
+          "labelName" : "protein_answer_turkey",
+          "promptName" : "turkey",
+          "image": "turkey",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "vegetarian",
+          "labelName" : "protein_answer_vegetarian",
+          "promptName" : "vegetarian",
+          "image": "vegetarian"
+        },
+        {
+          "name" : "any",
+          "labelName" : "protein_answer_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "secondary" : {
+      "labelQuestion" : "secondary_question",
+      "promptQuestion" : "secondary ingredients",
+      "answers" : [
+        {
+          "name" : "cheeses",
+          "labelName" : "secondary_cheeses",
+          "promptName" : "cheeses",
+          "image": "cheeses"
+        },
+        {
+          "name" : "greens",
+          "labelName" : "secondary_greens",
+          "promptName" : "greens",
+          "image": "greens"
+        },
+        {
+          "name" : "mushrooms",
+          "labelName" : "secondary_mushrooms",
+          "promptName" : "mushrooms",
+          "image": "mushrooms"
+        },
+        {
+          "name" : "peppers_onions",
+          "labelName" : "secondary_peppers_onions",
+          "promptName" : "peppers and onions",
+          "image": "peppers"
+        },
+        {
+          "name" : "tomatoes",
+          "labelName" : "secondary_tomatoes",
+          "promptName" : "tomatoes",
+          "image": "tomatoes"
+        },
+        {
+          "name" : "any",
+          "labelName" : "secondary_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "appetizer" : {
+      "labelQuestion": "appetizer_question",
+      "promptQuestion" : "appetizer category",
+      "answers": [
+        {
+          "name" : "chips",
+          "labelName" : "appetizer_chips",
+          "promptName" : "chips and dips",
+          "image": "appetizer_chips"
+        },
+        {
+          "name" : "fruits",
+          "labelName" : "appetizer_fruits",
+          "promptName" : "fruits",
+          "image": "appetizer_fruits"
+        },
+        {
+          "name" : "horsdoeuvres",
+          "labelName" : "appetizer_horsdoeuvres",
+          "promptName" : "hors d\\'oeuvres",
+          "image": "appetizer"
+        },
+        {
+          "name" : "stuffed",
+          "labelName" : "appetizer_stuffed",
+          "promptName" : "stuffed",
+          "image": "appetizer_stuffed"
+        },
+        {
+          "name" : "any",
+          "labelName" : "appetizer_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "breakfast" : {
+      "labelQuestion": "breakfast_question",
+      "promptQuestion" : "breakfast category",
+      "answers": [
+        {
+          "name" : "eggs",
+          "labelName" : "breakfast_eggs",
+          "promptName" : "eggs",
+          "image": "eggs",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "griddle",
+          "labelName" : "breakfast_griddle",
+          "promptName" : "griddle",
+          "image": "griddle"
+        },
+        {
+          "name" : "hash",
+          "labelName" : "breakfast_hash",
+          "promptName" : "hash",
+          "image": "hash"
+        },
+        {
+          "name" : "omelette",
+          "labelName" : "breakfast_omelette",
+          "promptName" : "omelette",
+          "image": "omelette",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "wraps",
+          "labelName" : "breakfast_wraps",
+          "promptName" : "wraps",
+          "image": "breakfast_wrap"
+        },
+        {
+          "name" : "any",
+          "labelName" : "breakfast_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "breakfast_protein" : {
+      "labelQuestion": "breakfast_protein_question",
+      "promptQuestion" : "breakfast protein category",
+      "answers": [
+        {
+          "name" : "bacon",
+          "labelName" : "breakfast_protein_bacon",
+          "promptName" : "bacon",
+          "image": "bacon",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "ham",
+          "labelName" : "breakfast_protein_ham",
+          "promptName" : "ham",
+          "image": "ham",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "sausage",
+          "labelName" : "breakfast_protein_sausage",
+          "promptName" : "sausage",
+          "image": "sausage",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "seafood",
+          "labelName" : "breakfast_protein_seafood",
+          "promptName" : "seafood",
+          "image": "seafood",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegan"]
+          }
+        },
+        {
+          "name" : "steak",
+          "labelName" : "breakfast_protein_steak",
+          "promptName" : "steak",
+          "image": "steak",
+          "filter": {
+            "question": "dietary_requirements",
+            "operator": "excludes",
+            "answers": ["vegetarian", "vegan"]
+          }
+        },
+        {
+          "name" : "vegetarian",
+          "labelName" : "breakfast_protein_vegetarian",
+          "promptName" : "vegetarian",
+          "image": "vegetarian"
+        },
+        {
+          "name" : "any",
+          "labelName" : "breakfast_protein_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "dessert" : {
+      "labelQuestion": "dessert_question",
+      "promptQuestion" : "dessert category",
+      "answers": [
+        {
+          "name" : "cake",
+          "labelName" : "dessert_cake",
+          "promptName" : "cake",
+          "image": "cake"
+        },
+        {
+          "name" : "cookies",
+          "labelName" : "dessert_cookies",
+          "promptName" : "cookies",
+          "image": "cookies"
+        },
+        {
+          "name" : "ice_cream",
+          "labelName" : "dessert_ice_cream",
+          "promptName" : "ice cream",
+          "image": "ice_cream"
+        },
+        {
+          "name" : "any",
+          "labelName" : "dessert_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "dessert_flavor" : {
+      "labelQuestion": "dessert_flavor_question",
+      "promptQuestion" : "dessert flavor",
+      "answers": [
+        {
+          "name" : "buttercream",
+          "labelName" : "dessert_flavor_buttercream",
+          "promptName" : "buttercream",
+          "image": "buttercream"
+        },
+        {
+          "name" : "chocolate",
+          "labelName" : "dessert_flavor_chocolate",
+          "promptName" : "chocolate",
+          "image": "chocolate"
+        },
+        {
+          "name" : "coconut",
+          "labelName" : "dessert_flavor_coconut",
+          "promptName" : "coconut",
+          "image": "coconut"
+        },
+        {
+          "name" : "peanut_butter",
+          "labelName" : "dessert_flavor_peanut_butter",
+          "promptName" : "peanut butter",
+          "image": "peanut_butter"
+        },
+        {
+          "name" : "strawberry",
+          "labelName" : "dessert_flavor_strawberry",
+          "promptName" : "strawberry",
+          "image": "strawberry"
+        },
+        {
+          "name" : "vanilla",
+          "labelName" : "dessert_flavor_vanilla",
+          "promptName" : "vanilla",
+          "image": "vanilla"
+        },
+        {
+          "name" : "any",
+          "labelName" : "dessert_flavor_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "style" : {
+      "labelQuestion": "style_question",
+      "promptQuestion" : "style",
+      "answers": [
+        {
+          "name" : "american",
+          "labelName" : "style_american",
+          "promptName" : "american",
+          "image": "american"
+        },
+        {
+          "name" : "greek",
+          "labelName" : "style_greek",
+          "promptName" : "greek",
+          "image": "greek"
+        },
+        {
+          "name" : "indian",
+          "labelName" : "style_indian",
+          "promptName" : "indian",
+          "image": "indian"
+        },
+        {
+          "name" : "italian",
+          "labelName" : "style_italian",
+          "promptName" : "italian",
+          "image": "italian"
+        },
+        {
+          "name" : "mexican",
+          "labelName" : "style_mexican",
+          "promptName" : "mexican",
+          "image": "mexican"
+        },
+        {
+          "name" : "any",
+          "labelName" : "style_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "sandwich" : {
+      "labelQuestion": "sandwich_question",
+      "promptQuestion" : "sandwich category",
+      "answers": [
+        {
+          "name" : "bread",
+          "labelName" : "sandwich_bread",
+          "promptName" : "bread",
+          "image": "bread"
+        },
+        {
+          "name" : "pita",
+          "labelName" : "sandwich_pita",
+          "promptName" : "pita",
+          "image": "pita"
+        },
+        {
+          "name" : "wrap",
+          "labelName" : "sandwich_wrap",
+          "promptName" : "wrap",
+          "image": "wrap"
+        },
+        {
+          "name" : "any",
+          "labelName" : "sandwich_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "salad" : {
+      "labelQuestion": "salad_question",
+      "promptQuestion" : "salad category",
+      "answers": [
+        {
+          "name" : "caprese",
+          "labelName" : "salad_caprese",
+          "promptName" : "caprese",
+          "image": "salad_caprese"
+        },
+        {
+          "name" : "caesar",
+          "labelName" : "salad_caesar",
+          "promptName" : "caesar",
+          "image": "salad_caesar"
+        },
+        {
+          "name" : "fruit",
+          "labelName" : "salad_fruit",
+          "promptName" : "fruit",
+          "image": "salad_fruit"
+        },
+        {
+          "name" : "greek",
+          "labelName" : "salad_greek",
+          "promptName" : "greek",
+          "image": "salad_greek"
+        },
+        {
+          "name" : "any",
+          "labelName" : "salad_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "soup" : {
+      "labelQuestion": "soup_question",
+      "promptQuestion" : "soup category",
+      "answers": [
+        {
+          "name" : "broth",
+          "labelName" : "soup_broth",
+          "promptName" : "broth",
+          "image": "soup_broth"
+        },
+        {
+          "name" : "chowder",
+          "labelName" : "soup_chowder",
+          "promptName" : "chowder",
+          "image": "soup_chowder"
+        },
+        {
+          "name" : "tomato",
+          "labelName" : "soup_tomato",
+          "promptName" : "tomato",
+          "image": "soup_tomato"
+        },
+        {
+          "name" : "any",
+          "labelName" : "soup_any",
+          "image": "skip"
+        }
+      ]
+    },
+    "search" : {
+      "labelQuestion" : "search_question",
+      "answers" : [
+        {
+          "name" : "search",
+          "labelName" : "search_start",
+          "image": "search"
+        }
+      ]
+    }
+  }
+}

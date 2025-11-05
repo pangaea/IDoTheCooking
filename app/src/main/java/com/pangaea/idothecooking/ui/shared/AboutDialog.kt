@@ -12,12 +12,16 @@ import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
 import com.pangaea.idothecooking.utils.extensions.replaceVariables
 
+
 class AboutDialog() : DialogFragment() {
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint("CommitPrefEdits", "SetJavaScriptEnabled")
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val layout: View =
             requireActivity().layoutInflater.inflate(R.layout.about_view, null, false)!!
         val webView = layout.findViewById<WebView>(R.id.viewport)
+
+        // Set web view chrome client
+        webView.webViewClient = AboutViewClient(requireActivity())
         val data: String = requireContext().readContentFromAssets("about.html")
 
         // Variable replacement routine
@@ -41,4 +45,14 @@ class AboutDialog() : DialogFragment() {
 
         return recipeView.create()
     }
+
+//    fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+//        if (url.contains("stackoverflow.com")) {
+//            view.loadUrl(url)
+//        } else {
+//            val i = Intent(Intent.ACTION_VIEW, url.toUri())
+//            startActivity(i)
+//        }
+//        return true
+//    }
 }

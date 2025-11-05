@@ -35,6 +35,7 @@
     <string name="about">About</string>
     <string name="adj_srv_size">Adjust Serving Size</string>
     <string name="filter">Filter</string>
+    <string name="back">Back</string>
 <!--    <string name="export_data">Export All Data</string>-->
 <!--    <string name="import_data">Import From File</string>-->
     <string name="import_complete">Import Complete</string>
@@ -178,7 +179,7 @@
     <string name="lock_screen">Lock Screen</string>
 
     <string name="recipe_generator">Recipe Creator</string>
-    <string name="recipe_generate">Get Recipes</string>
+    <string name="recipe_generate">Search</string>
     <string name="generated_from_openai">Generated from OpenAi</string>
     <string name="new_ai_recipe">New AI Recipe</string>
     <string name="description_missing">Description required</string>
@@ -187,6 +188,9 @@
     <string name="generate">Generate</string>
     <string name="generate_using_ai">Create using AI</string>
     <string name="enhance_using_ai">Enhance using AI</string>
+    <string name="questionnaire">Questionnaire</string>
+    <string name="questionnaire_description">Try the questionnaire to guide you through options.</string>
+    <string name="generate_description">Or, describe what you\'re looking for…</string>
 
     <string name="helper_desc_hint">Explain what kind of suggestions you are looking for</string>
     <string name="helper_button_text">Get Suggestions</string>
