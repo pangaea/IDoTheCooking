@@ -45,14 +45,4 @@ class AboutDialog() : DialogFragment() {
 
         return recipeView.create()
     }
-
-//    fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-//        if (url.contains("stackoverflow.com")) {
-//            view.loadUrl(url)
-//        } else {
-//            val i = Intent(Intent.ACTION_VIEW, url.toUri())
-//            startActivity(i)
-//        }
-//        return true
-//    }
 }
