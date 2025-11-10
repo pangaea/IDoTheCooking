@@ -1,0 +1,4 @@
+Suggest recipes with description: {description}.
+Respond in JSON array, return name, ingredients and directions.
+Format ingredients as a JSON array including quantity as a decimal, unit and name, no fractions
+Format directions as a JSON array

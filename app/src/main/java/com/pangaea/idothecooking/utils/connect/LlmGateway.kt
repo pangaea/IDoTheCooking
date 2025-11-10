@@ -30,7 +30,7 @@ class LlmGateway(val context: Context) {
     fun suggestRecipe(desc: String, callback: (success: Boolean, recipes: List<RecipeDetails>) -> Unit) {
 
         if (!mockRequest) {
-            val promptSuggestRecipe = context.getString(R.string.prompt_suggest_recipes)
+            val promptSuggestRecipe = context.readContentFromAssets("prompts/suggest_recipes.prompt")
             llmRequest(promptSuggestRecipe.replace("{description}", desc)) { success, json ->
                 callback(success, json?.let { parseRecipeListJson(it) } ?: emptyList())
             }
@@ -45,7 +45,7 @@ class LlmGateway(val context: Context) {
     @Throws(IOException::class)
     fun suggestEnhancements(desc: String, recipe: RecipeDetails, callback: (success: Boolean, recipes: List<HelperSuggestion>) -> Unit) {
         if (!mockRequest) {
-            val promptSuggestEnhancements = context.getString(R.string.prompt_suggest_recipe_improvements)
+            val promptSuggestEnhancements = context.readContentFromAssets("prompts/suggest_recipe_improvements.prompt")
             llmRequest(promptSuggestEnhancements.replace("{recipe_name}", recipe.recipe.name)
                            .replace("{ingredient_list}", recipe.ingredients.map{it.name}.joinToString(","))
                            .replace("{requested_improvements}", desc)) { success, json ->

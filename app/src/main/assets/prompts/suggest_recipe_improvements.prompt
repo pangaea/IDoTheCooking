@@ -1,0 +1,5 @@
+Suggest options for recipe:
+{recipe_name}, currently using ingredients:
+{ingredient_list}, to
+{requested_improvements}.
+Respond in JSON array as either ingredient or cooking_technique with description
