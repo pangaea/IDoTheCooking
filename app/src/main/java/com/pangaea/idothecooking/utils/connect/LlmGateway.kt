@@ -30,12 +30,12 @@ class LlmGateway(val context: Context) {
     private val mediaTypeJson: MediaType = "application/json".toMediaType()
     private val mockRequest = false
 
-    fun getCurrentLangauge(): String {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return LocaleList.getDefault().get(0).displayName
+    private fun getCurrentLanguage(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LocaleList.getDefault().get(0).displayName
         } else {
             // Fallback for older versions
-            return Locale.getDefault().displayName
+            Locale.getDefault().displayName
         }
     }
 
@@ -44,7 +44,7 @@ class LlmGateway(val context: Context) {
         if (!mockRequest) {
             val promptSuggestRecipe = context.readContentFromAssets("prompts/suggest_recipes.prompt")
             llmRequest(promptSuggestRecipe.replace("{description}", desc)
-                           .replace("{language}", getCurrentLangauge())) { success, json ->
+                           .replace("{language}", getCurrentLanguage())) { success, json ->
                 callback(success, json?.let { parseRecipeListJson(it) } ?: emptyList())
             }
         } else {
@@ -62,7 +62,7 @@ class LlmGateway(val context: Context) {
             llmRequest(promptSuggestEnhancements.replace("{recipe_name}", recipe.recipe.name)
                            .replace("{ingredient_list}", recipe.ingredients.map{it.name}.joinToString(","))
                            .replace("{requested_improvements}", desc)
-                           .replace("{language}", getCurrentLangauge())) { success, json ->
+                           .replace("{language}", getCurrentLanguage())) { success, json ->
                 callback(success, json?.let { parseSuggestionListJson(it) } ?: emptyList())
             }
         } else {
