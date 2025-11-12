@@ -31,6 +31,7 @@ fun Context.readContentFromAssets(path: String): String {
         bufferedReader.useLines { lines ->
             lines.forEach {
                 stringBuilder.append(it)
+                stringBuilder.append("\n")
             }
         }
         val jsonString = stringBuilder.toString()
@@ -42,12 +43,12 @@ fun Context.readContentFromAssets(path: String): String {
 }
 
 @SuppressLint("DiscouragedApi")
-fun String.replaceVariables(context: Context, resources: Resources): String {
+fun String.replaceVariables(context: Context): String {
     // Variable replacement routine
     return Regex("\\$\\{([a-zA-Z0-9_]+)\\}").replace(this) { matchResult ->
         val variableName = matchResult.groupValues[1]
-        val resourceId = resources.getIdentifier(variableName, "string", context.packageName)
-        if (resourceId > 0) resources.getText(resourceId) else matchResult.value
+        val resourceId = context.resources.getIdentifier(variableName, "string", context.packageName)
+        if (resourceId > 0) context.resources.getText(resourceId) else matchResult.value
     }
     /////////////////////////////////////////////////////////////////
 }

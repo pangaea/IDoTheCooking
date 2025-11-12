@@ -1,6 +1,8 @@
 package com.pangaea.idothecooking.utils.connect
 
 import android.content.Context
+import android.os.Build
+import android.os.LocaleList
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.JsonParser
@@ -19,19 +21,30 @@ import okhttp3.RequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import java.util.Locale
 import java.util.concurrent.TimeUnit
+
 
 class LlmGateway(val context: Context) {
     private val openAiChatCompletionUrl = "https://api.openai.com/v1/chat/completions"
     private val mediaTypeJson: MediaType = "application/json".toMediaType()
     private val mockRequest = false
 
+    fun getCurrentLangauge(): String {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return LocaleList.getDefault().get(0).displayName
+        } else {
+            // Fallback for older versions
+            return Locale.getDefault().displayName
+        }
+    }
+
     @Throws(IOException::class)
     fun suggestRecipe(desc: String, callback: (success: Boolean, recipes: List<RecipeDetails>) -> Unit) {
-
         if (!mockRequest) {
             val promptSuggestRecipe = context.readContentFromAssets("prompts/suggest_recipes.prompt")
-            llmRequest(promptSuggestRecipe.replace("{description}", desc)) { success, json ->
+            llmRequest(promptSuggestRecipe.replace("{description}", desc)
+                           .replace("{language}", getCurrentLangauge())) { success, json ->
                 callback(success, json?.let { parseRecipeListJson(it) } ?: emptyList())
             }
         } else {
@@ -48,7 +61,8 @@ class LlmGateway(val context: Context) {
             val promptSuggestEnhancements = context.readContentFromAssets("prompts/suggest_recipe_improvements.prompt")
             llmRequest(promptSuggestEnhancements.replace("{recipe_name}", recipe.recipe.name)
                            .replace("{ingredient_list}", recipe.ingredients.map{it.name}.joinToString(","))
-                           .replace("{requested_improvements}", desc)) { success, json ->
+                           .replace("{requested_improvements}", desc)
+                           .replace("{language}", getCurrentLangauge())) { success, json ->
                 callback(success, json?.let { parseSuggestionListJson(it) } ?: emptyList())
             }
         } else {

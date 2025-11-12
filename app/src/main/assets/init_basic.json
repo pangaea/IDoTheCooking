@@ -1,446 +1,446 @@
 {
   "categories":[
     {
-      "name":"Breakfast"
+      "name":"${category_breakfast}"
     },
     {
-      "name":"Lunch"
+      "name":"${category_lunch}"
     },
     {
-      "name":"Desert"
+      "name":"${category_desert}"
     },
     {
-      "name":"Appetizer"
+      "name":"${category_appetizer}"
     },
     {
-      "name":"Dinner"
+      "name":"${category_dinner}"
     },
     {
-      "name": "Instant Pot"
+      "name": "${category_instant_pot}"
     },
     {
-      "name": "Chicken"
+      "name": "${category_chicken}"
     },
     {
-      "name": "Air Fryer"
+      "name": "${category_air_fryer}"
     }
   ],
   "recipes":[
     {
       "description":"",
       "imageUri":"asset://image_library/FrenchToast.jpg",
-      "name":"French Toast",
+      "name":"${french_toast_title}",
       "servings":3,
       "favorite":false,
       "ingredients":[
         {
           "amount":3.0,
-          "name":"Eggs",
+          "name":"${french_toast_direction_eggs}",
           "unit":"",
           "order":0
         },
         {
           "amount":0.25,
-          "name":"Milk",
-          "unit":"cup",
+          "name":"${french_toast_direction_milk}",
+          "unit":"${units_cup}",
           "order":1
         },
         {
           "amount":2.0,
-          "name":"Granulated sugar",
-          "unit":"tbsp",
+          "name":"${french_toast_direction_sugar}",
+          "unit":"${units_tbsp}",
           "order":2
         },
         {
           "amount":1.0,
-          "name":"Vanilla extract",
-          "unit":"tsp",
+          "name":"${french_toast_direction_vanilla}",
+          "unit":"${units_tsp}",
           "order":3
         },
         {
           "amount":0.5,
-          "name":"Ground cinnamon ",
-          "unit":"tsp",
+          "name":"${french_toast_direction_cinnamon}",
+          "unit":"${units_tsp}",
           "order":4
         },
         {
           "amount":0.0,
-          "name":"Butter",
+          "name":"${french_toast_direction_butter}",
           "unit":"",
           "order":5
         },
         {
           "amount":0.0,
-          "name":"Bread",
+          "name":"${french_toast_direction_bread}",
           "unit":"",
           "order":6
         }
       ],
       "directions":[
         {
-          "content":"Put eggs in large bowl and scramble",
+          "content":"${french_toast_direction_1}",
           "order":0
         },
         {
-          "content":"Add milk, sugar, vanilla and cinnamon and mix",
+          "content":"${french_toast_direction_2}",
           "order":1
         },
         {
-          "content":"Heat skillet until butter melts",
+          "content":"${french_toast_direction_3}",
           "order":2
         },
         {
-          "content":"Dip bread in the bowl mixture and cook kin the skillet",
+          "content":"${french_toast_direction_4}",
           "order":3
         }
       ],
       "categories":[
-        "Breakfast"
+        "${category_breakfast}"
       ]
     },
     {
       "description":"",
       "imageUri":"asset://image_library/LemonChicken.jpg",
-      "name":"Lemon chicken",
+      "name":"${lemon_chicken_title}",
       "servings":2,
       "favorite": true,
       "ingredients":[
         {
           "amount":1.0,
-          "name":"Chicken breast",
-          "unit":"lb",
+          "name":"${lemon_chicken_chick_breast}",
+          "unit":"${units_lb}",
           "order":0
         },
         {
           "amount":0.0,
-          "name":"Salt",
+          "name":"${lemon_chicken_salt}",
           "unit":"",
           "order":1
         },
         {
           "amount":0.0,
-          "name":"Pepper",
+          "name":"${lemon_chicken_pepper}",
           "unit":"",
           "order":2
         },
         {
           "amount":0.3333333333333333,
-          "name":"Flour ",
-          "unit":"cup",
+          "name":"${lemon_chicken_flour}",
+          "unit":"${units_cup}",
           "order":3
         },
         {
           "amount":3.0,
-          "name":"Lemon juice",
-          "unit":"tbsp",
+          "name":"${lemon_chicken_lemon_juice}",
+          "unit":"${units_tbsp}",
           "order":4
         },
         {
           "amount":0.0,
-          "name":"Olive oil",
+          "name":"${lemon_chicken_olive_oil}",
           "unit":"",
           "order":5
         },
         {
           "amount":1.5,
-          "name":"Minced garlic",
-          "unit":"tsp",
+          "name":"${lemon_chicken_minced_garlic}",
+          "unit":"${units_tsp}",
           "order":6
         },
         {
           "amount":0.5,
-          "name":"Chicken broth",
-          "unit":"cup",
+          "name":"${lemon_chicken_chicken_broth}",
+          "unit":"${units_cup}",
           "order":7
         },
         {
           "amount":3.0,
-          "name":"Parmesan cheese",
-          "unit":"tbsp",
+          "name":"${lemon_chicken_parmesan_cheese}",
+          "unit":"${units_tbsp}",
           "order":8
         },
         {
           "amount":1.0,
-          "name":"Egg",
+          "name":"${lemon_chicken_egg}",
           "unit":"",
           "order":9
         },
         {
           "amount":4.0,
-          "name":"Unsalted butter",
-          "unit":"tbsp",
+          "name":"${lemon_chicken_unsalted_butter}",
+          "unit":"${units_tbsp}",
           "order":10
         },
         {
           "amount":1.5,
-          "name":"Fresh parsley",
-          "unit":"tbsp",
+          "name":"${lemon_chicken_fresh_parsley}",
+          "unit":"${units_tbsp}",
           "order":11
         }
       ],
       "directions":[
         {
-          "content":"Season both sides of the chicken with salt and pepper",
+          "content":"${lemon_chicken_direction_1}",
           "order":0
         },
         {
-          "content":"Dip in egg",
+          "content":"${lemon_chicken_direction_2}",
           "order":1
         },
         {
-          "content":"Dredge chicken in flour and Parmesan cheese mix",
+          "content":"${lemon_chicken_direction_3}",
           "order":2
         },
         {
-          "content":"Place Oliver oil in instant pot and put it in saute mode",
+          "content":"${lemon_chicken_direction_4}",
           "order":3
         },
         {
-          "content":"Cook until brown",
+          "content":"${lemon_chicken_direction_5}",
           "order":4
         },
         {
-          "content":"Remove from pot",
+          "content":"${lemon_chicken_direction_6}",
           "order":5
         },
         {
-          "content":"Add butter, garlic and lemon juice to pot",
+          "content":"${lemon_chicken_direction_7}",
           "order":6
         },
         {
-          "content":"Cook for 1 minute",
+          "content":"${lemon_chicken_direction_8}",
           "order":7
         },
         {
-          "content":"Add broth and chicken to pot",
+          "content":"${lemon_chicken_direction_9}",
           "order":8
         },
         {
-          "content":"Cook on manual mode for 7 minutes",
+          "content":"${lemon_chicken_direction_10}",
           "order":9
         },
         {
-          "content":"Add lemon slices and parsley to serve",
+          "content":"${lemon_chicken_direction_11}",
           "order":10
         }
       ],
       "categories":[
-        "Dinner",
-        "Instant Pot",
-        "Chicken"
+        "${category_dinner}",
+        "${category_instant_pot}",
+        "${category_chicken}"
       ]
     },
     {
-      "description":"Delicious and easy to make",
+      "description":"${chicken_parmesan_description}",
       "imageUri":"asset://image_library/ChickenParmHero.jpg",
-      "name":"Chicken Parmesan",
+      "name":"${chicken_parmesan_title}",
       "servings":3,
       "ingredients":[
         {
           "amount":1.5,
-          "name":"chicken breast",
-          "unit":"lbs",
+          "name":"${chicken_parmesan_chicken_breast}",
+          "unit":"${units_lbs}",
           "order":0
         },
         {
           "amount":0.25,
-          "name":"olive oil",
-          "unit":"cup",
+          "name":"${chicken_parmesan_olive_oil}",
+          "unit":"${units_cup}",
           "order":1
         },
         {
           "amount":0.0,
-          "name":"Italian bread crumbs",
+          "name":"${chicken_parmesan_italian_bread_crumbs}",
           "unit":"",
           "order":2
         },
         {
           "amount":24.0,
-          "name":"marinara sauce",
-          "unit":"oz",
+          "name":"${chicken_parmesan_marinara_sauce}",
+          "unit":"${units_oz}",
           "order":3
         },
         {
           "amount":1.0,
-          "name":"shredded mozzarella cheese",
-          "unit":"cup",
+          "name":"${chicken_parmesan_shredded_mozzarella_cheese}",
+          "unit":"${units_cup}",
           "order":4
         },
         {
           "amount":0.0,
-          "name":"salt",
+          "name":"${chicken_parmesan_salt}",
           "unit":"",
           "order":5
         },
         {
           "amount":0.0,
-          "name":"pepper",
+          "name":"${chicken_parmesan_pepper}",
           "unit":"",
           "order":6
         },
         {
           "amount":0.0,
-          "name":"fresh basil",
+          "name":"${chicken_parmesan_fresh_basil}",
           "unit":"",
           "order":7
         }
       ],
       "directions":[
         {
-          "content":"heat olive oil in pan",
+          "content":"${chicken_parmesan_direction_1}",
           "order":0
         },
         {
-          "content":"dredge chicken breast in bread crumbs",
+          "content":"${chicken_parmesan_direction_2}",
           "order":1
         },
         {
-          "content":"cook chicken in the pan to 165°",
+          "content":"${chicken_parmesan_direction_3}",
           "order":2
         },
         {
-          "content":"pour half the sauce into casserole dish",
+          "content":"${chicken_parmesan_direction_4}",
           "order":3
         },
         {
-          "content":"place chicken in dish evenly and cover with remaining sauce",
+          "content":"${chicken_parmesan_direction_5}",
           "order":4
         },
         {
-          "content":"cover chicken with cheese and chopped basil ",
+          "content":"${chicken_parmesan_direction_6}",
           "order":5
         },
         {
-          "content":"heat in oven at 425° for 15 minutes",
+          "content":"${chicken_parmesan_direction_7}",
           "order":6
         }
       ],
       "categories":[
-        "Dinner",
-        "Chicken"
+        "${category_dinner}",
+        "${category_chicken}"
       ]
     },
     {
-      "description":"Sweet and delicious",
+      "description":"${swedish_meatballs_description}",
       "imageUri":"asset://image_library/SwedishMeatballs.jpg",
-      "name":"Swedish Meatballs",
+      "name":"${swedish_meatballs_title}",
       "servings":10,
       "favorite": true,
       "ingredients":[
         {
           "amount":2.0,
-          "name":"frozen meatballs",
-          "unit":"lbs",
+          "name":"${swedish_meatballs_frozen_meatballs}",
+          "unit":"${units_lbs}",
           "order":0
         },
         {
           "amount":12.0,
-          "name":"chili sauce",
-          "unit":"oz",
+          "name":"${swedish_meatballs_chili_sauce}",
+          "unit":"${units_oz}",
           "order":1
         },
         {
           "amount":18,
-          "name":"grape jelly",
-          "unit":"oz",
+          "name":"${swedish_meatballs_grape_jelly}",
+          "unit":"${units_oz}",
           "order":2
         },
         {
           "amount":2.0,
-          "name":"brown sugar",
-          "unit":"tbsp",
+          "name":"${swedish_meatballs_brown_sugar}",
+          "unit":"${units_tbsp}",
           "order":3
         }
       ],
       "directions":[
         {
-          "content":"Brown meatballs",
+          "content":"${swedish_meatballs_direction_1}",
           "order":0
         },
         {
-          "content":"Heat jelly, chili sauce and brown sugar in pan",
+          "content":"${swedish_meatballs_direction_2}",
           "order":1
         },
         {
-          "content":"Add meatballs to sauce",
+          "content":"${swedish_meatballs_direction_3}",
           "order":2
         },
         {
-          "content":"Cover and simmer for 1 to 2 hours",
+          "content":"${swedish_meatballs_direction_4}",
           "order":3
         }
       ],
       "categories":[
-        "Appetizer"
+        "${category_appetizer}"
       ]
     },
     {
-      "description":"With crispy skins",
+      "description":"${baked_potatoes_description}",
       "imageUri":"asset://image_library/BakedPotatoes.jpg",
-      "name":"Baked Potatoes",
+      "name":"${baked_potatoes_title}",
       "servings":2,
       "ingredients":[
         {
           "amount":2.0,
-          "name":"potatoes",
+          "name":"${baked_potatoes_potatoes}",
           "unit":"",
           "order":0
         },
         {
           "amount":0.0,
-          "name":"olive oil",
+          "name":"${baked_potatoes_olive_oil}",
           "unit":"",
           "order":1
         },
         {
           "amount":0.0,
-          "name":"salt",
+          "name":"${baked_potatoes_salt}",
           "unit":"",
           "order":2
         },
         {
           "amount":0.0,
-          "name":"pepper",
+          "name":"${baked_potatoes_pepper}",
           "unit":"",
           "order":3
         }
       ],
       "directions":[
         {
-          "content":"Clean potatoes and poke holes",
+          "content":"${baked_potatoes_direction_1}",
           "order":0
         },
         {
-          "content":"Cover in olive oil, salt and pepper.",
+          "content":"${baked_potatoes_direction_2}",
           "order":1
         },
         {
-          "content":"Cook in the air fryer at 400° for 40 minutes, or until the internal temperature is 209°. Turn halfway.",
+          "content":"${baked_potatoes_direction_3}",
           "order":2
         }
       ],
       "categories":[
-        "Dinner",
-        "Air Fryer"
+        "${category_dinner}",
+        "${category_air_fryer}"
       ]
     }
   ],
   "shoppingLists":[
     {
-      "description":"Normal grocery list",
-      "name":"Groceries",
+      "description":"${groceries_description}",
+      "name":"${groceries_title}",
       "shoppingListItems":[
         {
           "amount":1.0,
-          "name":"Milk",
-          "unit":"gallon",
+          "name":"${groceries_item_1}",
+          "unit":"${units_gallon}",
           "checked":true,
           "order":0
         },
         {
           "amount":0.5,
-          "name":"American cheese",
-          "unit":"lb",
+          "name":"${groceries_item_2}",
+          "unit":"${units_lb}",
           "checked":false,
           "order":1
         }

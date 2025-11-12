@@ -6,24 +6,32 @@ import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.shared.ImageTool
+import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
+import com.pangaea.idothecooking.utils.extensions.replaceVariables
 import com.pangaea.idothecooking.utils.extensions.vulgarFraction
 
 class RecipeRenderer(private val context: Context, private val recipeDetails: RecipeDetails,
                      private val servingSize: Int, private val categoryMap: Map<Int, String>) {
 
     fun drawRecipeHtml(): String {
-        return renderRecipe(R.string.html_recipe2, R.string.html_recipe2_ingredient,
-                                      R.string.html_recipe2_direction)
+        val recipeHtml = context.readContentFromAssets("templates/recipe.html")
+        val formattedHTML = recipeHtml.replaceVariables(context)
+        val recipeIngredientHtml = context.readContentFromAssets("templates/recipe_ingredient.html")
+        val recipeDirectionHtml = context.readContentFromAssets("templates/recipe_direction.html")
+        return renderRecipe(formattedHTML, recipeIngredientHtml, recipeDirectionHtml)
     }
 
     fun drawRecipeText(): String {
-        return renderRecipe(R.string.text_recipe, R.string.text_recipe_ingredient,
-                                      R.string.text_recipe_direction)
+        val recipeTxt = context.readContentFromAssets("templates/recipe.txt")
+        val formattedTxt = recipeTxt.replaceVariables(context)
+        val recipeIngredientTxt = context.readContentFromAssets("templates/recipe_ingredient.txt")
+        val recipeDirectionTxt = context.readContentFromAssets("templates/recipe_direction.txt")
+        return renderRecipe(formattedTxt, recipeIngredientTxt, recipeDirectionTxt)
     }
 
-    private fun renderRecipe(template: Int, ingredientTemplate: Int, directionTemplate: Int): String {
+    private fun renderRecipe(template: String, ingredientTemplate: String, directionTemplate: String): String {
         val ingredientBuilder = StringBuilder()
-        val htmlRecipeIngredient = context.resources.getString(ingredientTemplate)
+        //val htmlRecipeIngredient = context.resources.getString(ingredientTemplate)
         val ingredients = recipeDetails.ingredients.toMutableList()
 
         var adjRatio: Double = 1.0
@@ -44,25 +52,25 @@ class RecipeRenderer(private val context: Context, private val recipeDetails: Re
                     val frac: Pair<String, Double>? = adjAmount?.vulgarFraction
                     if (frac != null) {
                         val amount = frac.first + " " + ingredient.unit
-                        ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", amount)
+                        ingredientBuilder.append(ingredientTemplate.replace("{{amount}}", amount)
                                                      .replace("{{name}}", ingredient.name))
                         break;
                     }
                 }
 
-                ingredientBuilder.append(htmlRecipeIngredient.replace("{{amount}}", "")
+                ingredientBuilder.append(ingredientTemplate.replace("{{amount}}", "")
                                              .replace("{{name}}", ingredient.name))
             } while (false)
         }
 
         val directionBuilder = StringBuilder()
-        val htmlRecipeDirection = context.resources.getString(directionTemplate)
+        //val htmlRecipeDirection = context.resources.getString(directionTemplate)
         val directions = recipeDetails.directions.toMutableList()
         directions.sortWith { obj1, obj2 ->
             Integer.valueOf(obj1.order).compareTo(Integer.valueOf(obj2.order))
         }
         directions.forEachIndexed { index, direction: Direction ->
-            directionBuilder.append(htmlRecipeDirection.replace("{{content}}", direction.content)
+            directionBuilder.append(directionTemplate.replace("{{content}}", direction.content)
                                         .replace("{{step}}", (index+1).toString()))
         }
 
@@ -80,8 +88,8 @@ class RecipeRenderer(private val context: Context, private val recipeDetails: Re
         val htmlRecipeCategories =
             recipeDetails.categories.joinToString(", ") { o -> categoryMap[o.category_id]!! }
 
-        var htmlRecipe = context.resources.getString(template)
-        htmlRecipe = htmlRecipe.replace("{{title}}", recipeDetails.recipe.name).replace("{{description}}", recipeDetails.recipe.description)
+        //var htmlRecipe = context.resources.getString(template)
+        var htmlRecipe = template.replace("{{title}}", recipeDetails.recipe.name).replace("{{description}}", recipeDetails.recipe.description)
             .replace("{{ingredients}}", ingredientBuilder.toString())
             .replace("{{directions}}", directionBuilder.toString())
             .replace("{{image}}", imageElem)

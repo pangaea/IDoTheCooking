@@ -24,6 +24,7 @@ import com.pangaea.idothecooking.state.db.entities.ShoppingListItem
 import com.pangaea.idothecooking.state.db.migrations.MIGRATION_1_2
 import com.pangaea.idothecooking.utils.data.JsonImportTool
 import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
+import com.pangaea.idothecooking.utils.extensions.replaceVariables
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.future.future
@@ -109,13 +110,14 @@ abstract class AppDatabase : RoomDatabase() {
 
             suspend fun initDatabase() {
 //                importTemplateRecipes(listOf("FrenchToast", "LemonChicken",
-//                                            "SwedishMeatballs", "ChickenParmesan"))
+//                                            "SwedishMeatballs", "ChickenParmesan", "BakedPotatoes"))
                 val json: String? = appContext?.readContentFromAssets("init_basic.json")
                 if (json != null) {
+                    val jsonWithLabels = json.replaceVariables(appContext!!)
                     val p = JsonImportTool(mainApp, null, emptyMap<String, Int>().toMutableMap(),
                                    emptyMap<String, Int>().toMutableMap(),
                                    emptyMap<String, Int>().toMutableMap())
-                    p.import(json)
+                    p.import(jsonWithLabels)
                 }
             }
         }

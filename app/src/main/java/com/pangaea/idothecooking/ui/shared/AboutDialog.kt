@@ -25,7 +25,7 @@ class AboutDialog() : DialogFragment() {
         val data: String = requireContext().readContentFromAssets("about.html")
 
         // Variable replacement routine
-        val formattedHTML = data.replaceVariables(requireContext(), resources)
+        val formattedHTML = data.replaceVariables(requireContext())
 
         webView.loadDataWithBaseURL(null, formattedHTML, "text/html", "utf-8", null);
         val recipeView: AlertDialog.Builder = AlertDialog.Builder(requireActivity())

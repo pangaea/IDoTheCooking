@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_breakfast">Breakfast</string>
+    <string name="category_lunch">Lunch</string>
+    <string name="category_desert">Desert</string>
+    <string name="category_appetizer">Appetizer</string>
+    <string name="category_dinner">Dinner</string>
+    <string name="category_instant_pot">Instant Pot</string>
+    <string name="category_chicken">Chicken</string>
+    <string name="category_air_fryer">Air Fryer</string>
+
+    <string name="units_tbsp">tbsp</string>
+    <string name="units_tsp">tsp</string>
+    <string name="units_cup">cup</string>
+    <string name="units_lb">lb</string>
+    <string name="units_lbs">lbs</string>
+    <string name="units_oz">oz</string>
+    <string name="units_gallon">gallon</string>
+
+    <string name="french_toast_title">French Toast</string>
+    <string name="french_toast_direction_eggs">Eggs</string>
+    <string name="french_toast_direction_milk">Milk</string>
+    <string name="french_toast_direction_sugar">Granulated sugar</string>
+    <string name="french_toast_direction_vanilla">Vanilla extract</string>
+    <string name="french_toast_direction_cinnamon">Ground cinnamon</string>
+    <string name="french_toast_direction_butter">Butter</string>
+    <string name="french_toast_direction_bread">Bread</string>
+    <string name="french_toast_direction_1">Put eggs in large bowl and scramble</string>
+    <string name="french_toast_direction_2">Add milk, sugar, vanilla and cinnamon and mix</string>
+    <string name="french_toast_direction_3">Heat skillet until butter melts</string>
+    <string name="french_toast_direction_4">Dip bread in the bowl mixture and cook kin the skillet</string>
+
+    <string name="lemon_chicken_title">Lemon chicken</string>
+    <string name="lemon_chicken_chick_breast">Chicken breast</string>
+    <string name="lemon_chicken_salt">Salt</string>
+    <string name="lemon_chicken_pepper">Pepper</string>
+    <string name="lemon_chicken_flour">Flour</string>
+    <string name="lemon_chicken_lemon_juice">Lemon juice</string>
+    <string name="lemon_chicken_olive_oil">Olive oil</string>
+    <string name="lemon_chicken_minced_garlic">Minced garlic</string>
+    <string name="lemon_chicken_chicken_broth">Chicken broth</string>
+    <string name="lemon_chicken_parmesan_cheese">Parmesan cheese</string>
+    <string name="lemon_chicken_egg">Egg</string>
+    <string name="lemon_chicken_unsalted_butter">Unsalted butter</string>
+    <string name="lemon_chicken_fresh_parsley">Fresh parsley</string>
+    <string name="lemon_chicken_direction_1">Season both sides of the chicken with salt and pepper</string>
+    <string name="lemon_chicken_direction_2">Dip in egg</string>
+    <string name="lemon_chicken_direction_3">Dredge chicken in flour and Parmesan cheese mix</string>
+    <string name="lemon_chicken_direction_4">Place Oliver oil in instant pot and put it in saute mode</string>
+    <string name="lemon_chicken_direction_5">Cook until brown</string>
+    <string name="lemon_chicken_direction_6">Remove from pot</string>
+    <string name="lemon_chicken_direction_7">Add butter, garlic and lemon juice to pot</string>
+    <string name="lemon_chicken_direction_8">Cook for 1 minute</string>
+    <string name="lemon_chicken_direction_9">Add broth and chicken to pot</string>
+    <string name="lemon_chicken_direction_10">Cook on manual mode for 7 minutes</string>
+    <string name="lemon_chicken_direction_11">Add lemon slices and parsley to serve</string>
+
+    <string name="chicken_parmesan_title">Chicken Parmesan</string>
+    <string name="chicken_parmesan_description">Delicious and easy to make</string>
+    <string name="chicken_parmesan_chicken_breast">chicken breast</string>
+    <string name="chicken_parmesan_olive_oil">olive oil</string>
+    <string name="chicken_parmesan_italian_bread_crumbs">Italian bread crumbs</string>
+    <string name="chicken_parmesan_marinara_sauce">marinara sauce</string>
+    <string name="chicken_parmesan_shredded_mozzarella_cheese">shredded mozzarella cheese</string>
+    <string name="chicken_parmesan_salt">salt</string>
+    <string name="chicken_parmesan_pepper">pepper</string>
+    <string name="chicken_parmesan_fresh_basil">fresh basil</string>
+    <string name="chicken_parmesan_direction_1">heat olive oil in pan</string>
+    <string name="chicken_parmesan_direction_2">dredge chicken breast in bread crumbs</string>
+    <string name="chicken_parmesan_direction_3">cook chicken in the pan to 165°</string>
+    <string name="chicken_parmesan_direction_4">pour half the sauce into casserole dish</string>
+    <string name="chicken_parmesan_direction_5">place chicken in dish evenly and cover with remaining sauce</string>
+    <string name="chicken_parmesan_direction_6">cover chicken with cheese and chopped basil</string>
+    <string name="chicken_parmesan_direction_7">heat in oven at 425° for 15 minutes</string>
+
+    <string name="baked_potatoes_title">Baked Potatoes</string>
+    <string name="baked_potatoes_description">With crispy skins</string>
+    <string name="baked_potatoes_potatoes">Potatoes</string>
+    <string name="baked_potatoes_olive_oil">Olive oil</string>
+    <string name="baked_potatoes_salt">Salt</string>
+    <string name="baked_potatoes_pepper">Pepper</string>
+    <string name="baked_potatoes_direction_1">Clean potatoes and poke holes</string>
+    <string name="baked_potatoes_direction_2">Cover in olive oil, salt and pepper.</string>
+    <string name="baked_potatoes_direction_3">Cook in the air fryer at 400° for 40 minutes, or until the internal temperature is 209°. Turn halfway.</string>
+
+    <string name="swedish_meatballs_title">Swedish Meatballs</string>
+    <string name="swedish_meatballs_description">Sweet and delicious</string>
+    <string name="swedish_meatballs_frozen_meatballs">frozen meatballs</string>
+    <string name="swedish_meatballs_chili_sauce">chili sauce</string>
+    <string name="swedish_meatballs_grape_jelly">grape jelly</string>
+    <string name="swedish_meatballs_brown_sugar">brown sugar</string>
+    <string name="swedish_meatballs_direction_1">Brown meatballs</string>
+    <string name="swedish_meatballs_direction_2">Heat jelly, chili sauce and brown sugar in pan</string>
+    <string name="swedish_meatballs_direction_3">Add meatballs to sauce</string>
+    <string name="swedish_meatballs_direction_4">Cover and simmer for 1 to 2 hours</string>
+
+    <string name="groceries_title">Groceries</string>
+    <string name="groceries_description">Normal grocery list</string>
+    <string name="groceries_item_1">Milk</string>
+    <string name="groceries_item_2">American cheese</string>
+</resources>
