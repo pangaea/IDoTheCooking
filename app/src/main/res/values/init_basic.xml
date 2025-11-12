@@ -57,21 +57,21 @@
 
     <string name="chicken_parmesan_title">Chicken Parmesan</string>
     <string name="chicken_parmesan_description">Delicious and easy to make</string>
-    <string name="chicken_parmesan_chicken_breast">chicken breast</string>
-    <string name="chicken_parmesan_olive_oil">olive oil</string>
+    <string name="chicken_parmesan_chicken_breast">Chicken breast</string>
+    <string name="chicken_parmesan_olive_oil">Olive oil</string>
     <string name="chicken_parmesan_italian_bread_crumbs">Italian bread crumbs</string>
-    <string name="chicken_parmesan_marinara_sauce">marinara sauce</string>
-    <string name="chicken_parmesan_shredded_mozzarella_cheese">shredded mozzarella cheese</string>
-    <string name="chicken_parmesan_salt">salt</string>
-    <string name="chicken_parmesan_pepper">pepper</string>
-    <string name="chicken_parmesan_fresh_basil">fresh basil</string>
-    <string name="chicken_parmesan_direction_1">heat olive oil in pan</string>
-    <string name="chicken_parmesan_direction_2">dredge chicken breast in bread crumbs</string>
-    <string name="chicken_parmesan_direction_3">cook chicken in the pan to 165°</string>
-    <string name="chicken_parmesan_direction_4">pour half the sauce into casserole dish</string>
-    <string name="chicken_parmesan_direction_5">place chicken in dish evenly and cover with remaining sauce</string>
-    <string name="chicken_parmesan_direction_6">cover chicken with cheese and chopped basil</string>
-    <string name="chicken_parmesan_direction_7">heat in oven at 425° for 15 minutes</string>
+    <string name="chicken_parmesan_marinara_sauce">Marinara sauce</string>
+    <string name="chicken_parmesan_shredded_mozzarella_cheese">Shredded mozzarella cheese</string>
+    <string name="chicken_parmesan_salt">Salt</string>
+    <string name="chicken_parmesan_pepper">Pepper</string>
+    <string name="chicken_parmesan_fresh_basil">Fresh basil</string>
+    <string name="chicken_parmesan_direction_1">Heat olive oil in pan</string>
+    <string name="chicken_parmesan_direction_2">Dredge chicken breast in bread crumbs</string>
+    <string name="chicken_parmesan_direction_3">Cook chicken in the pan to 165°</string>
+    <string name="chicken_parmesan_direction_4">Pour half the sauce into casserole dish</string>
+    <string name="chicken_parmesan_direction_5">Place chicken in dish evenly and cover with remaining sauce</string>
+    <string name="chicken_parmesan_direction_6">Cover chicken with cheese and chopped basil</string>
+    <string name="chicken_parmesan_direction_7">Heat in oven at 425° for 15 minutes</string>
 
     <string name="baked_potatoes_title">Baked Potatoes</string>
     <string name="baked_potatoes_description">With crispy skins</string>
@@ -85,10 +85,10 @@
 
     <string name="swedish_meatballs_title">Swedish Meatballs</string>
     <string name="swedish_meatballs_description">Sweet and delicious</string>
-    <string name="swedish_meatballs_frozen_meatballs">frozen meatballs</string>
-    <string name="swedish_meatballs_chili_sauce">chili sauce</string>
-    <string name="swedish_meatballs_grape_jelly">grape jelly</string>
-    <string name="swedish_meatballs_brown_sugar">brown sugar</string>
+    <string name="swedish_meatballs_frozen_meatballs">Frozen meatballs</string>
+    <string name="swedish_meatballs_chili_sauce">Chili sauce</string>
+    <string name="swedish_meatballs_grape_jelly">Grape jelly</string>
+    <string name="swedish_meatballs_brown_sugar">Brown sugar</string>
     <string name="swedish_meatballs_direction_1">Brown meatballs</string>
     <string name="swedish_meatballs_direction_2">Heat jelly, chili sauce and brown sugar in pan</string>
     <string name="swedish_meatballs_direction_3">Add meatballs to sauce</string>
