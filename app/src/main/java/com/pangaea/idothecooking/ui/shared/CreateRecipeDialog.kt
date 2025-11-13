@@ -81,13 +81,13 @@ open class CreateRecipeDialog(val callback: CreateRecipeCallBackListener) : Dial
         //nameView.requestFocus()
         //nameView.focusAndShowKeyboard()
 
-        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.requireContext())
-        if (sharedPreferences.getBoolean("show_sample_library", false)) {
-            val libraryTitle = layout.findViewById<TextView>(R.id.library_title)
-            libraryTitle.visibility = TextView.VISIBLE;
-            val recipeList = layout.findViewById<ScrollView>(R.id.recipe_list)
-            recipeList.visibility = TextView.VISIBLE;
-        }
+//        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.requireContext())
+//        if (sharedPreferences.getBoolean("show_sample_library", false)) {
+//            val libraryTitle = layout.findViewById<TextView>(R.id.library_title)
+//            libraryTitle.visibility = TextView.VISIBLE;
+//            val recipeList = layout.findViewById<ScrollView>(R.id.recipe_list)
+//            recipeList.visibility = TextView.VISIBLE;
+//        }
 
         return dlg;
     }

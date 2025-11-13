@@ -40,10 +40,10 @@
             app:key="auto_launch_about"
             app:defaultValue="true"
             app:title="@string/open_about_at_startup" />
-        <SwitchPreferenceCompat
-            app:key="show_sample_library"
-            app:defaultValue="false"
-            app:title="@string/show_sample_library" />
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="show_sample_library"-->
+<!--            app:defaultValue="false"-->
+<!--            app:title="@string/show_sample_library" />-->
         <SwitchPreferenceCompat
             app:key="show_backup_reminder"
             app:defaultValue="true"
