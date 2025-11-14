@@ -121,7 +121,7 @@ class QuestionnaireDialog(val callback: (results: Map<String, String>) -> Unit)
 		return dlg
 	}
 
-	fun fillInString(textView: TextView, resName: String) {
+	private fun fillInString(textView: TextView, resName: String) {
 		try {
 			textView.text = resources.getString(requireContext().resIdByName(resName, "string"))
 		}
@@ -130,7 +130,7 @@ class QuestionnaireDialog(val callback: (results: Map<String, String>) -> Unit)
 		}
 	}
 
-	fun fillInImage(imageView: ImageView, answer: Option) {
+	private fun fillInImage(imageView: ImageView, answer: Option) {
 		try {
 			val ims: InputStream = requireActivity().baseContext.assets.open("questionnaire_images/${answer.image}.png")
 			if (ims != null) {
@@ -180,7 +180,7 @@ class QuestionnaireDialog(val callback: (results: Map<String, String>) -> Unit)
 		}
 	}
 
-	fun filterCondition(filter: Filter): Boolean {
+	private fun filterCondition(filter: Filter): Boolean {
 		if (filter.operator.equals("excludes")) {
 			return !filter.answers.contains(answerMap[filter.question]?.name)
 		} else {
