@@ -26,8 +26,8 @@ android {
         applicationId = "com.pangaea.idothecooking"
         minSdk = 21
         targetSdk = 35
-        versionCode = 20
-        versionName = "20.0"
+        versionCode = 21
+        versionName = "21.0"
 
         // Load the values from apikey.properties file
         val keystoreFile = project.rootProject.file("apikey.properties")
