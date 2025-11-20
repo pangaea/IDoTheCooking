@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_breakfast">Frühstück</string>
+    <string name="category_lunch">Mittagessen</string>
+    <string name="category_desert">Dessert</string>
+    <string name="category_appetizer">Vorspeise</string>
+    <string name="category_dinner">Abendessen</string>
+    <string name="category_instant_pot">Schnellkochtopf</string>
+    <string name="category_chicken">Hähnchen</string>
+    <string name="category_air_fryer">Heißluftfritteuse</string>
+
+    <string name="units_tbsp">EL</string>
+    <string name="units_tsp">TL</string>
+    <string name="units_cup">Tasse</string>
+    <string name="units_lb">Pfund</string>
+    <string name="units_lbs">Pfund</string>
+    <string name="units_oz">Unze</string>
+    <string name="units_gallon">Gallone</string>
+
+    <string name="french_toast_title">French Toast</string>
+    <string name="french_toast_direction_eggs">Eier</string>
+    <string name="french_toast_direction_milk">Milch</string>
+    <string name="french_toast_direction_sugar">Kristallzucker</string>
+    <string name="french_toast_direction_vanilla">Vanilleextrakt</string>
+    <string name="french_toast_direction_cinnamon">Gemahlener Zimt</string>
+    <string name="french_toast_direction_butter">Butter</string>
+    <string name="french_toast_direction_bread">Brot</string>
+    <string name="french_toast_direction_1">Eier in eine große Schüssel geben und verquirlen</string>
+    <string name="french_toast_direction_2">Milch, Zucker, Vanille und Zimt hinzufügen und mischen</string>
+    <string name="french_toast_direction_3">Pfanne erhitzen, bis die Butter schmilzt</string>
+    <string name="french_toast_direction_4">Brot in die Schüsselmischung tauchen und in der Pfanne braten</string>
+
+    <string name="lemon_chicken_title">Zitronen‑Hähnchen</string>
+    <string name="lemon_chicken_chick_breast">Hähnchenbrust</string>
+    <string name="lemon_chicken_salt">Salz</string>
+    <string name="lemon_chicken_pepper">Pfeffer</string>
+    <string name="lemon_chicken_flour">Mehl</string>
+    <string name="lemon_chicken_lemon_juice">Zitronensaft</string>
+    <string name="lemon_chicken_olive_oil">Olivenöl</string>
+    <string name="lemon_chicken_minced_garlic">Gehackter Knoblauch</string>
+    <string name="lemon_chicken_chicken_broth">Hühnerbrühe</string>
+    <string name="lemon_chicken_parmesan_cheese">Parmesan</string>
+    <string name="lemon_chicken_egg">Ei</string>
+    <string name="lemon_chicken_unsalted_butter">Ungesalzene Butter</string>
+    <string name="lemon_chicken_fresh_parsley">Frische Petersilie</string>
+    <string name="lemon_chicken_direction_1">Beide Seiten des Hähnchens mit Salz und Pfeffer würzen</string>
+    <string name="lemon_chicken_direction_2">In Ei tauchen</string>
+    <string name="lemon_chicken_direction_3">Hähnchen in Mehl‑ und Parmesanmischung wenden</string>
+    <string name="lemon_chicken_direction_4">Olivenöl in den Instant Pot geben und den Sauté‑Modus einstellen</string>
+    <string name="lemon_chicken_direction_5">Kochen bis es braun wird</string>
+    <string name="lemon_chicken_direction_6">Aus dem Topf entfernen</string>
+    <string name="lemon_chicken_direction_7">Butter, Knoblauch und Zitronensaft in den Topf geben</string>
+    <string name="lemon_chicken_direction_8">Eine Minute kochen</string>
+    <string name="lemon_chicken_direction_9">Brühe und Hähnchen in den Topf geben</string>
+    <string name="lemon_chicken_direction_10">Im manuellen Modus 7 Minuten kochen</string>
+    <string name="lemon_chicken_direction_11">Zitronenscheiben und Petersilie zum Servieren hinzufügen</string>
+
+    <string name="chicken_parmesan_title">Hähnchen‑Parmesan</string>
+    <string name="chicken_parmesan_description">Lecker und einfach zuzubereiten</string>
+    <string name="chicken_parmesan_chicken_breast">Hähnchenbrust</string>
+    <string name="chicken_parmesan_olive_oil">Olivenöl</string>
+    <string name="chicken_parmesan_italian_bread_crumbs">Italienische Semmelbrösel</string>
+    <string name="chicken_parmesan_marinara_sauce">Marinara‑Soße</string>
+    <string name="chicken_parmesan_shredded_mozzarella_cheese">Geriebener Mozzarella</string>
+    <string name="chicken_parmesan_salt">Salz</string>
+    <string name="chicken_parmesan_pepper">Pfeffer</string>
+    <string name="chicken_parmesan_fresh_basil">Frisches Basilikum</string>
+    <string name="chicken_parmesan_direction_1">Olivenöl in einer Pfanne erhitzen</string>
+    <string name="chicken_parmesan_direction_2">Hähnchenbrust in Semmelbröseln wenden</string>
+    <string name="chicken_parmesan_direction_3">Hähnchen in der Pfanne bis 165 °C garen</string>
+    <string name="chicken_parmesan_direction_4">Die Hälfte der Soße in eine Auflaufform gießen</string>
+    <string name="chicken_parmesan_direction_5">Hähnchen gleichmäßig in die Form geben und mit der restlichen Soße bedecken</string>
+    <string name="chicken_parmesan_direction_6">Hähnchen mit Käse und gehacktem Basilikum bestreuen</string>
+    <string name="chicken_parmesan_direction_7">Im Ofen bei 425 °C 15 Minuten erhitzen</string>
+
+    <string name="baked_potatoes_title">Ofenkartoffeln</string>
+    <string name="baked_potatoes_description">Mit knuspriger Schale</string>
+    <string name="baked_potatoes_potatoes">Kartoffeln</string>
+    <string name="baked_potatoes_olive_oil">Olivenöl</string>
+    <string name="baked_potatoes_salt">Salz</string>
+    <string name="baked_potatoes_pepper">Pfeffer</string>
+    <string name="baked_potatoes_direction_1">Kartoffeln säubern und Löcher einstechen</string>
+    <string name="baked_potatoes_direction_2">Mit Olivenöl, Salz und Pfeffer bestreichen.</string>
+    <string name="baked_potatoes_direction_3">Im Heißluftfritteuse bei 200 °C 40 Minuten kochen, bis die Kerntemperatur 209 °F (≈98 °C) erreicht, zur Hälfte wenden.</string>
+
+    <string name="swedish_meatballs_title">Schwedische Fleischbällchen</string>
+    <string name="swedish_meatballs_description">Süß und lecker</string>
+    <string name="swedish_meatballs_frozen_meatballs">Gefrorene Fleischbällchen</string>
+    <string name="swedish_meatballs_chili_sauce">Chilisauce</string>
+    <string name="swedish_meatballs_grape_jelly">Traubengelee</string>
+    <string name="swedish_meatballs_brown_sugar">Brauner Zucker</string>
+    <string name="swedish_meatballs_direction_1">Fleischbällchen anbraten</string>
+    <string name="swedish_meatballs_direction_2">Gelee, Chilisauce und braunen Zucker in der Pfanne erhitzen</string>
+    <string name="swedish_meatballs_direction_3">Fleischbällchen zur Soße geben</string>
+    <string name="swedish_meatballs_direction_4">Abdecken und 1–2 Stunden köcheln lassen</string>
+
+    <string name="groceries_title">Einkäufe</string>
+    <string name="groceries_description">Normale Einkaufsliste</string>
+    <string name="groceries_item_1">Milch</string>
+    <string name="groceries_item_2">Amerikanischer Käse</string>
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_breakfast">Desayuno</string>
+    <string name="category_lunch">Almuerzo</string>
+    <string name="category_desert">Postre</string>
+    <string name="category_appetizer">Aperitivo</string>
+    <string name="category_dinner">Cena</string>
+    <string name="category_instant_pot">Olla Instantánea</string>
+    <string name="category_chicken">Pollo</string>
+    <string name="category_air_fryer">Freidora de Aire</string>
+
+    <string name="units_tbsp">tbsp</string>
+    <string name="units_tsp">tsp</string>
+    <string name="units_cup">cup</string>
+    <string name="units_lb">lb</string>
+    <string name="units_lbs">lbs</string>
+    <string name="units_oz">oz</string>
+    <string name="units_gallon">gallon</string>
+
+    <string name="french_toast_title">Tostada Francesa</string>
+    <string name="french_toast_direction_eggs">Huevos</string>
+    <string name="french_toast_direction_milk">Leche</string>
+    <string name="french_toast_direction_sugar">Azúcar granulada</string>
+    <string name="french_toast_direction_vanilla">Extracto de vainilla</string>
+    <string name="french_toast_direction_cinnamon">Canela molida</string>
+    <string name="french_toast_direction_butter">Mantequilla</string>
+    <string name="french_toast_direction_bread">Pan</string>
+    <string name="french_toast_direction_1">Pon los huevos en un bol grande y revuélvelos</string>
+    <string name="french_toast_direction_2">Añade leche, azúcar, vainilla y canela y mezcla</string>
+    <string name="french_toast_direction_3">Calienta la sartén hasta que se derrita la mantequilla</string>
+    <string name="french_toast_direction_4">Sumerge el pan en la mezcla del bol y cocina en la sartén</string>
+
+    <string name="lemon_chicken_title">Pollo al limón</string>
+    <string name="lemon_chicken_chick_breast">Pechuga de pollo</string>
+    <string name="lemon_chicken_salt">Sal</string>
+    <string name="lemon_chicken_pepper">Pimienta</string>
+    <string name="lemon_chicken_flour">Harina</string>
+    <string name="lemon_chicken_lemon_juice">Jugo de limón</string>
+    <string name="lemon_chicken_olive_oil">Aceite de oliva</string>
+    <string name="lemon_chicken_minced_garlic">Ajo picado</string>
+    <string name="lemon_chicken_chicken_broth">Caldo de pollo</string>
+    <string name="lemon_chicken_parmesan_cheese">Queso parmesano</string>
+    <string name="lemon_chicken_egg">Huevo</string>
+    <string name="lemon_chicken_unsalted_butter">Mantequilla sin sal</string>
+    <string name="lemon_chicken_fresh_parsley">Perejil fresco</string>
+    <string name="lemon_chicken_direction_1">Sazona ambos lados del pollo con sal y pimienta</string>
+    <string name="lemon_chicken_direction_2">Pasa el pollo por huevo</string>
+    <string name="lemon_chicken_direction_3">Empaniza el pollo con harina y la mezcla de queso parmesano</string>
+    <string name="lemon_chicken_direction_4">Coloca aceite de oliva en la olla instantánea y ponla en modo saltear</string>
+    <string name="lemon_chicken_direction_5">Cocina hasta que se dore</string>
+    <string name="lemon_chicken_direction_6">Retira de la olla</string>
+    <string name="lemon_chicken_direction_7">Añade mantequilla, ajo y jugo de limón a la olla</string>
+    <string name="lemon_chicken_direction_8">Cocina durante 1 minuto</string>
+    <string name="lemon_chicken_direction_9">Añade caldo y pollo a la olla</string>
+    <string name="lemon_chicken_direction_10">Cocina en modo manual durante 7 minutos</string>
+    <string name="lemon_chicken_direction_11">Añade rodajas de limón y perejil para servir</string>
+
+    <string name="chicken_parmesan_title">Pollo a la parmesana</string>
+    <string name="chicken_parmesan_description">Delicioso y fácil de preparar</string>
+    <string name="chicken_parmesan_chicken_breast">Pechuga de pollo</string>
+    <string name="chicken_parmesan_olive_oil">Aceite de oliva</string>
+    <string name="chicken_parmesan_italian_bread_crumbs">Migas de pan italianas</string>
+    <string name="chicken_parmesan_marinara_sauce">Salsa marinara</string>
+    <string name="chicken_parmesan_shredded_mozzarella_cheese">Queso mozzarella rallado</string>
+    <string name="chicken_parmesan_salt">Sal</string>
+    <string name="chicken_parmesan_pepper">Pimienta</string>
+    <string name="chicken_parmesan_fresh_basil">Albahaca fresca</string>
+    <string name="chicken_parmesan_direction_1">Calienta aceite de oliva en una sartén</string>
+    <string name="chicken_parmesan_direction_2">Empaniza la pechuga de pollo con migas de pan</string>
+    <string name="chicken_parmesan_direction_3">Cocina el pollo en la sartén hasta 165°</string>
+    <string name="chicken_parmesan_direction_4">Vierte la mitad de la salsa en una fuente para horno</string>
+    <string name="chicken_parmesan_direction_5">Coloca el pollo en la fuente de manera uniforme y cúbrelo con el resto de la salsa</string>
+    <string name="chicken_parmesan_direction_6">Cubre el pollo con queso y albahaca picada</string>
+    <string name="chicken_parmesan_direction_7">Hornea a 425° durante 15 minutos</string>
+
+    <string name="baked_potatoes_title">Papas al horno</string>
+    <string name="baked_potatoes_description">Con piel crujiente</string>
+    <string name="baked_potatoes_potatoes">Papas</string>
+    <string name="baked_potatoes_olive_oil">Aceite de oliva</string>
+    <string name="baked_potatoes_salt">Sal</string>
+    <string name="baked_potatoes_pepper">Pimienta</string>
+    <string name="baked_potatoes_direction_1">Lava las papas y hazles agujeros</string>
+    <string name="baked_potatoes_direction_2">Cúbrelas con aceite de oliva, sal y pimienta.</string>
+    <string name="baked_potatoes_direction_3">Cocina en la freidora de aire a 400° durante 40 minutos, o hasta que la temperatura interna sea 209°. Gira a mitad de cocción.</string>
+
+    <string name="swedish_meatballs_title">Albóndigas suecas</string>
+    <string name="swedish_meatballs_description">Dulce y deliciosa</string>
+    <string name="swedish_meatballs_frozen_meatballs">Albóndigas congeladas</string>
+    <string name="swedish_meatballs_chili_sauce">Salsa de chile</string>
+    <string name="swedish_meatballs_grape_jelly">Mermelada de uva</string>
+    <string name="swedish_meatballs_brown_sugar">Azúcar moreno</string>
+    <string name="swedish_meatballs_direction_1">Dora las albóndigas</string>
+    <string name="swedish_meatballs_direction_2">Calienta la mermelada, la salsa de chile y el azúcar moreno en una sartén</string>
+    <string name="swedish_meatballs_direction_3">Añade las albóndigas a la salsa</string>
+    <string name="swedish_meatballs_direction_4">Cubre y cuece a fuego lento de 1 a 2 horas</string>
+
+    <string name="groceries_title">Compras</string>
+    <string name="groceries_description">Lista de compras normal</string>
+    <string name="groceries_item_1">Leche</string>
+    <string name="groceries_item_2">Queso americano</string>
+</resources>

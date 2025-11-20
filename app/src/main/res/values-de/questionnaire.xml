@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="questionnaire_choose_type">Welchen Rezepttyp wählen?</string>
+    <string name="breakfast_recipe_type">Frühstück</string>
+    <string name="burger_recipe_type">Burger</string>
+    <string name="entree_recipe_type">Hauptgericht</string>
+    <string name="dessert_recipe_type">Dessert</string>
+    <string name="appetizer_recipe_type">Vorspeise</string>
+    <string name="sandwich_recipe_type">Sandwich</string>
+    <string name="salad_recipe_type">Salat</string>
+    <string name="soup_recipe_type">Suppe</string>
+
+    <string name="dietary_question">Haben Sie spezielle Ernährungsbedürfnisse?</string>
+    <string name="dietary_answer_light">Leicht</string>
+    <string name="dietary_answer_low_fat">Fettarm</string>
+    <string name="dietary_answer_vegetarian">Vegetarisch</string>
+    <string name="dietary_answer_vegan">Vegan</string>
+    <string name="dietary_answer_low_sugar">Zuckerarm</string>
+    <string name="dietary_answer_skip">Überspringen</string>
+
+    <string name="protein_question">Welche Art von Protein möchten Sie?</string>
+    <string name="protein_answer_beef">Rindfleisch</string>
+    <string name="protein_answer_chicken">Hähnchen</string>
+    <string name="protein_answer_lamb">Lamm</string>
+    <string name="protein_answer_pork">Schweinefleisch</string>
+    <string name="protein_answer_seafood">Meeresfrüchte</string>
+    <string name="protein_answer_sausage">Wurst</string>
+    <string name="protein_answer_steak">Steak</string>
+    <string name="protein_answer_turkey">Truthahn</string>
+    <string name="protein_answer_vegetarian">Vegetarisch</string>
+    <string name="protein_answer_any">Beliebig</string>
+
+    <string name="search_question">Nach Rezepten suchen?</string>
+    <string name="search_start">Jetzt suchen</string>
+
+    <string name="secondary_question">Zusätzliche Zutaten</string>
+    <string name="secondary_cheeses">Käse</string>
+    <string name="secondary_greens">Blattgemüse</string>
+    <string name="secondary_mushrooms">Pilze</string>
+    <string name="secondary_peppers_onions">Paprika / Zwiebeln</string>
+    <string name="secondary_tomatoes">Tomaten</string>
+    <string name="secondary_any">Beliebig</string>
+
+    <string name="appetizer_question">Vorspeisenkategorien</string>
+    <string name="appetizer_chips">Chips und Dips</string>
+    <string name="appetizer_fruits">Frisches Obst / Gemüse</string>
+    <string name="appetizer_horsdoeuvres">Hors d\'oeuvres</string>
+    <string name="appetizer_stuffed">Gefüllt</string>
+    <string name="appetizer_any">Beliebig</string>
+
+    <string name="breakfast_question">Frühstückskategorien</string>
+    <string name="breakfast_eggs">Eier</string>
+    <string name="breakfast_griddle">Pfanne</string>
+    <string name="breakfast_hash">Rösti</string>
+    <string name="breakfast_omelette">Omelett</string>
+    <string name="breakfast_wraps">Wraps</string>
+    <string name="breakfast_any">Beliebig</string>
+
+    <string name="breakfast_protein_question">Protein für Frühstück</string>
+    <string name="breakfast_protein_bacon">Speck</string>
+    <string name="breakfast_protein_ham">Schinken</string>
+    <string name="breakfast_protein_sausage">Wurst</string>
+    <string name="breakfast_protein_seafood">Meeresfrüchte</string>
+    <string name="breakfast_protein_steak">Steak</string>
+    <string name="breakfast_protein_vegetarian">Vegetarisch</string>
+    <string name="breakfast_protein_any">Beliebig</string>
+
+    <string name="dessert_question">Dessertkategorien</string>
+    <string name="dessert_cake">Kuchen</string>
+    <string name="dessert_cookies">Kekse</string>
+    <string name="dessert_ice_cream">Eis</string>
+    <string name="dessert_any">Beliebig</string>
+
+    <string name="dessert_flavor_question">Dessertgeschmack</string>
+    <string name="dessert_flavor_buttercream">Buttercreme</string>
+    <string name="dessert_flavor_chocolate">Schokolade</string>
+    <string name="dessert_flavor_coconut">Kokos</string>
+    <string name="dessert_flavor_peanut_butter">Erdnussbutter</string>
+    <string name="dessert_flavor_strawberry">Erdbeere</string>
+    <string name="dessert_flavor_vanilla">Vanille</string>
+    <string name="dessert_flavor_any">Beliebig</string>
+
+    <string name="style_question">Stil</string>
+    <string name="style_american">Amerikanisch</string>
+    <string name="style_greek">Griechisch</string>
+    <string name="style_indian">Indisch</string>
+    <string name="style_italian">Italienisch</string>
+    <string name="style_mexican">Mexikanisch</string>
+    <string name="style_any">Beliebig</string>
+
+    <string name="sandwich_question">Sandwich‑Kategorie</string>
+    <string name="sandwich_bread">Brot</string>
+    <string name="sandwich_pita">Pita</string>
+    <string name="sandwich_wrap">Wrap</string>
+    <string name="sandwich_any">Beliebig</string>
+
+    <string name="salad_question">Salat‑Kategorie</string>
+    <string name="salad_caprese">Caprese</string>
+    <string name="salad_caesar">Caesar</string>
+    <string name="salad_fruit">Fruchtsalat</string>
+    <string name="salad_greek">Griechischer Salat</string>
+    <string name="salad_any">Beliebig</string>
+
+    <string name="soup_question">Suppekategorie</string>
+    <string name="soup_broth">Brühe</string>
+    <string name="soup_chowder">Chowder</string>
+    <string name="soup_tomato">Tomate</string>
+    <string name="soup_any">Beliebig</string>
+</resources>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IDoTheCooking</string>
+    <string name="navigation_drawer_open">Apri il cassetto di navigazione</string>
+    <string name="navigation_drawer_close">Chiudi il cassetto di navigazione</string>
+    <string name="nav_header_title">IDoTheCooking</string>
+    <string name="nav_header_subtitle">Gestisci le tue esigenze culinarie in un unico posto</string>
+    <string name="nav_header_desc">Intestazione di navigazione</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="app_internal_name">IDoTheCooking</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_recipes">Ricette</string>
+    <string name="menu_shopping_lists">Liste della spesa</string>
+    <string name="menu_gallery">Galleria</string>
+    <string name="title_activity_recipe">Ricetta</string>
+    <string name="title_activity_recipe_name">Ricetta - {0}</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="recipe_main_fragment_label">Info ricetta</string>
+    <string name="next">Avanti</string>
+    <string name="previous">Indietro</string>
+    <string name="save">Salva</string>
+    <string name="save_as">Salva con nome</string>
+    <string name="cancel">Annulla</string>
+    <string name="close">Chiudi</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
+    <string name="update">Aggiorna</string>
+    <string name="add">Aggiungi</string>
+    <string name="ok">OK</string>
+    <string name="delete">Elimina</string>
+    <string name="name">Nome</string>
+    <string name="print">Stampa</string>
+    <string name="share">Condividi</string>
+    <string name="edit">Modifica</string>
+    <string name="about">Informazioni</string>
+    <string name="adj_srv_size">Regola dimensione porzione</string>
+    <string name="filter">Filtra</string>
+    <string name="back">Indietro</string>
+    <!--    <string name="export_data">Export All Data</string>-->
+    <!--    <string name="import_data">Import From File</string>-->
+    <string name="import_complete">Importazione completata</string>
+    <string name="import_recipe_complete">Importazione [{0}] completata</string>
+    <string name="import_error_recipe_exists">Ricetta [{0}] esiste già</string>
+    <string name="import_error_recipe">Errore nel salvare la ricetta [{0}]</string>
+    <string name="import_error_shopping_list">Errore nel salvare la lista della spesa [{0}]</string>
+    <string name="import_error_invalid_file">File di backup non valido</string>
+    <string name="import_from_library">Seleziona dalla libreria…</string>
+    <string name="do_not_show_about_at_startup">Non mostrare all\'avvio</string>
+    <string name="open_about_at_startup">Apri la finestra Informazioni all\'avvio</string>
+    <string name="show_sample_library">Mostra libreria di ricette di esempio</string>
+    <string name="general_setting">Impostazioni generali</string>
+
+    <string name="save_as_prompt">Scegli un nuovo nome</string>
+
+    <string name="exit_without_save">Hai effettuato modifiche.  Uscire senza salvare?</string>
+    <string name="exit_with_save">Hai effettuato modifiche. Salvare prima di uscire?</string>
+    <string name="exit_with_save_auto_save"><![CDATA[Hai effettuato modifiche. Salvare prima di uscire? <b>(Abilita AutoSave nelle Impostazioni per evitare di salvare manualmente le modifiche.)</b>]]></string>
+    <string name="delete_confirmation">Conferma eliminazione della ricetta: {0}</string>
+    <string name="save_success">Aggiornamento riuscito</string>
+
+    <string name="overview_tab">Panoramica</string>
+    <string name="ingredients_tab">Ingredienti</string>
+    <string name="instructions_tab">Istruzioni</string>
+    <string name="suggestions_tab">Suggerimenti</string>
+
+    <string name="home_recipes_title">Ricette</string>
+    <string name="home_recently_updated">Aggiornate di recente:</string>
+    <string name="home_create_new">Crea nuovo</string>
+    <string name="home_view_all">Visualizza tutti</string>
+    <string name="recipe_name">Nome ricetta</string>
+    <string name="home_favorites">Preferiti:</string>
+
+    <string name="recipe_main">Nome</string>
+    <string name="recipe_description">Breve descrizione (opzionale)</string>
+    <string name="recipe_image">Imposta immagine</string>
+    <string name="recipe_servings">Porzioni</string>
+    <string name="recipe_categories">Categorie</string>
+    <string name="recipe_select_categories">Seleziona categorie</string>
+    <string name="recipe_name_missing">Il nome è obbligatorio</string>
+    <string name="recipe_name_must_be_unique">Il nome deve essere unico</string>
+    <string name="manage_categories">Gestisci categorie</string>
+
+    <string name="ingredient_amount_hint">#</string>
+    <string name="ingredient_unit_hint">Unità</string>
+    <string name="ingredient_name_hint">Nome</string>
+    <string name="ingredient_edit_amount">Quantità</string>
+    <string name="ingredient_edit_servings">Porzioni</string>
+    <string name="ingredient_edit_name">Nome</string>
+    <string name="ingredient_edit_title">Modifica ingrediente</string>
+    <string name="ingredient_new_title">Nuovo ingrediente</string>
+    <string name="favorite">Preferito</string>
+
+    <string name="direction_content_hint">Dettagli</string>
+    <string name="instructions_content_hint">Dettagli istruzioni</string>
+
+    <string name="create_recipe_title">Crea nuova ricetta</string>
+    <string name="create_recipe_msg">Crea una nuova ricetta</string>
+    <string name="create_from_scratch">Crea da zero</string>
+    <string name="create_from_scratch_desc">Ricetta vuota</string>
+    <string name="rename_recipe_before_save">Una ricetta con lo stesso nome esiste già. Inserisci un nuovo nome.</string>
+
+    <string name="create_category_title">Categoria</string>
+    <string name="create_category_msg">Crea una nuova categoria</string>
+
+    <string name="create_shopping_list_title">Crea nuova lista della spesa</string>
+    <string name="shopping_list_edit_title">Modifica voce della lista della spesa</string>
+    <string name="shopping_list_new_title">Nuova voce della lista della spesa</string>
+    <string name="shopping_list_import">Importa dalla ricetta</string>
+
+    <string name="update_category_title">Categoria</string>
+    <string name="update_category_msg">Aggiorna una categoria</string>
+
+    <string name="filter_sort_by">Ordina per</string>
+    <string name="filter_sort_by_name">Nome</string>
+    <string name="filter_sort_by_newest">Più recenti</string>
+    <string name="filter_sort_by_recently_updated">Aggiornati di recente</string>
+    <string name="filter_sort_by_calories">Calorie</string>
+    <string name="filter_on_categories">Filtra per categorie</string>
+
+    <string name="direction_edit_title">Modifica istruzione</string>
+    <string name="direction_new_title">Nuova istruzione</string>
+
+    <string name="categories_dlg_title">Seleziona categoria</string>
+    <string name="categories_dlg_clear_all">Cancella tutto</string>
+    <string name="category_referenced_warning">Questa categoria è usata in {{0}} ricette. Vuoi eliminarla comunque?</string>
+    <string name="category_create_new"><![CDATA[<create new>]]></string>
+
+    <string name="recipe_sent_success">Ricetta \'{{0}}\' inviata</string>
+    <string name="recipe_sent_failed">Invio della ricetta \'{{0}}\' non riuscito</string>
+    <string name="title_activity_shopping_list">Lista della spesa</string>
+    <string name="title_activity_shopping_list_name">Lista della spesa - {0}</string>
+
+    <string name="adjust_servings_title">Regola dimensione porzione</string>
+    <string name="adjust_servings_error">Deve essere specificata la dimensione della porzione della ricetta per regolare correttamente gli ingredienti</string>
+
+    <string name="select_phone_number">Seleziona numero di telefono</string>
+
+    <string name="search_recipe_library">Cerca nella libreria di ricette</string>
+    <string name="selection_required">Seleziona un\'opzione</string>
+
+    <string name="export_to_shopping_list">Esporta nella lista della spesa</string>
+    <string name="success_export_to_shopping_list">Elementi esportati con successo nella lista della spesa selezionata</string>
+    <string name="title_activity_settings">Attività impostazioni</string>
+    <string name="import_from_recipe">Importa dalla ricetta</string>
+    <string name="import_from_list">Importa dalla lista della spesa</string>
+
+    <!-- Preference Titles -->
+    <string name="home_header">Schermata principale</string>
+    <string name="sync_header">Sincronizzazione</string>
+    <string name="auto_save_header">AutoSave</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">La tua firma</string>
+    <string name="reply_title">Azione di risposta predefinita</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sincronizza email periodicamente</string>
+    <string name="attachment_title">Scarica allegati in arrivo</string>
+    <string name="attachment_summary_on">Scarica automaticamente gli allegati per le email in arrivo</string>
+    <string name="attachment_summary_off">Scarica gli allegati solo su richiesta manuale</string>
+
+    <!-- Auto-save Preferences -->
+    <string name="auto_save_lists_title">Abilita per le liste della spesa</string>
+
+    <string name="recent_items_count">Elementi aggiornati di recente max.</string>
+    <string name="recent_items_count_summary">Usato per ricette e liste della spesa</string>
+
+    <string name="exception_generic">Si è verificato un errore durante il salvataggio di questo record.</string>
+    <string name="exception_duplicate_name">Non è possibile usare un nome duplicato. Riprova con un nome univoco.</string>
+
+    <string name="image_library_title">Seleziona dalla libreria</string>
+    <string name="detailed_measurements">Misure dettagliate</string>
+
+    <string name="image_menu_image_gallery">Galleria immagini</string>
+    <string name="image_menu_files">File &amp; Download</string>
+    <string name="image_menu_take_picture">Scatta una foto</string>
+    <string name="image_menu_image_library">Libreria immagini</string>
+    <string name="image_menu_clear">Cancella</string>
+    <string name="lock_screen">Schermata di blocco</string>
+
+    <string name="recipe_generator">Creatore di ricette</string>
+    <string name="recipe_generate">Cerca</string>
+    <string name="generated_from_openai">Generato da OpenAi</string>
+    <string name="new_ai_recipe">Nuova ricetta AI</string>
+    <string name="description_missing">Descrizione richiesta</string>
+    <string name="description_hint">Descrivi la ricetta che cerchi…</string>
+    <string name="import_recipe">Importa</string>
+    <string name="generate">Genera</string>
+    <string name="generate_using_ai">Crea usando l\'AI</string>
+    <string name="enhance_using_ai">Migliora usando l\'AI</string>
+    <string name="questionnaire">Questionario</string>
+    <string name="questionnaire_description">Prova il questionario per guidarti attraverso le opzioni.</string>
+    <string name="generate_description">Oppure, descrivi cosa stai cercando…</string>
+
+    <string name="helper_desc_hint">Spiega che tipo di suggerimenti stai cercando</string>
+    <string name="helper_button_text">Ottieni suggerimenti</string>
+    <string name="helper_prompt_title">Aggiungere questo suggerimento alla tua ricetta?</string>
+    <string name="llm_failure">Il portale AI è inattivo, riprova più tardi. Se il problema persiste, verifica la presenza di un aggiornamento.</string>
+
+    <string name="backup_restore_title">Backup e ripristino</string>
+    <string name="backup_title">Backup</string>
+    <string name="restore_title">Ripristina</string>
+    <string name="data_backup_button">Backup dati</string>
+    <string name="data_backup_overview">Esegui il backup di ricette, categorie e liste della spesa su Google Drive. Verrà salvato come file JSON e potrà essere letto da qualsiasi editor.</string>
+    <string name="data_restore_button">Ripristina dati</string>
+    <string name="data_restore_overview">Ripristina i dati salvati dal file JSON su Google Drive o sul dispositivo</string>
+    <string name="alert_data_backup_title">Esegui il backup dei dati</string>
+    <string name="alert_data_backup_message">Tutte le tue ricette, categorie e liste sono attualmente salvate solo localmente sul dispositivo. Proteggi i dati e rendili condivisibili tra dispositivi, eseguendo il backup su un file nel tuo cloud.</string>
+    <string name="alert_data_backup_button">Inizia</string>
+    <string name="alert_data_backup_later">Più tardi</string>
+    <string name="alert_data_backup_stop">Smetti di disturbarmi</string>
+    <string name="alert_data_backup_enabled">Promemoria avviso backup</string>
+    <string name="alert_data_backup_goto">Vai al backup</string>
+
+    <string name="about_subheading">Per chi cucina</string>
+    <string name="about_description"><![CDATA[<b>IDoTheCooking</b> è un\'applicazione completa per ricette progettata per aiutare gli utenti a generare, archiviare e migliorare le proprie ricette usando l\'AI, gestendo al contempo le liste della spesa. Questa app consente non solo di tenere traccia delle proprie creazioni culinarie, ma offre anche suggerimenti intelligenti per migliorare le ricette e ottimizzare le liste degli ingredienti. È il compagno ideale sia per cuochi esperti sia per principianti.]]></string>
+    <string name="about_key_features">Caratteristiche principali</string>
+    <string name="about_storage_organization">Archiviazione e organizzazione delle ricette</string>
+    <string name="about_storage_organization1"><![CDATA[<b>Crea e salva ricette:</b> Gli utenti possono inserire le proprie ricette con ingredienti dettagliati, istruzioni e tempi di cottura. Le ricette vengono archiviate in una collezione personale e possono essere facilmente filtrate per categorie (es. colazione, pranzo, cena, dessert).]]></string>
+    <string name="about_storage_organization2"><![CDATA[<b>Stampa e condividi:</b> Le ricette possono essere stampate direttamente dall\'app e condivise tramite messaggi di testo. Le quantità possono essere regolate automaticamente in base alla dimensione di porzione desiderata.]]></string>
+    <string name="about_storage_organization3"><![CDATA[<b>Importa ed esporta:</b> L\'intera libreria di ricette e liste della spesa può essere esportata come file JSON direttamente su Google Drive. Successivamente può essere importata dallo stesso luogo. Questo consente di eseguire il backup di tutte le ricette per conservarle al sicuro.]]></string>
+    <string name="about_generate_suggestions">Generazione e suggerimenti di ricette</string>
+    <string name="about_generate_suggestions1"><![CDATA[<b>Genera nuove ricette:</b> Basandosi su una breve descrizione o solo sugli ingredienti disponibili, l\'app può generare nuove ricette. Questo aiuta a ridurre gli sprechi alimentari e incoraggia una cucina creativa.]]></string>
+    <string name="about_generate_suggestions2"><![CDATA[<b>Miglioramenti con AI:</b> L\'app può analizzare una ricetta esistente e suggerire variazioni in base alle richieste dell\'utente. Può proporre miglioramenti come tecniche di cottura alternative, potenziamenti di sapore o ingredienti aggiuntivi.]]></string>
+    <string name="about_shopping_list">Integrazione lista della spesa</string>
+    <string name="about_shopping_list1"><![CDATA[<b>Integrazione lista della spesa:</b> Gli ingredienti possono essere facilmente trasferiti da una ricetta selezionata a una lista della spesa esistente o nuova. Gli utenti possono spuntare gli articoli già presenti in casa e continuare gli acquisti.]]></string>
+    <string name="about_shopping_list2"><![CDATA[<b>Stampa e condividi:</b> Le liste della spesa possono essere stampate direttamente dall\'app e condivise tramite messaggi di testo.]]></string>
+    <string name="about_footer"><![CDATA[<b>IDoTheCooking</b> mira a diventare il compagno di cucina definitivo per cuochi novizi e chef esperti, combinando tecnologia e creatività per rendere la cucina più semplice, sana e divertente.]]></string>
+</resources>

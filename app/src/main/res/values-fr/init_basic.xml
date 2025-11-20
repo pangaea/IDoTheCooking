@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_breakfast">Petit‑déjeuner</string>
+    <string name="category_lunch">Déjeuner</string>
+    <string name="category_desert">Dessert</string>
+    <string name="category_appetizer">Apéritif</string>
+    <string name="category_dinner">Dîner</string>
+    <string name="category_instant_pot">Instant Pot</string>
+    <string name="category_chicken">Poulet</string>
+    <string name="category_air_fryer">Friteuse à air</string>
+
+    <string name="units_tbsp">tbsp</string>
+    <string name="units_tsp">tsp</string>
+    <string name="units_cup">cup</string>
+    <string name="units_lb">lb</string>
+    <string name="units_lbs">lbs</string>
+    <string name="units_oz">oz</string>
+    <string name="units_gallon">gallon</string>
+
+    <string name="french_toast_title">Pain perdu</string>
+    <string name="french_toast_direction_eggs">Œufs</string>
+    <string name="french_toast_direction_milk">Lait</string>
+    <string name="french_toast_direction_sugar">Sucre granulé</string>
+    <string name="french_toast_direction_vanilla">Extrait de vanille</string>
+    <string name="french_toast_direction_cinnamon">Cannelle moulue</string>
+    <string name="french_toast_direction_butter">Beurre</string>
+    <string name="french_toast_direction_bread">Pain</string>
+    <string name="french_toast_direction_1">Mettre les œufs dans un grand bol et les brouiller</string>
+    <string name="french_toast_direction_2">Ajouter le lait, le sucre, la vanille et la cannelle et mélanger</string>
+    <string name="french_toast_direction_3">Chauffer la poêle jusqu\'à ce que le beurre fonde</string>
+    <string name="french_toast_direction_4">Tremper le pain dans le mélange du bol et le cuire dans la poêle</string>
+
+    <string name="lemon_chicken_title">Poulet au citron</string>
+    <string name="lemon_chicken_chick_breast">Poitrine de poulet</string>
+    <string name="lemon_chicken_salt">Sel</string>
+    <string name="lemon_chicken_pepper">Poivre</string>
+    <string name="lemon_chicken_flour">Farine</string>
+    <string name="lemon_chicken_lemon_juice">Jus de citron</string>
+    <string name="lemon_chicken_olive_oil">Huile d\'olive</string>
+    <string name="lemon_chicken_minced_garlic">Ail haché</string>
+    <string name="lemon_chicken_chicken_broth">Bouillon de poulet</string>
+    <string name="lemon_chicken_parmesan_cheese">Fromage parmesan</string>
+    <string name="lemon_chicken_egg">Œuf</string>
+    <string name="lemon_chicken_unsalted_butter">Beurre non salé</string>
+    <string name="lemon_chicken_fresh_parsley">Persil frais</string>
+    <string name="lemon_chicken_direction_1">Assaisonner les deux côtés du poulet avec du sel et du poivre</string>
+    <string name="lemon_chicken_direction_2">Tremper dans l\'œuf</string>
+    <string name="lemon_chicken_direction_3">Enrober le poulet de farine et du mélange de fromage parmesan</string>
+    <string name="lemon_chicken_direction_4">Placer l\'huile d\'olive dans l\'Instant Pot et le mettre en mode sauté</string>
+    <string name="lemon_chicken_direction_5">Cuire jusqu\'à ce qu\'il soit doré</string>
+    <string name="lemon_chicken_direction_6">Retirer du pot</string>
+    <string name="lemon_chicken_direction_7">Ajouter le beurre, l\'ail et le jus de citron dans le pot</string>
+    <string name="lemon_chicken_direction_8">Cuire pendant 1 minute</string>
+    <string name="lemon_chicken_direction_9">Ajouter le bouillon et le poulet dans le pot</string>
+    <string name="lemon_chicken_direction_10">Cuire en mode manuel pendant 7 minutes</string>
+    <string name="lemon_chicken_direction_11">Ajouter des tranches de citron et du persil pour servir</string>
+
+    <string name="chicken_parmesan_title">Poulet parmesan</string>
+    <string name="chicken_parmesan_description">Délicieux et facile à préparer</string>
+    <string name="chicken_parmesan_chicken_breast">Poitrine de poulet</string>
+    <string name="chicken_parmesan_olive_oil">Huile d\'olive</string>
+    <string name="chicken_parmesan_italian_bread_crumbs">Chapelure italienne</string>
+    <string name="chicken_parmesan_marinara_sauce">Sauce marinara</string>
+    <string name="chicken_parmesan_shredded_mozzarella_cheese">Mozzarella râpée</string>
+    <string name="chicken_parmesan_salt">Sel</string>
+    <string name="chicken_parmesan_pepper">Poivre</string>
+    <string name="chicken_parmesan_fresh_basil">Basilic frais</string>
+    <string name="chicken_parmesan_direction_1">Chauffer l\'huile d\'olive dans une poêle</string>
+    <string name="chicken_parmesan_direction_2">Enrober la poitrine de poulet de chapelure</string>
+    <string name="chicken_parmesan_direction_3">Cuire le poulet dans la poêle jusqu\'à 165°</string>
+    <string name="chicken_parmesan_direction_4">Verser la moitié de la sauce dans le plat à gratin</string>
+    <string name="chicken_parmesan_direction_5">Placer le poulet dans le plat de manière uniforme et couvrir avec le reste de sauce</string>
+    <string name="chicken_parmesan_direction_6">Couvrir le poulet de fromage et de basilic haché</string>
+    <string name="chicken_parmesan_direction_7">Cuire au four à 425° pendant 15 minutes</string>
+
+    <string name="baked_potatoes_title">Pommes de terre au four</string>
+    <string name="baked_potatoes_description">Avec des croûtes croustillantes</string>
+    <string name="baked_potatoes_potatoes">Pommes de terre</string>
+    <string name="baked_potatoes_olive_oil">Huile d\'olive</string>
+    <string name="baked_potatoes_salt">Sel</string>
+    <string name="baked_potatoes_pepper">Poivre</string>
+    <string name="baked_potatoes_direction_1">Nettoyer les pommes de terre et percer des trous</string>
+    <string name="baked_potatoes_direction_2">Enrober d\'huile d\'olive, de sel et de poivre.</string>
+    <string name="baked_potatoes_direction_3">Cuire dans la friteuse à air à 400° pendant 40 minutes, ou jusqu\'à ce que la température interne soit de 209°. Retourner à mi-cuisson.</string>
+
+    <string name="swedish_meatballs_title">Boulettes de viande suédoises</string>
+    <string name="swedish_meatballs_description">Sucrées et délicieuses</string>
+    <string name="swedish_meatballs_frozen_meatballs">Boulettes de viande surgelées</string>
+    <string name="swedish_meatballs_chili_sauce">Sauce chili</string>
+    <string name="swedish_meatballs_grape_jelly">Gelée de raisin</string>
+    <string name="swedish_meatballs_brown_sugar">Sucre brun</string>
+    <string name="swedish_meatballs_direction_1">Faire dorer les boulettes</string>
+    <string name="swedish_meatballs_direction_2">Chauffer la gelée, la sauce chili et le sucre brun dans une poêle</string>
+    <string name="swedish_meatballs_direction_3">Ajouter les boulettes à la sauce</string>
+    <string name="swedish_meatballs_direction_4">Couvrir et laisser mijoter pendant 1 à 2 heures</string>
+
+    <string name="groceries_title">Courses</string>
+    <string name="groceries_description">Liste de courses normale</string>
+    <string name="groceries_item_1">Lait</string>
+    <string name="groceries_item_2">Fromage américain</string>
+</resources>

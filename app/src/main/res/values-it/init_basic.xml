@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_breakfast">Colazione</string>
+    <string name="category_lunch">Pranzo</string>
+    <string name="category_desert">Dessert</string>
+    <string name="category_appetizer">Antipasto</string>
+    <string name="category_dinner">Cena</string>
+    <string name="category_instant_pot">Pentola a pressione</string>
+    <string name="category_chicken">Pollo</string>
+    <string name="category_air_fryer">Friggitrice ad aria</string>
+
+    <string name="units_tbsp">cucchiaio da tavola</string>
+    <string name="units_tsp">cucchiaino da tè</string>
+    <string name="units_cup">tazza</string>
+    <string name="units_lb">libbra</string>
+    <string name="units_lbs">libbre</string>
+    <string name="units_oz">once</string>
+    <string name="units_gallon">gallone</string>
+
+    <string name="french_toast_title">French Toast</string>
+    <string name="french_toast_direction_eggs">Uova</string>
+    <string name="french_toast_direction_milk">Latte</string>
+    <string name="french_toast_direction_sugar">Zucchero semolato</string>
+    <string name="french_toast_direction_vanilla">Estratto di vaniglia</string>
+    <string name="french_toast_direction_cinnamon">Cannella macinata</string>
+    <string name="french_toast_direction_butter">Burro</string>
+    <string name="french_toast_direction_bread">Pane</string>
+    <string name="french_toast_direction_1">Metti le uova in una grande ciotola e sbattile</string>
+    <string name="french_toast_direction_2">Aggiungi latte, zucchero, vaniglia e cannella e mescola</string>
+    <string name="french_toast_direction_3">Scalda la padella finché il burro si scioglie</string>
+    <string name="french_toast_direction_4">Immergi il pane nella miscela della ciotola e cuocilo nella padella</string>
+
+    <string name="lemon_chicken_title">Pollo al limone</string>
+    <string name="lemon_chicken_chick_breast">Petto di pollo</string>
+    <string name="lemon_chicken_salt">Sale</string>
+    <string name="lemon_chicken_pepper">Pepe</string>
+    <string name="lemon_chicken_flour">Farina</string>
+    <string name="lemon_chicken_lemon_juice">Succo di limone</string>
+    <string name="lemon_chicken_olive_oil">l\'olio d\'oliva</string>
+    <string name="lemon_chicken_minced_garlic">Aglio tritato</string>
+    <string name="lemon_chicken_chicken_broth">Brodo di pollo</string>
+    <string name="lemon_chicken_parmesan_cheese">Formaggio parmigiano</string>
+    <string name="lemon_chicken_egg">Uovo</string>
+    <string name="lemon_chicken_unsalted_butter">Burro non salato</string>
+    <string name="lemon_chicken_fresh_parsley">Prezzemolo fresco</string>
+    <string name="lemon_chicken_direction_1">Condisci entrambi i lati del pollo con sale e pepe</string>
+    <string name="lemon_chicken_direction_2">Immergi nell\'uovo</string>
+    <string name="lemon_chicken_direction_3">Passa il pollo nella farina e nel mix di formaggio parmigiano</string>
+    <string name="lemon_chicken_direction_4">Metti l\'olio d\'oliva nella pentola a pressione e impostala su modalità soffritto</string>
+    <string name="lemon_chicken_direction_5">Cuoci finché non diventa dorato</string>
+    <string name="lemon_chicken_direction_6">Rimuovi dalla pentola</string>
+    <string name="lemon_chicken_direction_7">Aggiungi burro, aglio e succo di limone nella pentola</string>
+    <string name="lemon_chicken_direction_8">Cuoci per 1 minuto</string>
+    <string name="lemon_chicken_direction_9">Aggiungi brodo e pollo nella pentola</string>
+    <string name="lemon_chicken_direction_10">Cuoci in modalità manuale per 7 minuti</string>
+    <string name="lemon_chicken_direction_11">Aggiungi fette di limone e prezzemolo per servire</string>
+
+    <string name="chicken_parmesan_title">Pollo alla Parmigiana</string>
+    <string name="chicken_parmesan_description">Delizioso e facile da preparare</string>
+    <string name="chicken_parmesan_chicken_breast">Petto di pollo</string>
+    <string name="chicken_parmesan_olive_oil">l\'olio d\'oliva</string>
+    <string name="chicken_parmesan_italian_bread_crumbs">Pangrattato italiano</string>
+    <string name="chicken_parmesan_marinara_sauce">Salsa marinara</string>
+    <string name="chicken_parmesan_shredded_mozzarella_cheese">Mozzarella grattugiata</string>
+    <string name="chicken_parmesan_salt">Sale</string>
+    <string name="chicken_parmesan_pepper">Pepe</string>
+    <string name="chicken_parmesan_fresh_basil">Basilico fresco</string>
+    <string name="chicken_parmesan_direction_1">Scalda l\'olio d\'oliva in una padella</string>
+    <string name="chicken_parmesan_direction_2">Passa il petto di pollo nel pangrattato</string>
+    <string name="chicken_parmesan_direction_3">Cuoci il pollo nella padella fino a 165°</string>
+    <string name="chicken_parmesan_direction_4">Versa metà della salsa nella teglia</string>
+    <string name="chicken_parmesan_direction_5">Distribuisci il pollo nella teglia e copri con la salsa rimanente</string>
+    <string name="chicken_parmesan_direction_6">Copri il pollo con formaggio e basilico tritato</string>
+    <string name="chicken_parmesan_direction_7">Cuoci in forno a 425° per 15 minuti</string>
+
+    <string name="baked_potatoes_title">Patate al forno</string>
+    <string name="baked_potatoes_description">Con pelle croccante</string>
+    <string name="baked_potatoes_potatoes">Patate</string>
+    <string name="baked_potatoes_olive_oil">l\'olio d\'oliva</string>
+    <string name="baked_potatoes_salt">Sale</string>
+    <string name="baked_potatoes_pepper">Pepe</string>
+    <string name="baked_potatoes_direction_1">Pulisci le patate e pratica dei fori</string>
+    <string name="baked_potatoes_direction_2">Condisci con l\'olio d\'oliva, sale e pepe.</string>
+    <string name="baked_potatoes_direction_3">Cuoci nella friggitrice ad aria a 400° per 40 minuti, o finché la temperatura interna è 209°. Gira a metà cottura.</string>
+
+    <string name="swedish_meatballs_title">Polpette svedesi</string>
+    <string name="swedish_meatballs_description">Dolci e deliziose</string>
+    <string name="swedish_meatballs_frozen_meatballs">Polpette surgelate</string>
+    <string name="swedish_meatballs_chili_sauce">Salsa al peperoncino</string>
+    <string name="swedish_meatballs_grape_jelly">Marmellata d\'uva</string>
+    <string name="swedish_meatballs_brown_sugar">Zucchero di canna</string>
+    <string name="swedish_meatballs_direction_1">Rosola le polpette</string>
+    <string name="swedish_meatballs_direction_2">Scalda marmellata, salsa al peperoncino e zucchero di canna in padella</string>
+    <string name="swedish_meatballs_direction_3">Aggiungi le polpette alla salsa</string>
+    <string name="swedish_meatballs_direction_4">Copri e lascia sobbollire per 1-2 ore</string>
+
+    <string name="groceries_title">Spesa</string>
+    <string name="groceries_description">Lista della spesa normale</string>
+    <string name="groceries_item_1">Latte</string>
+    <string name="groceries_item_2">Formaggio americano</string>
+</resources>
