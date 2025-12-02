@@ -227,4 +227,6 @@
     <string name="about_shopping_list1"><![CDATA[<b>Integración de listas de compras:</b> Los ingredientes pueden migrarse fácilmente de una receta seleccionada a una lista de compras existente o nueva. Los usuarios pueden marcar los artículos que ya tienen en casa y seguir comprando.]]></string>
     <string name="about_shopping_list2"><![CDATA[<b>Imprimir y compartir:</b> Las listas de compras pueden imprimirse directamente desde la aplicación y compartirse mediante mensajes de texto.]]></string>
     <string name="about_footer"><![CDATA[<b>IDoTheCooking</b> aspira a ser el compañero de cocina definitivo tanto para cocineros novatos como para chefs experimentados, combinando tecnología y creatividad para hacer la cocina más fácil, saludable y divertida.]]></string>
+    <string name="about_icons_1">Iconos creados por</string>
+    <string name="about_icons_2">de</string>
 </resources>

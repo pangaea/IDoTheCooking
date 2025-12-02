@@ -227,4 +227,6 @@
     <string name="about_shopping_list1"><![CDATA[<b>Integration von Einkaufslisten:</b> Zutaten können einfach von einem ausgewählten Rezept in eine bestehende oder neue Einkaufsliste übertragen werden. Nutzer können bereits vorhandene Artikel abhaken und beim Einkaufen fortfahren.]]></string>
     <string name="about_shopping_list2"><![CDATA[<b>Drucken und Teilen:</b> Einkaufslisten können direkt aus der App ausgedruckt und per SMS geteilt werden.]]></string>
     <string name="about_footer"><![CDATA[<b>IDoTheCooking</b> möchte der ultimative Küchenbegleiter für sowohl Kochanfänger als auch erfahrene Köche sein und verbindet Technologie und Kreativität, um das Kochen einfacher, gesünder und unterhaltsamer zu machen.]]></string>
+    <string name="about_icons_1">Symbole erstellt von</string>
+    <string name="about_icons_2">von</string>
 </resources>

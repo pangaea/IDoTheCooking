@@ -226,4 +226,6 @@
     <string name="about_shopping_list1"><![CDATA[<b>Shopping List Integration:</b> Ingredients can be easily migrated from a selected recipe to an existing or new shopping list. Users can check off items they already have at home and continue as they are shopping.]]></string>
     <string name="about_shopping_list2"><![CDATA[<b>Print and Share:</b> Shopping lists can be printed directly from the app and shared using text messaging.]]></string>
     <string name="about_footer"><![CDATA[<b>IDoTheCooking</b> aims to be the ultimate kitchen companion for both novice cooks and seasoned chefs, blending technology and creativity to make cooking easier, healthier, and more fun.]]></string>
+    <string name="about_icons_1">Icons made by</string>
+    <string name="about_icons_2">from</string>
 </resources>
