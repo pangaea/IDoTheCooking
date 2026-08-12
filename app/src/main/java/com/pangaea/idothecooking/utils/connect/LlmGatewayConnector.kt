@@ -30,8 +30,6 @@ import org.json.JSONObject
 import java.io.IOException
 import java.security.KeyPairGenerator
 import java.security.KeyStore
-import java.security.SecureRandom
-import java.security.cert.Certificate
 import java.security.cert.X509Certificate
 import java.util.Base64
 import java.util.Locale
@@ -39,8 +37,10 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 class LlmGatewayConnector(val context: Context) {
-    val challengeUrl = "http://192.168.1.40/webmenus/LLMGateway/get_challenge"
+    val challengeUrl = "http://192.168.1.40/webmenus/LLMGateway/get_attestation_nonce"
     val gatewayUrl = "http://192.168.1.40/webmenus/LLMGateway/query"
+//    val challengeUrl = "https://www.soundmenus.com/webmenus/LLMGateway/get_attestation_nonce"
+//    val gatewayUrl = "https://www.soundmenus.com/webmenus/LLMGateway/query"
     private val keyAlias = "attested_key"
     private val mediaTypeJson: MediaType = "application/json".toMediaType()
     private val mockRequest = false
@@ -60,18 +60,6 @@ class LlmGatewayConnector(val context: Context) {
             KeyProperties.KEY_ALGORITHM_EC,
             "AndroidKeyStore"
         )
-
-//        val parameterSpec = KeyGenParameterSpec.Builder(
-//            keyAlias,
-//            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
-//        ).run {
-//            setDigests(KeyProperties.DIGEST_SHA256)
-//            // Passing the challenge enables attestation
-//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//				setAttestationChallenge(challenge)
-//			}
-//			build()
-//        }
 
         val parameterSpec = KeyGenParameterSpec.Builder(
             keyAlias,
@@ -192,23 +180,19 @@ class LlmGatewayConnector(val context: Context) {
     @RequiresApi(Build.VERSION_CODES.O)
     @Throws(IOException::class)
     private fun llmRequest(content: String, callback: (success: Boolean, payload: String?) -> Unit) {
-//        val attestationChallenge = ByteArray(16).apply {
-//            SecureRandom().nextBytes(this)
-//        }
-        getChallengeFromServer() { success, attestationChallenge ->
 
-            //val attestationChallenge = "1234567890".toByteArray()
+        getChallengeFromServer() { success, attestationChallenge ->
             if (!success || attestationChallenge == null) {
                 callback(false, null)
                 throw IOException("Failed to get attestation challenge")
             }
 
             generateAttestedKey(attestationChallenge.toByteArray())
-            val ks2 = getCertificateChain()
+            val ks = getCertificateChain()
                 ?: throw IOException("Failed to retrieve the attested key")
 
             // Convert to standard JSON string
-            val certList = convertCertificatesToBase64(ks2)
+            val certList = convertCertificatesToBase64(ks)
             val jsonString = convertArrayToJson(certList)
 
             val jsonBody = JSONObject()
@@ -243,8 +227,7 @@ class LlmGatewayConnector(val context: Context) {
                         callback(false, null)
                     } else {
                         val json = response.body!!.string()
-                        //val jsonRoot = JsonParser.parseString(json).asJsonObject;
-                        callback(true, "{\"recipes\":$json}")
+                        callback(true, json)
                     }
                 }
             } catch (e: Exception) {
