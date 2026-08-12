@@ -60,7 +60,6 @@ class QuestionnaireDialog(val callback: (results: Map<String, String>) -> Unit)
 
 	private fun loadConfig(fileName: String): Question? {
 		val json: String = requireContext().readContentFromAssets(fileName)
-		//val mapper = ObjectMapper()
 		val mapper = ObjectMapper().apply {
 			configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 		}

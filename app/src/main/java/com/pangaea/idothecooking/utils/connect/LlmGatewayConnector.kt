@@ -3,9 +3,13 @@ package com.pangaea.idothecooking.utils.connect
 import android.content.Context
 import android.os.Build
 import android.os.LocaleList
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import androidx.annotation.RequiresApi
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.JsonParser
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.pangaea.idothecooking.R
 import com.pangaea.idothecooking.state.db.entities.Direction
 import com.pangaea.idothecooking.state.db.entities.Ingredient
@@ -13,6 +17,9 @@ import com.pangaea.idothecooking.state.db.entities.Recipe
 import com.pangaea.idothecooking.state.db.entities.RecipeDetails
 import com.pangaea.idothecooking.ui.recipe.adapters.HelperSuggestion
 import com.pangaea.idothecooking.utils.extensions.readContentFromAssets
+import okhttp3.Cookie
+import okhttp3.CookieJar
+import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -21,12 +28,20 @@ import okhttp3.RequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import java.security.KeyPairGenerator
+import java.security.KeyStore
+import java.security.SecureRandom
+import java.security.cert.Certificate
+import java.security.cert.X509Certificate
+import java.util.Base64
 import java.util.Locale
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
-
-class LlmGateway(val context: Context) {
-    private val openAiChatCompletionUrl = "https://api.openai.com/v1/chat/completions"
+class LlmGatewayConnector(val context: Context) {
+    val challengeUrl = "http://192.168.1.40/webmenus/LLMGateway/get_challenge"
+    val gatewayUrl = "http://192.168.1.40/webmenus/LLMGateway/query"
+    private val keyAlias = "attested_key"
     private val mediaTypeJson: MediaType = "application/json".toMediaType()
     private val mockRequest = false
 
@@ -39,7 +54,71 @@ class LlmGateway(val context: Context) {
         }
     }
 
-    @Throws(IOException::class)
+    @RequiresApi(Build.VERSION_CODES.N)
+	private fun generateAttestedKey(challenge: ByteArray) {
+        val kpg = KeyPairGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_EC,
+            "AndroidKeyStore"
+        )
+
+//        val parameterSpec = KeyGenParameterSpec.Builder(
+//            keyAlias,
+//            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
+//        ).run {
+//            setDigests(KeyProperties.DIGEST_SHA256)
+//            // Passing the challenge enables attestation
+//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//				setAttestationChallenge(challenge)
+//			}
+//			build()
+//        }
+
+        val parameterSpec = KeyGenParameterSpec.Builder(
+            keyAlias,
+            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
+            ).setDigests(KeyProperties.DIGEST_SHA256)
+            .setAttestationChallenge(challenge)        // request attestation
+            .build()
+
+        kpg.initialize(parameterSpec)
+        kpg.generateKeyPair()
+    }
+
+//    private fun getCertificateChain(): Array<out Certificate>? {
+//        val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+//        return keyStore.getCertificateChain(keyAlias)
+//    }
+
+    private fun getCertificateChain(): List<X509Certificate>? {
+        val keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
+            load(null)
+        }
+
+        // Retrieve the certificate chain tied to your key alias
+        val chain = keyStore.getCertificateChain(keyAlias) ?: return null
+
+        return chain.map { it as X509Certificate }
+    }
+
+    private fun convertArrayToJson(cert: List<String>): String {
+        // Convert to standard JSON string
+        val mapper = ObjectMapper().apply {
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+        }
+        return mapper.writeValueAsString(cert)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+	fun convertCertificatesToBase64(certificates: List<X509Certificate>): List<String> {
+        val encoder = Base64.getEncoder()
+        return certificates.map { cert ->
+            encoder.encodeToString(cert.encoded)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+	@Throws(IOException::class)
     fun suggestRecipe(desc: String, callback: (success: Boolean, recipes: List<RecipeDetails>) -> Unit) {
         if (!mockRequest) {
             val promptSuggestRecipe = context.readContentFromAssets("prompts/suggest_recipes.prompt")
@@ -55,6 +134,7 @@ class LlmGateway(val context: Context) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Throws(IOException::class)
     fun suggestEnhancements(desc: String, recipe: RecipeDetails, callback: (success: Boolean, recipes: List<HelperSuggestion>) -> Unit) {
         if (!mockRequest) {
@@ -73,30 +153,23 @@ class LlmGateway(val context: Context) {
         }
     }
 
-    @Throws(IOException::class)
-    private fun llmRequest(content: String, callback: (success: Boolean, payload: String?) -> Unit) {
-        val jsonBody = JSONObject()
-        try {
-            jsonBody.put("model", "gpt-4o-mini")
-            val jsonMsg = JSONObject()
-            jsonMsg.put("role", "user")
-            jsonMsg.put("content", content)
-            val jsonMsgs = JSONArray()
-            jsonMsgs.put(jsonMsg)
-            jsonBody.put("messages", jsonMsgs)
-            jsonBody.put("max_tokens", 4000)
-            jsonBody.put("temperature", 0)
-        } catch (e: Exception) {
-            e.printStackTrace()
+    val cookieJar = object : CookieJar {
+        private val cookieStore = ConcurrentHashMap<String, List<Cookie>>()
+
+        override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+            cookieStore[url.host] = cookies
         }
 
-        val openAiApiKey = com.pangaea.idothecooking.BuildConfig.OPENAI_API_KEY
-        val body: RequestBody = RequestBody.create(mediaTypeJson, jsonBody.toString())
+        override fun loadForRequest(url: HttpUrl): List<Cookie> {
+            return cookieStore[url.host] ?: emptyList()
+        }
+    }
+
+    private fun getChallengeFromServer(callback: (success: Boolean, payload: String?) -> Unit) {
         val request: Request = Request.Builder()
-            .url(openAiChatCompletionUrl)
-            .header("Authorization", "Bearer $openAiApiKey")
-            .post(body).build()
+            .url(challengeUrl).get().build()
         val client = OkHttpClient.Builder()
+            .cookieJar(cookieJar)
             .connectTimeout(60, TimeUnit.SECONDS) // Set connection timeout to 30 seconds
             .readTimeout(60, TimeUnit.SECONDS)    // Set read timeout to 30 seconds
             .writeTimeout(30, TimeUnit.SECONDS)   // Set write timeout to 30 seconds
@@ -104,20 +177,79 @@ class LlmGateway(val context: Context) {
         try {
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) {
-                    //throw IOException("Unexpected code $response")
                     callback(false, null)
                 } else {
-                    val json = response.body!!.string()
-                    val jsonRoot = JsonParser.parseString(json).asJsonObject;
-                    val choices = jsonRoot.get("choices").asJsonArray
-                    val choice = choices[0].asJsonObject
-                    val msg = choice.get("message").asJsonObject
-                    callback(true, msg.get("content").asString)
+                    val nonce = response.body!!.string()
+                    callback(true, nonce)
                 }
             }
         }
         catch (e: Exception) {
             callback(false, null)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @Throws(IOException::class)
+    private fun llmRequest(content: String, callback: (success: Boolean, payload: String?) -> Unit) {
+//        val attestationChallenge = ByteArray(16).apply {
+//            SecureRandom().nextBytes(this)
+//        }
+        getChallengeFromServer() { success, attestationChallenge ->
+
+            //val attestationChallenge = "1234567890".toByteArray()
+            if (!success || attestationChallenge == null) {
+                callback(false, null)
+                throw IOException("Failed to get attestation challenge")
+            }
+
+            generateAttestedKey(attestationChallenge.toByteArray())
+            val ks2 = getCertificateChain()
+                ?: throw IOException("Failed to retrieve the attested key")
+
+            // Convert to standard JSON string
+            val certList = convertCertificatesToBase64(ks2)
+            val jsonString = convertArrayToJson(certList)
+
+            val jsonBody = JSONObject()
+            try {
+                val jsonMsg = JSONObject()
+                jsonMsg.put("content", content)
+                val jsonMsgs = JSONArray()
+                jsonMsgs.put(jsonMsg)
+                jsonBody.put("messages", jsonMsgs)
+                val jsonAuth = JSONObject()
+                jsonAuth.put("type", "android_attestation")
+                jsonAuth.put("data", jsonString)
+                jsonBody.put("authentication", jsonAuth)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            val body: RequestBody = RequestBody.create(mediaTypeJson, jsonBody.toString())
+            val request: Request = Request.Builder()
+                .url(gatewayUrl)
+                .post(body).build()
+            val client = OkHttpClient.Builder()
+                .cookieJar(cookieJar)
+                .connectTimeout(60, TimeUnit.SECONDS) // Set connection timeout to 30 seconds
+                .readTimeout(60, TimeUnit.SECONDS)    // Set read timeout to 30 seconds
+                .writeTimeout(30, TimeUnit.SECONDS)   // Set write timeout to 30 seconds
+                .build()
+            try {
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        //throw IOException("Unexpected code $response")
+                        callback(false, null)
+                    } else {
+                        val json = response.body!!.string()
+                        //val jsonRoot = JsonParser.parseString(json).asJsonObject;
+                        callback(true, "{\"recipes\":$json}")
+                    }
+                }
+            } catch (e: Exception) {
+                callback(false, null)
+            }
         }
     }
 
@@ -144,18 +276,6 @@ class LlmGateway(val context: Context) {
             recipes.add(extractRecipeFromJson(node))
         }
     }
-
-//    private fun parseRecipeJson(data: String): RecipeDetails {
-//        val recipeJson = extractJsonString(data)
-//        val mapper = ObjectMapper()
-//        val node: JsonNode = mapper.readTree(recipeJson)
-//        val recipeNode: JsonNode? = node.get("recipe")
-//        return if (recipeNode != null) {
-//            extractRecipeFromJson(recipeNode)
-//        } else {
-//            extractRecipeFromJson(node)
-//        }
-//    }
 
     private fun extractRecipeFromJson(recipeNode: JsonNode?): RecipeDetails {
         val recipe = Recipe()
@@ -217,15 +337,15 @@ class LlmGateway(val context: Context) {
     // Common
     ////////////////////////////////////////////////////////
 
-    private fun extractJsonString(text: String): String? {
+    private fun extractJsonString(text: String): String {
         val startToken = "```json"
         val endToken = "```"
         // Find beginning of JSON block
         val startIndex = text.indexOf(startToken)
-        if (startIndex == -1) return null
+        if (startIndex == -1) return text
         // Find end of JSON block
         val endIndex = text.indexOf(endToken, startIndex + startToken.length)
-        if (endIndex == -1) return null
+        if (endIndex == -1) return text
         // Extract JSON from string
         return text.substring(startIndex + startToken.length, endIndex)
     }

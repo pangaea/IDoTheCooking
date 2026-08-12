@@ -20,10 +20,9 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.shared.adapters.CreateRecipeAdapter
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
-import com.pangaea.idothecooking.utils.connect.LlmGateway
+import com.pangaea.idothecooking.utils.connect.LlmGatewayConnector
 import com.pangaea.idothecooking.utils.extensions.disable
 import com.pangaea.idothecooking.utils.extensions.enable
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -79,7 +78,7 @@ class RecipeGeneratorFragment : Fragment() {
 
             val me: Fragment = this
             GlobalScope.launch {
-                LlmGateway(requireContext())
+                LlmGatewayConnector(requireContext())
                     .suggestRecipe(prompt) { success, generatedRecipes ->
                         requireActivity().runOnUiThread {
                             // UNMASK - View

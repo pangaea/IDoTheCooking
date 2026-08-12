@@ -23,7 +23,7 @@ import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModel
 import com.pangaea.idothecooking.ui.recipe.viewmodels.RecipeViewModelFactory
 import com.pangaea.idothecooking.ui.recipe.viewmodels.SelectedRecipeModel
 import com.pangaea.idothecooking.ui.shared.adapters.RecycleViewClickListener
-import com.pangaea.idothecooking.utils.connect.LlmGateway
+import com.pangaea.idothecooking.utils.connect.LlmGatewayConnector
 import com.pangaea.idothecooking.utils.extensions.disable
 import com.pangaea.idothecooking.utils.extensions.enable
 import com.pangaea.idothecooking.utils.extensions.observeOnce
@@ -58,8 +58,8 @@ class HelperSearchFragment : Fragment() {
                     val me: Fragment = this
                     selectedRecipeModel.selectedRecipe.observeOnce { recipe ->
                         GlobalScope.launch {
-                            LlmGateway(requireContext()).suggestEnhancements(descView.text.toString(),
-                                                                             recipe) { success, suggestions ->
+                            LlmGatewayConnector(requireContext()).suggestEnhancements(descView.text.toString(),
+																					  recipe) { success, suggestions ->
                                 requireActivity().runOnUiThread {
                                     // UNMASK - View
                                     progressBar.visibility = View.GONE
